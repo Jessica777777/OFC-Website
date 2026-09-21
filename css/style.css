@@ -2100,10 +2100,18 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   height: clamp(34px, 5vw, 52px);
   width: auto;
 }
+/* same reasoning as .feature-card-logo--stud on how-to-play.html: the
+   "7 Card Stud" wordmark is a thinner mixed-case script, not the bold
+   all-caps sans the other five titles use, so it reads smaller/lighter
+   at the same box height here too. */
+.gr-hero-banner-logo--stud {
+  height: clamp(40px, 6vw, 62px);
+}
 @media (max-width: 640px) {
   .gr-hero-banner { height: 150px; }
   .gr-hero-banner h2 { font-size: 1.3rem; }
   .gr-hero-banner-logo { height: 30px; }
+  .gr-hero-banner-logo--stud { height: 36px; }
 }
 
 .gr-switch {

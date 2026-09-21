@@ -435,7 +435,7 @@
       var titleImg = GR_TITLE_IMG[id];
       if (titleImg) {
         var logo = document.createElement("img");
-        logo.className = "gr-hero-banner-logo";
+        logo.className = "gr-hero-banner-logo" + (id === "stud" ? " gr-hero-banner-logo--stud" : "");
         logo.src = titleImg;
         logo.alt = txt(game.title);
         logo.onerror = function () {
