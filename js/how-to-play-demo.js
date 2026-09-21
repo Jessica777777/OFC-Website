@@ -230,6 +230,13 @@
     let lastResult = null;
     let dragIdx = null;
     let quotaHintVisible = false;
+    // v29d: absolute slot position (0-based, within the row's fixed
+    // TOTAL_MAX[row] grid) that this round's card `idx` was actually
+    // dropped/clicked into — keyed by dealt-index, only meaningful while
+    // placement[idx] is a row (not 'tray'). Lets a card stay exactly where
+    // the visitor put it instead of always packing to the leftmost open
+    // slot; see firstOpenSlot()/renderBoard() below.
+    let liveSlot = {};
 
     function currentRound() { return ROUNDS[step]; }
 
@@ -322,6 +329,7 @@
       lastResult = null;
       dragIdx = null;
       quotaHintVisible = false;
+      liveSlot = {};
       feedbackEl.hidden = true;
       feedbackEl.className = 'ofc-demo-feedback';
       ROW_ORDER.forEach((row) => rowEls[row].classList.remove('result-ok', 'result-foul'));
@@ -333,7 +341,22 @@
       render();
     }
 
-    function placeCard(idx, row) {
+    // v29d: this round's playable area within `row` is the absolute slots
+    // from boardBefore(step)[row].length (wherever the locked-in preset
+    // cards from earlier rounds stop) up to TOTAL_MAX[row]-1. Returns the
+    // first of those not already claimed by some other card of this
+    // round (excludeIdx's own current slot doesn't block itself).
+    function firstOpenSlot(row, excludeIdx) {
+      const presetCount = boardBefore(step)[row].length;
+      for (let i = presetCount; i < TOTAL_MAX[row]; i++) {
+        const takenByOther = placement.some((loc, otherIdx) =>
+          loc === row && otherIdx !== excludeIdx && liveSlot[otherIdx] === i);
+        if (!takenByOther) return i;
+      }
+      return presetCount;
+    }
+
+    function placeCard(idx, row, slotIndex) {
       if (locked) return;
       if (row !== 'tray') {
         if (dealtIn(row).length >= openCap(row) && placement[idx] !== row) return;
@@ -347,12 +370,28 @@
         }
       }
       placement[idx] = row;
+      if (row === 'tray') {
+        delete liveSlot[idx];
+      } else {
+        // v29d: land on the exact slot the visitor targeted (drag onto a
+        // specific box, or click a specific empty box) instead of always
+        // repacking to the leftmost open slot. Falls back to "first open
+        // slot" only when no specific slot was given (e.g. dropping
+        // somewhere in the row that isn't a slot element) or that slot
+        // got claimed by something else in between.
+        const wanted = slotIndex;
+        const alreadyTaken = wanted !== undefined && wanted !== null
+          && placement.some((loc, otherIdx) => loc === row && otherIdx !== idx && liveSlot[otherIdx] === wanted);
+        liveSlot[idx] = (wanted === undefined || wanted === null || alreadyTaken)
+          ? firstOpenSlot(row, idx)
+          : wanted;
+      }
       selected = null;
       quotaHintVisible = false;
       render();
     }
 
-    function wireDropTarget(el, targetRow) {
+    function wireDropTarget(el, targetRow, slotIndex) {
       el.addEventListener('dragover', (e) => {
         if (dragIdx === null || locked) return;
         const already = placement[dragIdx] === targetRow;
@@ -368,8 +407,21 @@
         el.classList.remove('drag-over');
         if (dragIdx === null || locked) return;
         e.preventDefault();
-        placeCard(dragIdx, targetRow);
+        placeCard(dragIdx, targetRow, slotIndex);
         dragIdx = null;
+      });
+    }
+
+    // v29d: an empty slot is both a drop target (drag) and, since clicks
+    // bubble up to the row's own click listener which doesn't know which
+    // slot was actually clicked, needs its own click handler too so a
+    // specific slot can be targeted by click-to-place as well as drag.
+    function wireEmptySlot(el, row, slotIndex) {
+      wireDropTarget(el, row, slotIndex);
+      el.addEventListener('click', (e) => {
+        if (locked || !currentRound()) return;
+        e.stopPropagation();
+        if (selected !== null) placeCard(selected, row, slotIndex);
       });
     }
 
@@ -414,38 +466,43 @@
       ROW_ORDER.forEach((row) => {
         const slotsEl = rowEls[row].querySelector('[data-slots-for]');
         slotsEl.innerHTML = '';
-        let filled = 0;
-        preset[row].forEach((card) => { slotsEl.appendChild(makeCardEl(card, { preset: true })); filled++; });
+        const presetCount = preset[row].length;
 
-        if (round) {
-          placement.forEach((loc, idx) => {
-            if (loc === row) { slotsEl.appendChild(makeCardEl(round.dealt[idx], { idx, selected: selected === idx })); filled++; }
-          });
-        }
+        // Preset cards (locked in from earlier rounds) always occupy the
+        // leftmost `presetCount` absolute slots, in their fixed order —
+        // immovable at this point, not drop/click targets.
+        preset[row].forEach((card) => slotsEl.appendChild(makeCardEl(card, { preset: true })));
 
-        // v29: pad out to TOTAL_MAX[row] fixed empty slots (3/5/5) instead
-        // of leaving the row as a growing/shrinking bar — see .ofc-demo-
-        // slot-empty in the CSS for why this was requested.
-        // v29c: each empty slot is now its own drop target (wireDropTarget
-        // below) instead of the highlight covering the whole row — the
-        // visitor can drag onto (or, with a card selected, click) any one
-        // specific empty box. Which exact box they pick has no effect on
-        // scoring (order within a row was never meaningful — see the file
-        // header), placeCard() always resolves to "this row", and the
-        // render after that re-packs left-to-right, so nothing needs to
-        // track "which slot" beyond this render pass.
+        // v29/v29c/v29d: slots presetCount..TOTAL_MAX[row]-1 are this
+        // round's playable area, always rendered as the full fixed 3/5/5
+        // grid (card or empty) rather than a growing/shrinking bar. Each
+        // absolute slot is rendered at ITS OWN position — a card dropped
+        // into slot i via liveSlot[idx] stays exactly there on re-render
+        // instead of getting packed to the leftmost open slot (per user
+        // feedback: "放的當下可以就放在我拉的位置，不會立刻放到最左邊").
+        // Which absolute slot ends up holding which card has no effect on
+        // scoring (row order was never meaningful — see the file header);
+        // this is purely so the board visually matches where the visitor
+        // put things until they move it or the round advances.
         const canClickDrop = round && !locked
           && selected !== null && placement[selected] !== row && dealtIn(row).length < openCap(row);
-        for (let i = filled; i < TOTAL_MAX[row]; i++) {
-          const empty = document.createElement('div');
-          empty.className = 'ofc-demo-slot-empty';
-          if (canClickDrop) empty.classList.add('can-drop');
-          wireDropTarget(empty, row);
-          slotsEl.appendChild(empty);
+        for (let i = presetCount; i < TOTAL_MAX[row]; i++) {
+          const idxHere = round
+            ? placement.findIndex((loc, idx) => loc === row && liveSlot[idx] === i)
+            : -1;
+          if (idxHere !== -1) {
+            slotsEl.appendChild(makeCardEl(round.dealt[idxHere], { idx: idxHere, selected: selected === idxHere }));
+          } else {
+            const empty = document.createElement('div');
+            empty.className = 'ofc-demo-slot-empty';
+            if (canClickDrop) empty.classList.add('can-drop');
+            if (round) wireEmptySlot(empty, row, i);
+            slotsEl.appendChild(empty);
+          }
         }
 
         const capEl = rowEls[row].querySelector('.ofc-demo-row-cap');
-        const total = preset[row].length + (round ? dealtIn(row).length : 0);
+        const total = presetCount + (round ? dealtIn(row).length : 0);
         const cap = round ? openCap(row) : 0;
         capEl.textContent = total + '/' + TOTAL_MAX[row] + (round && cap === 0 ? ' ' + t('howToPlay.interactive.rowLocked') : '');
         rowEls[row].classList.toggle('full', total >= TOTAL_MAX[row]);
@@ -707,6 +764,16 @@
           return el ? el.getBoundingClientRect() : null;
         });
         placement = placement.map((_, idx) => correctRowFor(idx));
+        // v29d: a moved card's old liveSlot value belongs to the row it's
+        // leaving (and may well collide with something already in the
+        // row it's entering) — clear it first, then hand it the first
+        // open slot in its *new* row. Cards that were already correct
+        // (not in movedIdxs) keep whatever slot the visitor put them in.
+        movedIdxs.forEach((idx) => { delete liveSlot[idx]; });
+        movedIdxs.forEach((idx) => {
+          const newRow = placement[idx];
+          if (newRow !== 'tray') liveSlot[idx] = firstOpenSlot(newRow, idx);
+        });
         lastResult = 'corrected';
       }
       render();

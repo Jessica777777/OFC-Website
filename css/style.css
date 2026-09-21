@@ -654,6 +654,12 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
   height: auto;
   filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.55));
 }
+/* About us hero uses the full crew-poster art (landing-hero-crew.png),
+   which reads better bigger than the single-portrait default above —
+   scoped to .page-about only so index.html's boss.png hero is untouched. */
+.page-about .trust-portrait img {
+  width: min(440px, 88vw);
+}
 
 /* --- Carousel engine (shared: B feature cards + C collectibles, v26) ---
    Both sections used to be different things — B was a static 4x2 CSS
@@ -1563,8 +1569,12 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 /* --- Playing cards: deliberately skeuomorphic (cream face, red/black
    suit ink) so they read as real cards against the dark felt panel --- */
 .ofc-card {
-  width: 56px;
-  height: 78px;
+  /* v29d: enlarged from 56x78 per user feedback that the slot/drop
+     "trigger box" boundary felt too small to reliably hit — kept in
+     lockstep with .ofc-demo-slot-empty below so filled and empty slots
+     stay the same footprint. */
+  width: 64px;
+  height: 88px;
   border-radius: 8px;
   background: linear-gradient(165deg, #faf6ea, #efe6cf);
   color: #1a1a1a;
@@ -1667,8 +1677,9 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
    still needs. Rendered by renderBoard() to always pad each row out to
    TOTAL_MAX[row] boxes (3 for front, 5 for middle/back), card or empty. */
 .ofc-demo-slot-empty {
-  width: 56px;
-  height: 78px;
+  /* v29d: enlarged in lockstep with .ofc-card above — see that comment. */
+  width: 64px;
+  height: 88px;
   border-radius: 8px;
   border: 1.5px dashed rgba(245, 241, 230, 0.16);
   background: rgba(255, 255, 255, 0.02);
@@ -1899,9 +1910,10 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   .ofc-demo { padding: 20px; }
   .ofc-demo-row { flex-direction: column; align-items: stretch; gap: 10px; }
   .ofc-demo-row-label { flex-direction: row; align-items: baseline; justify-content: space-between; }
-  .ofc-card { width: 48px; height: 68px; font-size: 0.95rem; }
+  /* v29d: enlarged from 48x68 in lockstep with the desktop sizes above. */
+  .ofc-card { width: 54px; height: 76px; font-size: 0.95rem; }
   .ofc-card-suit { font-size: 1.1rem; }
-  .ofc-demo-slot-empty { width: 48px; height: 68px; }
+  .ofc-demo-slot-empty { width: 54px; height: 76px; }
 }
 
 /* --- Full-bleed "feature band" (v9/v10) ---
