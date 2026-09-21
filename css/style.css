@@ -2134,10 +2134,17 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 }
 .gr-tab:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 2px; }
 
+/* v30 -- the whole rule-text column (divider/h2, h3, sub-labels, p,
+   vrows/paytable, ranking table) is centered as a single 900px reading
+   column inside the 1160px .container, instead of hugging the left
+   edge with empty space on the right. Widened from the v29 720px cap
+   per the user's request (compare Pokerrrr's About page, which reads
+   left-aligned but fills more of its container). */
 .gr-panel .gr-sec-head {
   border-top: 2px solid var(--color-gold);
   padding-top: 10px;
-  margin: 44px 0 18px;
+  margin: 44px auto 18px;
+  max-width: 900px;
 }
 .gr-panel .gr-sec-head:first-child { margin-top: 0; }
 .gr-panel .gr-sec-head h2 { margin: 0; }
@@ -2149,14 +2156,15 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-gold-light);
-  margin: 30px 0 10px;
+  margin: 30px auto 10px;
+  max-width: 900px;
 }
 
 /* explanatory rule text reads as the primary content of this page,
    not secondary copy -- override the site-wide muted-gray <p> color
    with full text color for legibility. */
-.gr-panel p { max-width: 720px; white-space: pre-line; color: var(--color-text); }
-.gr-sub { font-weight: 600; color: var(--color-text); margin-bottom: 6px; max-width: 720px; }
+.gr-panel p { max-width: 900px; margin-left: auto; margin-right: auto; white-space: pre-line; color: var(--color-text); }
+.gr-sub { font-weight: 600; color: var(--color-text); margin-bottom: 6px; max-width: 900px; margin-left: auto; margin-right: auto; }
 
 .gr-ph {
   font-family: ui-monospace, 'SFMono-Regular', 'Courier New', monospace;
@@ -2166,7 +2174,7 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 }
 
 /* step list (Rummy's Undo / All button explainer) */
-.gr-steps { display: flex; flex-direction: column; margin-bottom: 20px; }
+.gr-steps { display: flex; flex-direction: column; margin-bottom: 20px; max-width: 900px; margin-left: auto; margin-right: auto; }
 .gr-step {
   display: grid;
   grid-template-columns: 8rem 1fr;
@@ -2186,6 +2194,12 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 /* playing cards — same skeuomorphic cream-face treatment as .ofc-card,
    just smaller so a full paytable row still fits comfortably */
 .gr-hand { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 18px; }
+/* a standalone hand-of-cards example (Rummy/Gin Rummy) rendered directly into the
+   panel needs the same 900px-centered treatment as the surrounding text, otherwise
+   it juts out past the left edge of the centered column above/below it. Scoped to a
+   direct child of #grPanel so it does not touch .gr-hand nested inside .gr-vrow/
+   .gr-prow/.gr-rank-table, which have their own margin resets right above. */
+.gr-panel > .gr-hand { max-width: 900px; margin-left: auto; margin-right: auto; }
 .gr-card {
   width: 40px;
   height: 56px;
@@ -2219,8 +2233,8 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   padding: 18px;
-  margin: 0 0 24px;
-  max-width: 720px;
+  margin: 0 auto 24px;
+  max-width: 900px;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -2251,7 +2265,7 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   margin: 30px 0 12px;
 }
 /* same 720px cap as .gr-vrows above -- the ranking table (NLH/PLO/7 Card Stud) has the same width:100% stretch problem. */
-.gr-table-scroll { overflow-x: auto; margin: 0 0 24px; max-width: 720px; }
+.gr-table-scroll { overflow-x: auto; margin: 0 auto 24px; max-width: 900px; }
 .gr-rank-table { border-collapse: collapse; width: 100%; min-width: 20rem; }
 .gr-rank-table th, .gr-rank-table td {
   text-align: left;
