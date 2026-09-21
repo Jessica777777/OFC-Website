@@ -2211,13 +2211,16 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 .gr-card.back { background: linear-gradient(165deg, var(--color-surface-2), #2a1218); color: transparent; border-color: var(--color-border); }
 .gr-card.gap { background: transparent; border: 0; box-shadow: none; }
 
-/* value / paytable rows */
+/* value / paytable rows -- capped to the same 720px reading width as
+   .gr-panel p, otherwise the 1fr/auto grid columns stretch across the
+   full container and blow the label/amount gap wide open on desktop. */
 .gr-vrows {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   padding: 18px;
   margin: 0 0 24px;
+  max-width: 720px;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -2247,7 +2250,8 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   white-space: pre-line;
   margin: 30px 0 12px;
 }
-.gr-table-scroll { overflow-x: auto; margin: 0 0 24px; }
+/* same 720px cap as .gr-vrows above -- the ranking table (NLH/PLO/7 Card Stud) has the same width:100% stretch problem. */
+.gr-table-scroll { overflow-x: auto; margin: 0 0 24px; max-width: 720px; }
 .gr-rank-table { border-collapse: collapse; width: 100%; min-width: 20rem; }
 .gr-rank-table th, .gr-rank-table td {
   text-align: left;
