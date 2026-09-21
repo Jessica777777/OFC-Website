@@ -1,0 +1,397 @@
+OFC: Pineapple Poker 官網 — 中文文字內容（供編輯用）
+============================================================
+
+使用說明：
+1. 這份文件只列出「中文」版本的網站文字，依頁面分組。
+2. 每一則文字前面的 [方括號代碼] 是內部對應用的識別碼，例如 [index.hero.title]，
+   請「保留這行、不要刪除或更動方括號內容」，只需要修改冒號後面的文字即可。
+3. 文字中如果看到 <br> 是「換行」的意思，<a href="mailto:...">...</a> 是「信箱連結」，
+   除非你要連帶修改換行位置或聯絡信箱，否則請保留這些標籤，只改中間的文字內容。
+4. 改好後把整份文件傳回來，我會先套用中文到網站，
+   確認沒問題後再依照新的中文內容重新翻譯英文／日文版本。
+
+============================================================
+
+【全站共用（導覽列 / 頁尾）】
+------------------------------------------------------------
+
+[common.nav.home]
+  首頁
+
+[common.nav.howToPlay]
+  玩法教學
+
+[common.nav.about]
+  關於我們
+
+[common.nav.faq]
+  FAQ
+
+[common.nav.downloadBtn]
+  免費下載
+
+[common.nav.openMenu]
+  開啟選單
+
+[common.store.appleAria]
+  前往 App Store 下載
+
+[common.store.googleAria]
+  前往 Google Play 下載
+
+[common.footer.disclaimer]
+  本 App 為純娛樂性質的模擬牌桌遊戲，內含虛擬道具僅限於遊戲內使用，不涉及真實賭博或現金獎金。
+
+[common.footer.navHeading]
+  導覽
+
+[common.footer.followHeading]
+  追蹤我們
+
+[common.footer.contactLine]
+  有問題？<a href="mailto:hello@ofcpineapplepoker.com">hello@ofcpineapplepoker.com</a>
+
+[common.footer.rights]
+  All rights reserved.
+
+
+【首頁（index.html）】
+------------------------------------------------------------
+
+[index.head.title]
+  OFC: Pineapple Poker｜全球玩家都在玩的 OFC
+
+[index.head.description]
+  OFC: Pineapple Poker —— 集結全球玩家的 OFC 大菠蘿撲克，達成 Fantasyland、挑戰 Progressive／Joker／SNG 等任務模式，隨時切換 Blackjack 21、德州撲克等牌桌。立即下載，展開你的下一場行動！
+
+[index.video.tag]
+  遊戲內限時活動預告・Fugitive Grid
+
+[index.video.unmute]
+  開啟聲音
+
+[index.hero.eyebrow]
+  特務行動 × OFC 大菠蘿撲克
+
+[index.hero.title]
+  坐上牌桌，<br>展開你的下一場行動
+
+[index.hero.desc]
+  OFC: Pineapple Poker 集結全球玩家，在開放式排點撲克（Open Face Chinese Poker）的牌桌上一較高下：達成 Fantasyland 資格、挑戰 Progressive OFC、Joker OFC、OFC SNG 等任務模式，也能隨時切換到 Blackjack 21、德州撲克等牌桌，換個節奏繼續行動。
+
+[index.hero.stat1]
+  App Store 評分
+
+[index.hero.stat2]
+  適齡分級
+
+[index.hero.imgAlt]
+  OFC: Pineapple Poker 遊戲畫面：西裝紳士在牌桌上對戰
+
+[index.features.eyebrow]
+  為什麼玩家喜歡我們
+
+[index.features.title]
+  策略深度與特務級刺激，一次滿足
+
+[index.features.desc]
+  以正統 OFC 排點玩法為核心，搭配多種任務系統，還能隨時切換 Blackjack 21 放鬆一下。
+
+[index.features.card1.title]
+  正統 OFC 排點玩法
+
+[index.features.card1.desc]
+  完整還原開放式排點撲克規則，支援 Fantasyland 資格與多種計分模式，策略深度滿分。
+
+[index.features.card2.title]
+  每日任務與排行榜
+
+[index.features.card2.desc]
+  每日／每週任務與競賽活動，累積積分登上排行榜，贏取限定獎勵與稱號。
+
+[index.features.card3.title]
+  新手友善的引導
+
+[index.features.card3.desc]
+  內建規則教學與練習模式，不論是撲克新手還是老手都能快速上手。
+
+[index.features.card4.title]
+  全球玩家連線對戰
+
+[index.features.card4.desc]
+  即時配對全球玩家，也可以建立好友房與朋友一較高下，隨時隨地開桌。
+
+[index.features.card5.title]
+  Blackjack 21 模式
+
+[index.features.card5.desc]
+  想暫時換個節奏時，App 內也有 Blackjack 21 桌可以隨時開一局，規則簡單好上手。
+
+[index.features.card6.title]
+  安全公平的機制
+
+[index.features.card6.desc]
+  採用公正的發牌演算法與帳號保護機制，讓每一局都玩得安心。
+
+[index.screenshots.eyebrow]
+  遊戲畫面
+
+[index.screenshots.title]
+  先睹為快
+
+[index.screenshots.desc]
+  電影級的美術風格，每一桌都像置身諜報片現場。
+
+[index.screenshots.shot1]
+  遊戲大廳
+
+[index.screenshots.shot2]
+  OFC 排點對戰
+
+[index.screenshots.shot3]
+  OFC 結算畫面
+
+[index.screenshots.shot4]
+  Blackjack 21 桌
+
+[index.screenshots.shot5]
+  特務任務
+
+[index.missions.eyebrow]
+  不只是牌桌
+
+[index.missions.title]
+  接下任務，成為真正的特務玩家
+
+[index.missions.desc1]
+  除了 OFC 排點對戰，App 內建「特務任務」系統：完成世界各地的牌桌任務、解鎖限定劇情與獎勵，讓每一次登入都像展開一場新的行動。
+
+[index.missions.desc2]
+  此外還收錄 Texas Hold'em、Omaha、7 Card Stud、Gin Rummy，以及 Pineapple OFC、Joker OFC、OFC SNG 等多種 OFC 進階玩法——尤其 OFC SNG 讓所有玩家拿到相同的牌，純粹考驗排牌技術，一個 App 滿足所有牌桌需求。
+
+[index.cta.eyebrow]
+  即刻加入
+
+[index.cta.title]
+  準備好接受任務了嗎？
+
+[index.cta.desc]
+  免費下載 OFC: Pineapple Poker，新手註冊即送新手籌碼包，即刻展開你的第一場行動。
+
+[index.cta.ageBadge]
+  🔞 本遊戲適齡分級為 18+，遊戲內虛擬籌碼不可兌換現金或具現金價值之獎品
+
+
+【玩法教學（how-to-play.html）】
+------------------------------------------------------------
+
+[howToPlay.head.title]
+  玩法教學｜OFC: Pineapple Poker
+
+[howToPlay.head.description]
+  OFC 開放式排點撲克新手教學：規則、排墩邏輯與計分方式一次搞懂，還有 Blackjack 21 模式簡介。
+
+[howToPlay.hero.eyebrow]
+  新手上路
+
+[howToPlay.hero.title]
+  玩法教學
+
+[howToPlay.hero.desc]
+  從零開始認識 OFC 開放式排點撲克的規則與計分方式，幾分鐘就能上手，準備好接下你的第一個任務。
+
+[howToPlay.ofc.eyebrow]
+  核心玩法
+
+[howToPlay.ofc.title]
+  OFC 開放式排點撲克怎麼玩？
+
+[howToPlay.ofc.p1]
+  每位玩家會拿到 13 張牌，需要把它們分配到三個「墩」——前墩（3 張）、中墩（5 張）、後墩（5 張），並且遵守「後墩牌力 ≥ 中墩牌力 ≥ 前墩牌力」的排列規則，排錯順序會被判定為「犯規（Fouled）」，直接輸掉該局。
+
+[howToPlay.ofc.step1.title]
+  ① 排定三墩
+
+[howToPlay.ofc.step1.desc]
+  依序拿到手牌，逐步決定每張牌要放進前墩、中墩或後墩。
+
+[howToPlay.ofc.step2.title]
+  ② 逐墩比牌
+
+[howToPlay.ofc.step2.desc]
+  三個墩全部排定後，與對手逐墩比牌，贏的墩得分，全部三墩都贏可再拿額外獎勵分（Scoop）。
+
+[howToPlay.ofc.step3.title]
+  ③ 小心犯規
+
+[howToPlay.ofc.step3.desc]
+  若後墩、中墩、前墩的牌力沒有依序遞減，就會犯規，直接輸掉全部分數。
+
+[howToPlay.fantasy.eyebrow]
+  進階機制
+
+[howToPlay.fantasy.title]
+  什麼是夢幻樂園（Fantasy Land）？
+
+[howToPlay.fantasy.desc]
+  當你的前墩湊出一對 Q 以上的牌型時，就有機會進入「夢幻樂園」：下一局可以一次拿到 13～14 張牌，直接排出三墩而不用逐張決策，大幅提高組出高分牌型的機會，是 OFC 最讓人上頭的機制之一。
+
+[howToPlay.sng.eyebrow]
+  硬實力對決
+
+[howToPlay.sng.title]
+  OFC SNG — 相同的牌，比的是技術
+
+[howToPlay.sng.desc]
+  在 OFC SNG 模式中，三位玩家每一輪都會拿到完全相同的一副牌。當運氣被排除在外，真正決定勝負的，就只剩下排牌的判斷與技術——這正是 OFC: Pineapple Poker 與其他 OFC App 最大的不同之處。
+
+[howToPlay.blackjack.eyebrow]
+  換個節奏
+
+[howToPlay.blackjack.title]
+  Blackjack 21 模式
+
+[howToPlay.blackjack.desc]
+  想暫時放鬆一下時，App 內也有 Blackjack 21 桌：規則簡單，比誰的手牌點數更接近 21 點又不超過即可獲勝，隨時可以開一局。
+
+[howToPlay.more.eyebrow]
+  更多玩法
+
+[howToPlay.more.title]
+  不只這些
+
+[howToPlay.more.desc]
+  App 內還收錄 Texas Hold'em、Omaha、7 Card Stud、Gin Rummy，以及 Pineapple OFC、Joker OFC、OFC SNG 等多種進階玩法與「特務任務」系統，下載後即可探索。
+
+[howToPlay.cta.title]
+  準備好了嗎？
+
+[howToPlay.cta.desc]
+  下載 OFC: Pineapple Poker，跟著新手教學一步步上手吧！
+
+
+【關於我們（about.html）】
+------------------------------------------------------------
+
+[about.head.title]
+  關於我們｜OFC: Pineapple Poker
+
+[about.head.description]
+  認識 OFC: Pineapple Poker 開發團隊 Mondraw。
+
+[about.hero.eyebrow]
+  關於我們
+
+[about.hero.title]
+  用心打造每一張牌桌
+
+[about.hero.desc]
+  我們是 Mondraw，一支熱愛牌桌遊戲的開發團隊。OFC: Pineapple Poker 是我們投入策略遊戲設計與公平競技體驗打造的作品，希望讓喜歡動腦與講求刺激的玩家，都能在同一個地方找到樂趣。
+
+[about.mission.card1.title]
+  我們的使命
+
+[about.mission.card1.desc]
+  打造公平、有趣、且能持續進步的牌桌遊戲體驗，讓每位玩家都能安心享受遊戲。
+
+[about.mission.card2.title]
+  玩家優先
+
+[about.mission.card2.desc]
+  我們重視每一則玩家回饋，並持續依照社群意見改善遊戲內容與機制。
+
+[about.mission.card3.title]
+  負責任娛樂
+
+[about.mission.card3.desc]
+  遊戲內僅提供虛擬籌碼，不涉及真實金錢賭博，並提醒玩家適度娛樂、量力而為。
+
+
+【常見問題（faq.html）】
+------------------------------------------------------------
+
+[faq.head.title]
+  常見問題｜OFC: Pineapple Poker
+
+[faq.head.description]
+  OFC: Pineapple Poker 常見問題：付費方式、虛擬籌碼、OFC 模式介紹與帳號協助。
+
+[faq.hero.eyebrow]
+  FAQ
+
+[faq.hero.title]
+  常見問題
+
+[faq.q1]
+  OFC: Pineapple Poker 需要付費才能玩嗎？
+
+[faq.a1]
+  App 本身完全免費下載與遊玩，選購性質的內購項目不影響基本遊戲體驗。
+
+[faq.q2]
+  遊戲內的籌碼可以換成真實金錢嗎？
+
+[faq.a2]
+  不行。所有虛擬籌碼與道具僅供遊戲內娛樂使用，不具備任何現金價值，也無法兌換、提領或轉讓。
+
+[faq.q3]
+  支援哪些裝置與系統？
+
+[faq.a3]
+  目前支援 iOS 與 Android 系統的手機與平板裝置，請至 App Store 或 Google Play 搜尋「OFC: Pineapple Poker」下載。
+
+[faq.q4]
+  App 內有哪些 OFC 模式？彼此有什麼不同？
+
+[faq.a4]
+  共有三種模式：Progressive OFC 是標準玩法，逐步排出三墩並挑戰 Fantasyland；Joker OFC 加入鬼牌，增添變化與彈性；OFC SNG 則是三位玩家每輪拿到完全相同的一副牌，排除運氣干擾，純粹比拼排牌技術與判斷力，是與其他 OFC App 最大的不同之處。
+
+[faq.q5]
+  什麼是 Fantasyland？要怎麼進入？
+
+[faq.a5]
+  當你的前墩湊出一對 Q 以上的牌型時，就能在下一局進入 Fantasyland：一次拿到 13～14 張牌，直接排出三墩，詳細規則可參考「玩法教學」頁面。
+
+[faq.q6]
+  忘記帳號密碼怎麼辦？
+
+[faq.a6]
+  請至登入頁選擇「忘記密碼」，依指示透過註冊信箱重設密碼；若仍無法登入，歡迎寄信到頁尾列出的信箱協助處理。
+
+[faq.q7]
+  想回報問題或不當行為，該怎麼做？
+
+[faq.a7]
+  可透過遊戲內的「回報」功能，或直接寄信到頁尾列出的信箱，並附上時間、對戰 ID 等細節，我們會盡快協助處理。
+
+[faq.q8]
+  有問題想聯絡你們，怎麼做？
+
+[faq.a8]
+  歡迎寄信到頁尾列出的信箱，我們會盡快回覆。
+
+
+【首頁截圖標籤（Steam 精選風格短標籤，固定英文，不隨語言切換，通常不需要翻譯）】
+------------------------------------------------------------
+
+[index.shot1.mode-tag]
+  ALL MODES
+
+[index.shot2.mode-tag]
+  OFC
+
+[index.shot3.mode-tag]
+  OFC SNG
+
+[index.shot4.mode-tag]
+  BJ
+
+[index.shot5.mode-tag]
+  MISSIONS
+
+
+【其他固定中文文字（僅供參考／可一併編輯）】
+------------------------------------------------------------
+
+[index.video.ariaLabel]  （首頁影片區塊的無障礙標籤，螢幕閱讀器會唸出這段文字）
+  OFC: Pineapple Poker 遊戲內限時活動預告：Fugitive Grid

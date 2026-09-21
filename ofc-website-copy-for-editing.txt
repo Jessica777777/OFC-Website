@@ -1,0 +1,626 @@
+OFC: Pineapple Poker 官網 — 文字內容彙整（供編輯用）
+============================================================
+
+使用說明：
+1. 這份文件列出網站上所有可編輯的文字，依頁面分組，每一則同時列出中／英／日三種語言。
+2. 每一則文字前面的 [方括號代碼] 是內部對應用的識別碼，例如 [index.hero.title]，
+   請「保留這行、不要刪除或更動方括號內容」，只需要修改冒號後面的文字即可。
+3. 文字中如果看到 <br> 是「換行」的意思，<a href="mailto:...">...</a> 是「信箱連結」，
+   除非你要連帶修改換行位置或聯絡信箱，否則請保留這些標籤，只改中間的文字內容。
+4. 如果某個語言你不想改，直接留著不動即可；只要改你要改的語言那一行就好。
+5. 改好後把整份文件傳回來，我會逐一比對 [代碼] 套用到網站上，並重新發布預覽。
+
+============================================================
+
+【全站共用（導覽列 / 頁尾）】
+------------------------------------------------------------
+
+[common.nav.home]
+  zh: 首頁
+  en: Home
+  ja: ホーム
+
+[common.nav.howToPlay]
+  zh: 玩法教學
+  en: How to Play
+  ja: 遊び方
+
+[common.nav.about]
+  zh: 關於我們
+  en: About
+  ja: 私たちについて
+
+[common.nav.faq]
+  zh: FAQ
+  en: FAQ
+  ja: よくある質問
+
+[common.nav.downloadBtn]
+  zh: 免費下載
+  en: Download Free
+  ja: 無料ダウンロード
+
+[common.nav.openMenu]
+  zh: 開啟選單
+  en: Open menu
+  ja: メニューを開く
+
+[common.store.appleAria]
+  zh: 前往 App Store 下載
+  en: Get it on the App Store
+  ja: App Store で入手
+
+[common.store.googleAria]
+  zh: 前往 Google Play 下載
+  en: Get it on Google Play
+  ja: Google Play で入手
+
+[common.footer.disclaimer]
+  zh: 本 App 為純娛樂性質的模擬牌桌遊戲，內含虛擬道具僅限於遊戲內使用，不涉及真實賭博或現金獎金。
+  en: This app is a purely entertainment card-table simulation. In-app virtual items are for in-game use only and do not involve real gambling or cash prizes.
+  ja: 本アプリは純粋に娯楽目的のカードテーブル・シミュレーションです。アプリ内の仮想アイテムはゲーム内でのみ使用でき、実際の賭博や現金賞品とは一切関係ありません。
+
+[common.footer.navHeading]
+  zh: 導覽
+  en: Navigate
+  ja: ナビゲーション
+
+[common.footer.followHeading]
+  zh: 追蹤我們
+  en: Follow Us
+  ja: フォローする
+
+[common.footer.contactLine]
+  zh: 有問題？<a href="mailto:hello@ofcpineapplepoker.com">hello@ofcpineapplepoker.com</a>
+  en: Questions? <a href="mailto:hello@ofcpineapplepoker.com">hello@ofcpineapplepoker.com</a>
+  ja: お問い合わせは <a href="mailto:hello@ofcpineapplepoker.com">hello@ofcpineapplepoker.com</a> まで
+
+[common.footer.rights]
+  zh: All rights reserved.
+  en: All rights reserved.
+  ja: All rights reserved.
+
+
+【首頁（index.html）】
+------------------------------------------------------------
+
+[index.head.title]
+  zh: OFC: Pineapple Poker｜全球玩家都在玩的 OFC
+  en: OFC: Pineapple Poker | Open Face Chinese Poker on Mobile
+  ja: OFC: Pineapple Poker｜オープンフェイス中国ポーカー
+
+[index.head.description]
+  zh: OFC: Pineapple Poker —— 集結全球玩家的 OFC 大菠蘿撲克，達成 Fantasyland、挑戰 Progressive／Joker／SNG 等任務模式，隨時切換 Blackjack 21、德州撲克等牌桌。立即下載，展開你的下一場行動！
+  en: OFC: Pineapple Poker — a free strategy mobile game built around Open Face Chinese Poker (OFC), with a classic Blackjack mode you can switch to anytime. Play against players worldwide. Download now!
+  ja: OFC: Pineapple Poker —— オープンフェイス中国ポーカー（OFC）を中心にした無料の戦略スマホゲーム。いつでもクラシックなブラックジャックモードに切り替え可能。世界中のプレイヤーと腕を競おう。今すぐダウンロード！
+
+[index.video.tag]
+  zh: 遊戲內限時活動預告・Fugitive Grid
+  en: In-game limited-time event teaser・Fugitive Grid
+  ja: ゲーム内期間限定イベント予告・Fugitive Grid
+
+[index.video.unmute]
+  zh: 開啟聲音
+  en: Unmute
+  ja: 音声をオンにする
+
+[index.hero.eyebrow]
+  zh: 特務行動 × OFC 大菠蘿撲克
+  en: OFC Open Face Chinese Poker
+  ja: OFC オープンフェイス中国ポーカー
+
+[index.hero.title]
+  zh: 坐上牌桌，<br>展開你的下一場行動
+  en: Take a seat.<br>Become the sharpest card counter at the table.
+  ja: テーブルに着いて、<br>最強のカードカウンターになろう
+
+[index.hero.desc]
+  zh: OFC: Pineapple Poker 集結全球玩家，在開放式排點撲克（Open Face Chinese Poker）的牌桌上一較高下：達成 Fantasyland 資格、挑戰 Progressive OFC、Joker OFC、OFC SNG 等任務模式，也能隨時切換到 Blackjack 21、德州撲克等牌桌，換個節奏繼續行動。
+  en: OFC: Pineapple Poker is a strategy card game built around Open Face Chinese Poker — cinematic table atmosphere and real-player tension for players who love to calculate every move. Want a change of pace? Switch to the classic Blackjack mode anytime for a quick, casual hand.
+  ja: OFC: Pineapple Poker は「オープンフェイス中国ポーカー（Open Face Chinese Poker）」を中心にした戦略カードゲームです。映画のようなテーブルの雰囲気とリアルプレイヤーとの駆け引きで、計算派プレイヤーも思う存分楽しめます。気分を変えたいときは、いつでもクラシックなブラックジャックモードへ。
+
+[index.hero.stat1]
+  zh: App Store 評分
+  en: App Store rating
+  ja: App Store 評価
+
+[index.hero.stat2]
+  zh: 適齡分級
+  en: Age rating
+  ja: 対象年齢
+
+[index.hero.imgAlt]
+  zh: OFC: Pineapple Poker 遊戲畫面：西裝紳士在牌桌上對戰
+  en: OFC: Pineapple Poker gameplay: two men in tuxedos at a card table
+  ja: OFC: Pineapple Poker のゲーム画面：タキシード姿の紳士たちがカードテーブルで対戦
+
+[index.features.eyebrow]
+  zh: 為什麼玩家喜歡我們
+  en: Why players love us
+  ja: プレイヤーに選ばれる理由
+
+[index.features.title]
+  zh: 策略深度與特務級刺激，一次滿足
+  en: Deep strategy, and a lighter pace when you want it
+  ja: 奥深い戦略と、気軽に楽しめる一戦
+
+[index.features.desc]
+  zh: 以正統 OFC 排點玩法為核心，搭配多種任務系統，還能隨時切換 Blackjack 21 放鬆一下。
+  en: Built around authentic OFC gameplay, with a set of features on top — plus a classic Blackjack table whenever you want to switch things up.
+  ja: 本格的な OFC プレイを中心に、さまざまな特徴を搭載。気分転換にはクラシックなブラックジャックテーブルもいつでもどうぞ。
+
+[index.features.card1.title]
+  zh: 正統 OFC 排點玩法
+  en: Authentic OFC gameplay
+  ja: 本格的な OFC プレイ
+
+[index.features.card1.desc]
+  zh: 完整還原開放式排點撲克規則，支援 Fantasyland 資格與多種計分模式，策略深度滿分。
+  en: Full Open Face Chinese Poker rules, with Fantasy Land support and multiple scoring modes for maximum strategic depth.
+  ja: オープンフェイス中国ポーカーのルールを忠実に再現。ファンタジーランドや複数のスコアリング方式にも対応し、戦略の深さは抜群です。
+
+[index.features.card2.title]
+  zh: 每日任務與排行榜
+  en: Daily events & leaderboards
+  ja: デイリーイベント＆ランキング
+
+[index.features.card2.desc]
+  zh: 每日／每週任務與競賽活動，累積積分登上排行榜，贏取限定獎勵與稱號。
+  en: Daily and weekly competitions let you climb the leaderboard and earn exclusive rewards and titles.
+  ja: 毎日・毎週のイベントでポイントを貯めてランキング上位を目指そう。限定報酬や称号も獲得できます。
+
+[index.features.card3.title]
+  zh: 新手友善的引導
+  en: Beginner-friendly guidance
+  ja: 初心者にやさしいガイド
+
+[index.features.card3.desc]
+  zh: 內建規則教學與練習模式，不論是撲克新手還是老手都能快速上手。
+  en: Built-in rule tutorials and practice tables help both newcomers and veterans get up to speed fast.
+  ja: 内蔵のルールチュートリアルと練習モードで、初心者もベテランもすぐに上達できます。
+
+[index.features.card4.title]
+  zh: 全球玩家連線對戰
+  en: Play players worldwide
+  ja: 世界中のプレイヤーと対戦
+
+[index.features.card4.desc]
+  zh: 即時配對全球玩家，也可以建立好友房與朋友一較高下，隨時隨地開桌。
+  en: Get matched instantly with players around the globe, or create a private room to challenge your friends anytime.
+  ja: 世界中のプレイヤーと瞬時にマッチング。フレンドルームを作って友達と対戦することもできます。
+
+[index.features.card5.title]
+  zh: Blackjack 21 模式
+  en: Blackjack 21 mode
+  ja: Blackjack 21 モード
+
+[index.features.card5.desc]
+  zh: 想暫時換個節奏時，App 內也有 Blackjack 21 桌可以隨時開一局，規則簡單好上手。
+  en: Want a change of pace? Jump into a Blackjack 21 table anytime — simple rules, easy to pick up.
+  ja: 気分を変えたいときは、いつでも Blackjack 21 テーブルへ。ルールはシンプルで、すぐに楽しめます。
+
+[index.features.card6.title]
+  zh: 安全公平的機制
+  en: Safe and fair by design
+  ja: 安全・公正な設計
+
+[index.features.card6.desc]
+  zh: 採用公正的發牌演算法與帳號保護機制，讓每一局都玩得安心。
+  en: A certified fair dealing algorithm and account protection keep every hand secure.
+  ja: 認証済みの公正な配牌アルゴリズムとアカウント保護で、安心して対戦できます。
+
+[index.screenshots.eyebrow]
+  zh: 遊戲畫面
+  en: In-game screens
+  ja: ゲーム画面
+
+[index.screenshots.title]
+  zh: 先睹為快
+  en: A first look
+  ja: プレビュー
+
+[index.screenshots.desc]
+  zh: 電影級的美術風格，每一桌都像置身諜報片現場。
+  en: Cinematic art direction — every table feels like a scene from a spy thriller.
+  ja: 映画のようなアートディレクション。すべてのテーブルがスパイ映画の一場面のようです。
+
+[index.screenshots.shot1]
+  zh: 遊戲大廳
+  en: Game lobby
+  ja: ゲームロビー
+
+[index.screenshots.shot2]
+  zh: OFC 排點對戰
+  en: OFC gameplay
+  ja: OFC 対戦画面
+
+[index.screenshots.shot3]
+  zh: OFC 結算畫面
+  en: OFC results screen
+  ja: OFC 結果画面
+
+[index.screenshots.shot4]
+  zh: Blackjack 21 桌
+  en: Blackjack table
+  ja: ブラックジャックテーブル
+
+[index.screenshots.shot5]
+  zh: 特務任務
+  en: Agent missions
+  ja: エージェントミッション
+
+[index.missions.eyebrow]
+  zh: 不只是牌桌
+  en: More than a card table
+  ja: カードテーブルだけじゃない
+
+[index.missions.title]
+  zh: 接下任務，成為真正的特務玩家
+  en: Take on missions. Become a real agent.
+  ja: ミッションに挑戦して、本物のエージェントになろう
+
+[index.missions.desc1]
+  zh: 除了 OFC 排點對戰，App 內建「特務任務」系統：完成世界各地的牌桌任務、解鎖限定劇情與獎勵，讓每一次登入都像展開一場新的行動。
+  en: Beyond OFC gameplay, the app features a built-in "Agent Missions" system: complete table missions around the world to unlock exclusive storylines and rewards, making every session feel like a new operation.
+  ja: OFC プレイに加えて、アプリには「エージェントミッション」システムを搭載。世界各地のテーブルミッションをクリアして限定ストーリーや報酬を解除し、毎回のログインを新たな任務のように楽しめます。
+
+[index.missions.desc2]
+  zh: 此外還收錄 Texas Hold'em、Omaha、7 Card Stud、Gin Rummy，以及 Pineapple OFC、Joker OFC、OFC SNG 等多種 OFC 進階玩法——尤其 OFC SNG 讓所有玩家拿到相同的牌，純粹考驗排牌技術，一個 App 滿足所有牌桌需求。
+  en: Also included: Texas Hold'em, Omaha, 7 Card Stud, Gin Rummy, plus advanced OFC variants — Pineapple OFC, Joker OFC and OFC SNG, where every player is dealt the same cards and it's pure placement skill that decides the winner. One app, every table you need.
+  ja: さらに、Texas Hold'em、Omaha、7 Card Stud、Gin Rummy、そして Pineapple OFC、Joker OFC、OFC SNG などの上級 OFC バリエーションも収録。中でも OFC SNG は全員が同じ手札を配られ、純粋に配置の技術を競うモードです。このアプリ一つで、あらゆるテーブルゲームが楽しめます。
+
+[index.cta.eyebrow]
+  zh: 即刻加入
+  en: Join now
+  ja: 今すぐ参加
+
+[index.cta.title]
+  zh: 準備好接受任務了嗎？
+  en: Ready to take a seat?
+  ja: テーブルに着く準備はできましたか？
+
+[index.cta.desc]
+  zh: 免費下載 OFC: Pineapple Poker，新手註冊即送新手籌碼包，即刻展開你的第一場行動。
+  en: Download OFC: Pineapple Poker for free — new players get a starter chip pack.
+  ja: OFC: Pineapple Poker を無料ダウンロード。新規登録でスターターチップパックをプレゼント。
+
+[index.cta.ageBadge]
+  zh: 🔞 本遊戲適齡分級為 18+，遊戲內虛擬籌碼不可兌換現金或具現金價值之獎品
+  en: 🔞 This game is rated 18+. In-game virtual chips cannot be exchanged for cash or cash-equivalent prizes.
+  ja: 🔞 本ゲームの対象年齢は18歳以上です。ゲーム内の仮想チップは現金または現金相当の賞品と交換できません。
+
+
+【玩法教學（how-to-play.html）】
+------------------------------------------------------------
+
+[howToPlay.head.title]
+  zh: 玩法教學｜OFC: Pineapple Poker
+  en: How to Play | OFC: Pineapple Poker
+  ja: 遊び方｜OFC: Pineapple Poker
+
+[howToPlay.head.description]
+  zh: OFC 開放式排點撲克新手教學：規則、排墩邏輯與計分方式一次搞懂，還有 Blackjack 21 模式簡介。
+  en: A beginner's guide to Open Face Chinese Poker (OFC): rules, row-setting logic, scoring, plus a quick intro to the classic Blackjack mode.
+  ja: オープンフェイス中国ポーカー（OFC）の初心者ガイド：ルール、並べ方のロジック、スコアリング、そしてクラシック・ブラックジャックモードの紹介。
+
+[howToPlay.hero.eyebrow]
+  zh: 新手上路
+  en: Getting started
+  ja: はじめに
+
+[howToPlay.hero.title]
+  zh: 玩法教學
+  en: How to Play
+  ja: 遊び方
+
+[howToPlay.hero.desc]
+  zh: 從零開始認識 OFC 開放式排點撲克的規則與計分方式，幾分鐘就能上手，準備好接下你的第一個任務。
+  en: Learn the rules and scoring of Open Face Chinese Poker from scratch — you'll be ready for your first hand in minutes.
+  ja: オープンフェイス中国ポーカーのルールとスコアリングを基礎から解説。数分で最初の一戦に挑めます。
+
+[howToPlay.ofc.eyebrow]
+  zh: 核心玩法
+  en: Core gameplay
+  ja: コアゲームプレイ
+
+[howToPlay.ofc.title]
+  zh: OFC 開放式排點撲克怎麼玩？
+  en: How does OFC work?
+  ja: OFC はどうやって遊ぶの？
+
+[howToPlay.ofc.p1]
+  zh: 每位玩家會拿到 13 張牌，需要把它們分配到三個「墩」——前墩（3 張）、中墩（5 張）、後墩（5 張），並且遵守「後墩牌力 ≥ 中墩牌力 ≥ 前墩牌力」的排列規則，排錯順序會被判定為「犯規（Fouled）」，直接輸掉該局。
+  en: Each player is dealt 13 cards, which must be arranged into three "rows" — the front row (3 cards), middle row (5 cards), and back row (5 cards) — following the rule that back-row strength ≥ middle-row strength ≥ front-row strength. Arranging them out of order results in a "foul," which loses the hand automatically.
+  ja: 各プレイヤーは13枚のカードを配られ、それを「フロント（3枚）」「ミドル（5枚）」「バック（5枚）」の3列に配置します。「バック ≥ ミドル ≥ フロント」の強さの順を守る必要があり、順序を誤ると「ファウル」となりそのハンドは自動的に負けとなります。
+
+[howToPlay.ofc.step1.title]
+  zh: ① 排定三墩
+  en: ① Set your three rows
+  ja: ① 3列を組み立てる
+
+[howToPlay.ofc.step1.desc]
+  zh: 依序拿到手牌，逐步決定每張牌要放進前墩、中墩或後墩。
+  en: Receive your cards in turn and decide which row each one goes into — front, middle, or back.
+  ja: 順番にカードを受け取り、フロント・ミドル・バックのどの列に置くかをその都度決めます。
+
+[howToPlay.ofc.step2.title]
+  zh: ② 逐墩比牌
+  en: ② Compare row by row
+  ja: ② 列ごとに比較
+
+[howToPlay.ofc.step2.desc]
+  zh: 三個墩全部排定後，與對手逐墩比牌，贏的墩得分，全部三墩都贏可再拿額外獎勵分（Scoop）。
+  en: Once all three rows are set, compare each row against your opponent's — the winning row scores a point, and sweeping all three earns a bonus (Scoop).
+  ja: 3列すべてが確定したら、相手の対応する列と比較します。勝った列は得点となり、3列すべてに勝つとボーナス（スクープ）も獲得できます。
+
+[howToPlay.ofc.step3.title]
+  zh: ③ 小心犯規
+  en: ③ Watch out for fouls
+  ja: ③ ファウルに注意
+
+[howToPlay.ofc.step3.desc]
+  zh: 若後墩、中墩、前墩的牌力沒有依序遞減，就會犯規，直接輸掉全部分數。
+  en: If your rows aren't arranged with back ≥ middle ≥ front strength, it's a foul, and you lose all points for the hand.
+  ja: バック・ミドル・フロントの強さが順に並んでいない場合はファウルとなり、そのハンドの得点をすべて失います。
+
+[howToPlay.fantasy.eyebrow]
+  zh: 進階機制
+  en: Advanced mechanic
+  ja: 上級テクニック
+
+[howToPlay.fantasy.title]
+  zh: 什麼是夢幻樂園（Fantasy Land）？
+  en: What is Fantasy Land?
+  ja: ファンタジーランドとは？
+
+[howToPlay.fantasy.desc]
+  zh: 當你的前墩湊出一對 Q 以上的牌型時，就有機會進入「夢幻樂園」：下一局可以一次拿到 13～14 張牌，直接排出三墩而不用逐張決策，大幅提高組出高分牌型的機會，是 OFC 最讓人上頭的機制之一。
+  en: If your front row scores a pair of Queens or better, you can enter "Fantasy Land": on your next hand, you're dealt 13-14 cards at once and can set all three rows without placing them one at a time — a huge advantage for building high-scoring hands, and one of OFC's most addictive mechanics.
+  ja: フロント列がクイーンのペア以上になると「ファンタジーランド」に突入できます。次のハンドでは一度に13〜14枚のカードが配られ、1枚ずつ配置を決めることなく3列をまとめてセットできるため、高得点を狙う大きなチャンスになります。OFC で最も熱くなる仕組みの一つです。
+
+[howToPlay.sng.eyebrow]
+  zh: 硬實力對決
+  en: A true test of skill
+  ja: 技術がすべて
+
+[howToPlay.sng.title]
+  zh: OFC SNG — 相同的牌，比的是技術
+  en: OFC SNG — Same cards, different skill
+  ja: OFC SNG — 同じ手札、問われるのは技術
+
+[howToPlay.sng.desc]
+  zh: 在 OFC SNG 模式中，三位玩家每一輪都會拿到完全相同的一副牌。當運氣被排除在外，真正決定勝負的，就只剩下排牌的判斷與技術——這正是 OFC: Pineapple Poker 與其他 OFC App 最大的不同之處。
+  en: In OFC SNG, all three players are dealt the exact same cards every round. With luck taken out of the equation, the only thing left to decide the outcome is placement skill and judgment — it's what sets OFC: Pineapple Poker apart from other OFC apps.
+  ja: OFC SNG モードでは、3人のプレイヤー全員が毎回まったく同じカードを配られます。運の要素がなくなることで、勝敗を分けるのは配置の判断力と技術だけ——これが他の OFC アプリとは一線を画す、OFC: Pineapple Poker ならではの魅力です。
+
+[howToPlay.blackjack.eyebrow]
+  zh: 換個節奏
+  en: Change of pace
+  ja: 気分転換に
+
+[howToPlay.blackjack.title]
+  zh: Blackjack 21 模式
+  en: Blackjack 21 mode
+  ja: Blackjack 21 モード
+
+[howToPlay.blackjack.desc]
+  zh: 想暫時放鬆一下時，App 內也有 Blackjack 21 桌：規則簡單，比誰的手牌點數更接近 21 點又不超過即可獲勝，隨時可以開一局。
+  en: When you want to relax for a bit, the app also has a Blackjack 21 table: simple rules — get closer to 21 than the dealer without going over — ready whenever you are.
+  ja: 少しリラックスしたいときは、アプリ内の Blackjack 21 テーブルへ。ルールはシンプルで、21を超えずにディーラーより高い数字を目指すだけ。いつでもプレイできます。
+
+[howToPlay.more.eyebrow]
+  zh: 更多玩法
+  en: And there's more
+  ja: まだまだあります
+
+[howToPlay.more.title]
+  zh: 不只這些
+  en: Beyond OFC and Blackjack
+  ja: OFC とブラックジャックだけじゃない
+
+[howToPlay.more.desc]
+  zh: App 內還收錄 Texas Hold'em、Omaha、7 Card Stud、Gin Rummy，以及 Pineapple OFC、Joker OFC、OFC SNG 等多種進階玩法與「特務任務」系統，下載後即可探索。
+  en: The app also includes Texas Hold'em, Omaha, 7 Card Stud, Gin Rummy, advanced OFC variants like Pineapple OFC, Joker OFC and OFC SNG, plus the "Agent Missions" system — all ready to explore after download.
+  ja: アプリには Texas Hold'em、Omaha、7 Card Stud、Gin Rummy に加え、Pineapple OFC、Joker OFC、OFC SNG などの上級 OFC バリエーション、そして「エージェントミッション」システムも収録。ダウンロード後にぜひ探索してみてください。
+
+[howToPlay.cta.title]
+  zh: 準備好了嗎？
+  en: Ready to give it a try?
+  ja: 準備はできましたか？
+
+[howToPlay.cta.desc]
+  zh: 下載 OFC: Pineapple Poker，跟著新手教學一步步上手吧！
+  en: Download OFC: Pineapple Poker and follow the built-in tutorial to get started.
+  ja: OFC: Pineapple Poker をダウンロードして、内蔵チュートリアルで始めましょう！
+
+
+【關於我們（about.html）】
+------------------------------------------------------------
+
+[about.head.title]
+  zh: 關於我們｜OFC: Pineapple Poker
+  en: About Us | OFC: Pineapple Poker
+  ja: 私たちについて｜OFC: Pineapple Poker
+
+[about.head.description]
+  zh: 認識 OFC: Pineapple Poker 開發團隊 Mondraw。
+  en: Meet Mondraw, the team behind OFC: Pineapple Poker.
+  ja: OFC: Pineapple Poker の開発チーム Mondraw をご紹介します。
+
+[about.hero.eyebrow]
+  zh: 關於我們
+  en: About Us
+  ja: 私たちについて
+
+[about.hero.title]
+  zh: 用心打造每一張牌桌
+  en: Crafting every card table with care
+  ja: 一つ一つのテーブルに心を込めて
+
+[about.hero.desc]
+  zh: 我們是 Mondraw，一支熱愛牌桌遊戲的開發團隊。OFC: Pineapple Poker 是我們投入策略遊戲設計與公平競技體驗打造的作品，希望讓喜歡動腦與講求刺激的玩家，都能在同一個地方找到樂趣。
+  en: We're Mondraw, a team passionate about card table games. OFC: Pineapple Poker is built on our commitment to strategic game design and fair competitive play, so that both thinkers and thrill-seekers can find their fun in one place.
+  ja: 私たちは Mondraw、カードテーブルゲームを愛する開発チームです。OFC: Pineapple Poker は、戦略的なゲームデザインと公正な競技体験への私たちのこだわりから生まれた作品です。頭を使うのが好きな人も、スリルを求める人も、同じ場所で楽しめることを目指しています。
+
+[about.mission.card1.title]
+  zh: 我們的使命
+  en: Our mission
+  ja: 私たちの使命
+
+[about.mission.card1.desc]
+  zh: 打造公平、有趣、且能持續進步的牌桌遊戲體驗，讓每位玩家都能安心享受遊戲。
+  en: Build a fair, fun, and continuously improving card game experience that every player can enjoy with confidence.
+  ja: 公正で楽しく、進化し続けるカードゲーム体験をつくり、すべてのプレイヤーが安心して楽しめるようにします。
+
+[about.mission.card2.title]
+  zh: 玩家優先
+  en: Players first
+  ja: プレイヤー第一
+
+[about.mission.card2.desc]
+  zh: 我們重視每一則玩家回饋，並持續依照社群意見改善遊戲內容與機制。
+  en: We value every piece of player feedback and keep improving the game based on community input.
+  ja: プレイヤーからのフィードバックを大切にし、コミュニティの意見をもとにゲームを改善し続けています。
+
+[about.mission.card3.title]
+  zh: 負責任娛樂
+  en: Responsible play
+  ja: 責任あるプレイ
+
+[about.mission.card3.desc]
+  zh: 遊戲內僅提供虛擬籌碼，不涉及真實金錢賭博，並提醒玩家適度娛樂、量力而為。
+  en: The game offers virtual chips only, with no real-money gambling involved, and we encourage playing in moderation.
+  ja: ゲーム内では仮想チップのみを提供し、実際の金銭を賭けることはありません。節度あるプレイをお願いしています。
+
+
+【常見問題（faq.html）】
+------------------------------------------------------------
+
+[faq.head.title]
+  zh: 常見問題｜OFC: Pineapple Poker
+  en: FAQ | OFC: Pineapple Poker
+  ja: よくある質問｜OFC: Pineapple Poker
+
+[faq.head.description]
+  zh: OFC: Pineapple Poker 常見問題：付費方式、虛擬籌碼、OFC 模式介紹與帳號協助。
+  en: Frequently asked questions about OFC: Pineapple Poker: pricing, virtual chips, OFC modes, and account help.
+  ja: OFC: Pineapple Poker に関するよくある質問：料金、仮想チップ、OFC モードの違い、アカウントサポートについて。
+
+[faq.hero.eyebrow]
+  zh: FAQ
+  en: FAQ
+  ja: よくある質問
+
+[faq.hero.title]
+  zh: 常見問題
+  en: Frequently Asked Questions
+  ja: よくある質問
+
+[faq.q1]
+  zh: OFC: Pineapple Poker 需要付費才能玩嗎？
+  en: Do I have to pay to play OFC: Pineapple Poker?
+  ja: OFC: Pineapple Poker は有料ですか？
+
+[faq.a1]
+  zh: App 本身完全免費下載與遊玩，選購性質的內購項目不影響基本遊戲體驗。
+  en: The app is completely free to download and play. Optional in-app purchases don't affect the core game experience.
+  ja: アプリ本体は完全無料でダウンロード・プレイできます。任意のアプリ内購入は基本的なゲーム体験に影響しません。
+
+[faq.q2]
+  zh: 遊戲內的籌碼可以換成真實金錢嗎？
+  en: Can in-game chips be exchanged for real money?
+  ja: ゲーム内のチップを現金に交換できますか？
+
+[faq.a2]
+  zh: 不行。所有虛擬籌碼與道具僅供遊戲內娛樂使用，不具備任何現金價值，也無法兌換、提領或轉讓。
+  en: No. All virtual chips and items are for in-game entertainment only — they have no cash value and cannot be redeemed, withdrawn, or transferred.
+  ja: いいえ。すべての仮想チップとアイテムはゲーム内での娯楽利用のみを目的としており、現金的価値はなく、換金・引き出し・譲渡もできません。
+
+[faq.q3]
+  zh: 支援哪些裝置與系統？
+  en: Which devices and platforms are supported?
+  ja: 対応デバイスとOSは？
+
+[faq.a3]
+  zh: 目前支援 iOS 與 Android 系統的手機與平板裝置，請至 App Store 或 Google Play 搜尋「OFC: Pineapple Poker」下載。
+  en: The app currently supports iOS and Android phones and tablets. Search "OFC: Pineapple Poker" on the App Store or Google Play to download.
+  ja: 現在 iOS と Android のスマートフォン・タブレットに対応しています。App Store または Google Play で「OFC: Pineapple Poker」を検索してダウンロードしてください。
+
+[faq.q4]
+  zh: App 內有哪些 OFC 模式？彼此有什麼不同？
+  en: What OFC modes are available, and how are they different?
+  ja: アプリ内の OFC モードにはどんな違いがありますか？
+
+[faq.a4]
+  zh: 共有三種模式：Progressive OFC 是標準玩法，逐步排出三墩並挑戰 Fantasyland；Joker OFC 加入鬼牌，增添變化與彈性；OFC SNG 則是三位玩家每輪拿到完全相同的一副牌，排除運氣干擾，純粹比拼排牌技術與判斷力，是與其他 OFC App 最大的不同之處。
+  en: There are three: Progressive OFC is the standard mode — set your rows and chase Fantasyland; Joker OFC adds wildcards for extra flexibility and variance; and OFC SNG deals all three players the exact same cards every round, removing luck from the equation so it comes down purely to placement skill and judgment — that's what sets it apart from other OFC apps.
+  ja: 3種類あります。Progressive OFC は標準ルールで、列を組み立てながらファンタジーランドを目指します。Joker OFC はワイルドカードが加わり、より変化に富んだプレイが楽しめます。OFC SNG は3人のプレイヤー全員が毎回まったく同じカードを配られるモードで、運の要素を排除し、純粋に配置の技術と判断力を競います。これが他の OFC アプリとの大きな違いです。
+
+[faq.q5]
+  zh: 什麼是 Fantasyland？要怎麼進入？
+  en: What is Fantasy Land, and how do I get there?
+  ja: ファンタジーランドとは何ですか？どうすれば入れますか？
+
+[faq.a5]
+  zh: 當你的前墩湊出一對 Q 以上的牌型時，就能在下一局進入 Fantasyland：一次拿到 13～14 張牌，直接排出三墩，詳細規則可參考「玩法教學」頁面。
+  en: If your front row scores a pair of Queens or better, you'll enter Fantasy Land on your next hand — you're dealt 13-14 cards at once and set all three rows in one go. See the How to Play page for details.
+  ja: フロント列がクイーンのペア以上になると、次のハンドでファンタジーランドに突入します。一度に13〜14枚のカードが配られ、3列をまとめてセットできます。詳しくは「遊び方」ページをご覧ください。
+
+[faq.q6]
+  zh: 忘記帳號密碼怎麼辦？
+  en: I forgot my password. What do I do?
+  ja: パスワードを忘れてしまいました。どうすればいいですか？
+
+[faq.a6]
+  zh: 請至登入頁選擇「忘記密碼」，依指示透過註冊信箱重設密碼；若仍無法登入，歡迎寄信到頁尾列出的信箱協助處理。
+  en: Use "Forgot password" on the login screen to reset it via your registered email. Still stuck? Email the address in the footer and we'll help you out.
+  ja: ログイン画面の「パスワードをお忘れですか」から、登録済みのメールアドレスを使ってリセットできます。解決しない場合は、フッターに記載のメールアドレスまでご連絡ください。
+
+[faq.q7]
+  zh: 想回報問題或不當行為，該怎麼做？
+  en: How do I report a problem or inappropriate behavior?
+  ja: 問題や不適切な行為を報告するには？
+
+[faq.a7]
+  zh: 可透過遊戲內的「回報」功能，或直接寄信到頁尾列出的信箱，並附上時間、對戰 ID 等細節，我們會盡快協助處理。
+  en: Use the in-app report feature, or email the address in the footer with details like the time and match ID — we'll follow up as soon as we can.
+  ja: アプリ内の通報機能をご利用いただくか、フッターのメールアドレスに日時や対戦IDなどの詳細を添えてご連絡ください。できるだけ早く対応いたします。
+
+[faq.q8]
+  zh: 有問題想聯絡你們，怎麼做？
+  en: How do I get in touch with you?
+  ja: お問い合わせ方法は？
+
+[faq.a8]
+  zh: 歡迎寄信到頁尾列出的信箱，我們會盡快回覆。
+  en: Feel free to email the address listed in the footer — we'll get back to you as soon as we can.
+  ja: フッターに記載のメールアドレスまでお気軽にご連絡ください。できるだけ早くご返信いたします。
+
+
+【首頁截圖標籤（Steam 精選風格短標籤，固定英文，不隨語言切換）】
+------------------------------------------------------------
+
+[index.shot1.mode-tag]
+  text: ALL MODES
+
+[index.shot2.mode-tag]
+  text: OFC
+
+[index.shot3.mode-tag]
+  text: OFC SNG
+
+[index.shot4.mode-tag]
+  text: BJ
+
+[index.shot5.mode-tag]
+  text: MISSIONS
+
+
+【其他固定文字（不隨語言切換，僅供參考／可一併編輯）】
+------------------------------------------------------------
+
+[index.video.ariaLabel]  （首頁影片區塊的無障礙標籤，螢幕閱讀器會唸出這段文字）
+  text: OFC: Pineapple Poker 遊戲內限時活動預告：Fugitive Grid
+
+[footer.social.fb / footer.social.ig / footer.social.x]  （頁尾社群連結文字，目前連結尚未設定實際網址）
+  text: FB / IG / X

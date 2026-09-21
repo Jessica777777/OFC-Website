@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+._*
+
+# 裝置連線暫存殘留檔（非網站內容）
+.fuse_hidden*
+
+# Claude 產出的預覽/報告檔案，不算網站原始碼
+Claude outputs/
+
+# 已標記待刪除的舊備份檔
+_to_delete/
