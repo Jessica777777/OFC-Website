@@ -1898,6 +1898,33 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   box-shadow: var(--shadow-card);
 }
 
+/* User feedback (2026-09-21): the raw source images for Fantasyland
+   (landscape, 900x469) and SNG (portrait, 900x1268) have wildly
+   different aspect ratios, so at width:100% they rendered at very
+   different natural heights next to their paired text column -- SNG's
+   photo towered far past its text (portrait crop scaled to column
+   width comes out ~1.4x taller than wide), while Fantasyland's short
+   landscape crop left a lot of empty space below it. Capping both to
+   the same fixed height + object-fit:cover makes each image's height
+   track its neighboring text block instead of its own raw aspect
+   ratio. object-position is tuned per image: SNG keeps the top of the
+   frame (trophy, both hands' AAAQQ, player nameplates) since that's
+   the part v23 cropped the screenshot for; Fantasyland stays centered
+   since the "FANTASYLAND" watermark and card row are already centered
+   in the source crop. */
+.feature-split-img--sng,
+.feature-split-img--fantasy {
+  height: 420px;
+  object-fit: cover;
+}
+.feature-split-img--sng { object-position: top; }
+.feature-split-img--fantasy { object-position: center; }
+
+@media (max-width: 900px) {
+  .feature-split-img--sng,
+  .feature-split-img--fantasy { height: 320px; }
+}
+
 /* v25: user feedback was that the full-width royalty-table looked
    sparse/empty (a lot of horizontal whitespace across just 3 narrow
    columns) and that its top edge didn't line up with this section's own
@@ -1907,13 +1934,16 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
    capped the table back down to a comfortable reading width (was
    max-width:none/100% before), bumped the cell font size up a notch now
    that there's less width to fill, and pulled this column up with a
-   negative margin sized to roughly the h2's own height + its bottom
-   margin + the grid's top margin (~90px at this page's desktop heading
-   size) so the table's top edge lines up with the h2's top edge instead
-   of the paragraph's. This page's file:// path can't be opened in a
-   browser from here to fine-tune the exact px, so it's a calculated
-   estimate — worth a quick visual check after this update. */
-.scoring-table-media { margin-top: -90px; }
+   negative margin.
+   v28: the -90px from v25 was a calculated estimate (this page's file://
+   path couldn't be opened in a browser at the time to check), and it
+   overshot — user feedback ("這裡怪怪的") plus a Playwright render showed
+   the table's top actually landing ~16px ABOVE the h2's top, not level
+   with it. Measured the real gap with Playwright bounding boxes
+   (h2.top vs .scoring-table-media.top) instead of recalculating from CSS
+   values, and corrected to -74px, which lines the two up exactly at
+   1280px width. */
+.scoring-table-media { margin-top: -74px; }
 .scoring-table-media .royalty-table { max-width: 440px; width: 100%; }
 .scoring-table-media .royalty-table th,
 .scoring-table-media .royalty-table td { font-size: var(--fs-md); }
