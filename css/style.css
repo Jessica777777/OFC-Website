@@ -1914,15 +1914,27 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
    in the source crop. */
 .feature-split-img--sng,
 .feature-split-img--fantasy {
-  height: 420px;
   object-fit: cover;
 }
-.feature-split-img--sng { object-position: top; }
-.feature-split-img--fantasy { object-position: center; }
+.feature-split-img--fantasy {
+  height: 420px;
+  object-position: center;
+}
+/* v29: SNG image re-cropped (now ~1:1 instead of the old tall 900x1268
+   portrait) to include the third player's hand, which the old crop's
+   shared 420px height was cutting off. Given its own height instead of
+   sharing Fantasyland's -- sized to the image's natural aspect ratio at
+   its actual rendered column width (~602px desktop / ~342px mobile,
+   measured with Playwright), so object-fit:cover has nothing left to
+   crop and the full three-hand screenshot shows. */
+.feature-split-img--sng {
+  height: 630px;
+  object-position: top;
+}
 
 @media (max-width: 900px) {
-  .feature-split-img--sng,
   .feature-split-img--fantasy { height: 320px; }
+  .feature-split-img--sng { height: 360px; }
 }
 
 /* v25: user feedback was that the full-width royalty-table looked
@@ -1944,6 +1956,15 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
    values, and corrected to -74px, which lines the two up exactly at
    1280px width. */
 .scoring-table-media { margin-top: -74px; }
+
+/* v29: user feedback was that Fantasyland's image sat noticeably lower
+   than the section's own h2 (same misalignment .scoring-table-media
+   fixed above for the royalty table) -- same fix, same cause
+   (.feature-split's align-items:start only starts below the eyebrow +
+   h2), same measured value (-74px lines the image top up exactly with
+   the h2 top at 1280px width, verified with Playwright bounding_box()). */
+.fantasy-media { margin-top: -74px; }
+.sng-media { margin-top: -74px; }
 .scoring-table-media .royalty-table { max-width: 440px; width: 100%; }
 .scoring-table-media .royalty-table th,
 .scoring-table-media .royalty-table td { font-size: var(--fs-md); }
