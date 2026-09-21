@@ -1928,13 +1928,23 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
    measured with Playwright), so object-fit:cover has nothing left to
    crop and the full three-hand screenshot shows. */
 .feature-split-img--sng {
-  height: 630px;
+  /* v29b: a fixed px height (originally 630, tuned for this column's
+     width at 1280px viewport) turned out fragile: .container-wide (this
+     section's container) has no max-width until 1520px, so on a wider
+     browser window the column keeps growing past 602px up to ~725px,
+     and object-fit:cover with a height that no longer matches cropped
+     off the third hand again (reported by user on an actual wide
+     screen, not just my 1280px test). aspect-ratio locks the box to the
+     source image's own ratio at any column width, so cover never has
+     anything to crop vertically -- verified with Playwright at 960 /
+     1280 / 1520 / 1800px widths, full three-hand image visible at all
+     of them. */
+  aspect-ratio: 1284 / 1340;
   object-position: top;
 }
 
 @media (max-width: 900px) {
   .feature-split-img--fantasy { height: 320px; }
-  .feature-split-img--sng { height: 360px; }
 }
 
 /* v25: user feedback was that the full-width royalty-table looked
