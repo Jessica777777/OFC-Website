@@ -426,9 +426,21 @@
         // v29: pad out to TOTAL_MAX[row] fixed empty slots (3/5/5) instead
         // of leaving the row as a growing/shrinking bar — see .ofc-demo-
         // slot-empty in the CSS for why this was requested.
+        // v29c: each empty slot is now its own drop target (wireDropTarget
+        // below) instead of the highlight covering the whole row — the
+        // visitor can drag onto (or, with a card selected, click) any one
+        // specific empty box. Which exact box they pick has no effect on
+        // scoring (order within a row was never meaningful — see the file
+        // header), placeCard() always resolves to "this row", and the
+        // render after that re-packs left-to-right, so nothing needs to
+        // track "which slot" beyond this render pass.
+        const canClickDrop = round && !locked
+          && selected !== null && placement[selected] !== row && dealtIn(row).length < openCap(row);
         for (let i = filled; i < TOTAL_MAX[row]; i++) {
           const empty = document.createElement('div');
           empty.className = 'ofc-demo-slot-empty';
+          if (canClickDrop) empty.classList.add('can-drop');
+          wireDropTarget(empty, row);
           slotsEl.appendChild(empty);
         }
 
@@ -437,13 +449,6 @@
         const cap = round ? openCap(row) : 0;
         capEl.textContent = total + '/' + TOTAL_MAX[row] + (round && cap === 0 ? ' ' + t('howToPlay.interactive.rowLocked') : '');
         rowEls[row].classList.toggle('full', total >= TOTAL_MAX[row]);
-
-        if (round && !locked) {
-          const canClickDrop = selected !== null && placement[selected] !== row && dealtIn(row).length < openCap(row);
-          rowEls[row].classList.toggle('can-drop', canClickDrop);
-        } else {
-          rowEls[row].classList.remove('can-drop');
-        }
       });
     }
 

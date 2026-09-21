@@ -1645,11 +1645,12 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   border: 1.5px dashed transparent;
   transition: border-color 0.15s ease, background 0.15s ease;
 }
-.ofc-demo-row.can-drop .ofc-demo-row-slots,
-.ofc-demo-row.drag-over .ofc-demo-row-slots {
-  border-color: var(--color-gold);
-  background: rgba(212, 175, 55, 0.08);
-}
+/* v29c: this rule used to highlight the WHOLE .ofc-demo-row-slots
+   container as one long dashed box whenever any slot in the row was
+   droppable — per user feedback that read as "one big box" rather than
+   "3/5/5 individual spaces". Removed; each empty slot is now its own drop
+   target (see renderBoard() in the JS) and highlights itself individually
+   via .ofc-demo-slot-empty.can-drop/.drag-over below. */
 .ofc-demo-row.full { border-color: rgba(212, 175, 55, 0.3); }
 .ofc-demo-row.result-ok {
   border-color: var(--color-gold);
@@ -1672,6 +1673,21 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   border: 1.5px dashed rgba(245, 241, 230, 0.16);
   background: rgba(255, 255, 255, 0.02);
   flex: 0 0 auto;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+/* v29c: per-slot highlight — each empty box lights up on its own (as a
+   drop target for drag, or as a clickable destination once a card is
+   selected) instead of the whole row's slots container turning into one
+   highlighted bar. Which specific empty slot gets picked doesn't matter
+   for scoring; see renderBoard()/wireDropTarget() in the JS. */
+.ofc-demo-slot-empty.can-drop,
+.ofc-demo-slot-empty.drag-over {
+  border-color: var(--color-gold);
+  border-style: solid;
+  background: rgba(212, 175, 55, 0.12);
+}
+.ofc-demo-slot-empty.drag-over {
+  background: rgba(212, 175, 55, 0.22);
 }
 
 .ofc-demo-explain {
