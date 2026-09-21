@@ -967,6 +967,37 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
 .card h3 { margin-bottom: 8px; }
 .card p { margin-bottom: 0; font-size: var(--fs-sm); }
 
+/* --- About "our principles" case-file cards (v28) ---
+   User feedback: the plain emoji-in-circle mission cards read as a
+   generic "why choose us" template block, out of step with the rest of
+   the site's HQ/dossier visual language. .mission-card is a scoped
+   modifier added ON TOP of the shared .card (about.html's three cards
+   become class="card mission-card"; how-to-play.html's own plain .card
+   usage elsewhere is untouched). It swaps the flat emoji-in-circle icon
+   for a monospace case-file number badge with a clipped corner (like a
+   stamped tab), adds a gold left rule, and a very faint diagonal hatch
+   texture reminiscent of dossier paper. No new colors or fonts — reuses
+   --color-gold/-gold-light and the monospace stack already established
+   by .transmission-tag. */
+.mission-card {
+  position: relative;
+  border-left: 3px solid var(--color-gold);
+  background-image:
+    repeating-linear-gradient(135deg, rgba(212, 175, 55, 0.035) 0px, rgba(212, 175, 55, 0.035) 1px, transparent 1px, transparent 14px),
+    linear-gradient(165deg, var(--color-surface), var(--color-surface-2));
+}
+.mission-card .icon {
+  border-radius: 4px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1.5px solid var(--color-gold);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  font-family: ui-monospace, 'SFMono-Regular', 'Courier New', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-gold-light);
+}
+
 /* --- Feature cards (v22 "Why us" redesign) ---
    Replaces the old 6-card small-icon .grid-3/.card layout with an
    8-card, bigger-image grid referencing Pokerist's "Why Pokerist?"
@@ -1375,6 +1406,22 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
    ========================================================= */
 .ofc-demo {
   position: relative;
+  /* v27: z-index:0 here is load-bearing, not decoration. A `position:
+     relative` element with `z-index: auto` does NOT establish a new
+     stacking context (CSS2.1 stacking rule) — so .ofc-demo::before's
+     `z-index: -1` was, this whole time, stacking against the nearest
+     ancestor that DOES form a stacking context (way up the tree), not
+     against .ofc-demo itself. In practice that painted the photo behind
+     the page/section background, i.e. fully invisible, no matter how
+     bright the image or how light the scrim — which is exactly why v22's
+     "lighter scrim" and v26's "brighten the source photo" both failed to
+     fix anything real. Confirmed by rendering the page with Playwright:
+     adding `z-index: 0` here (creating .ofc-demo's own stacking context,
+     so the pseudo-element's z-index:-1 is scoped to just behind it) is
+     what actually makes the photo appear. Root-caused and fixed here for
+     real — v22/v26 fixed the wrong layer. See
+     how-to-play-page-task-context.md "v27". */
+  z-index: 0;
   margin-top: 40px;
   border: 1px solid var(--color-border);
   border-top: 3px solid var(--color-gold);
@@ -1384,21 +1431,20 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   overflow: hidden;
 }
 /* v22: the real OFC table felt photo, as a ::before layer instead of a
-   background-image directly on .ofc-demo. v21's version stacked such a
-   dark gradient (0.88-0.94 alpha) over the photo that it read as plain
-   black — the user couldn't tell the photo was there at all. This version
-   uses a much lighter scrim so the felt/crest/watch are actually visible,
-   while z-index:-1 (valid since .ofc-demo is a position:relative
-   containing block, and overflow:hidden clips it to the rounded corner)
-   keeps it behind every normal-flow child without needing to touch any of
-   their own z-index/position. See how-to-play-page-task-context.md "v22". */
+   background-image directly on .ofc-demo, so scrim + photo composite in
+   one paint. v26: brightened the source photo itself (PIL: Brightness×2.3,
+   Contrast×1.12, Color×1.15 — mean luma ~20/255 → ~44/255) and lightened
+   the scrim further, since the raw photo measured too dark to read at any
+   scrim opacity. Neither of those actually fixed the "looks solid black"
+   report — see the z-index note on .ofc-demo above (v27) for the real
+   cause. History: how-to-play-page-task-context.md "v22"/"v26"/"v27". */
 .ofc-demo::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
   background-image:
-    linear-gradient(165deg, rgba(18, 14, 10, 0.5), rgba(8, 8, 10, 0.68)),
+    linear-gradient(165deg, rgba(18, 14, 10, 0.32), rgba(8, 8, 10, 0.48)),
     url('../assets/images/ofc-table-bg.jpg');
   background-size: cover;
   background-position: center 25%;
