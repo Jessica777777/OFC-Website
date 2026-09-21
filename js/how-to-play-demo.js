@@ -414,12 +414,22 @@
       ROW_ORDER.forEach((row) => {
         const slotsEl = rowEls[row].querySelector('[data-slots-for]');
         slotsEl.innerHTML = '';
-        preset[row].forEach((card) => slotsEl.appendChild(makeCardEl(card, { preset: true })));
+        let filled = 0;
+        preset[row].forEach((card) => { slotsEl.appendChild(makeCardEl(card, { preset: true })); filled++; });
 
         if (round) {
           placement.forEach((loc, idx) => {
-            if (loc === row) slotsEl.appendChild(makeCardEl(round.dealt[idx], { idx, selected: selected === idx }));
+            if (loc === row) { slotsEl.appendChild(makeCardEl(round.dealt[idx], { idx, selected: selected === idx })); filled++; }
           });
+        }
+
+        // v29: pad out to TOTAL_MAX[row] fixed empty slots (3/5/5) instead
+        // of leaving the row as a growing/shrinking bar — see .ofc-demo-
+        // slot-empty in the CSS for why this was requested.
+        for (let i = filled; i < TOTAL_MAX[row]; i++) {
+          const empty = document.createElement('div');
+          empty.className = 'ofc-demo-slot-empty';
+          slotsEl.appendChild(empty);
         }
 
         const capEl = rowEls[row].querySelector('.ofc-demo-row-cap');
@@ -456,13 +466,16 @@
       feedbackEl.hidden = false;
 
       if (lastResult === 'corrected') {
-        feedbackEl.className = 'ofc-demo-feedback corrected';
-        feedbackEl.innerHTML = '<strong>' + t('howToPlay.interactive.correctedTitle') + '</strong>';
+        // v29: was a full sentence ending in a colon, which looked like it
+        // was introducing the (separate) explanation paragraph below it.
+        // Now just a small pinned badge — see .ofc-demo-feedback-badge.
+        feedbackEl.className = 'ofc-demo-feedback corrected has-badge';
+        feedbackEl.innerHTML = '<span class="ofc-demo-feedback-badge fail">' + t('howToPlay.interactive.correctedTitle') + '</span>';
         return;
       }
       if (lastResult === 'success') {
-        feedbackEl.className = 'ofc-demo-feedback success';
-        feedbackEl.innerHTML = '<strong>' + t('howToPlay.interactive.stepSuccessTitle') + '</strong>';
+        feedbackEl.className = 'ofc-demo-feedback success has-badge';
+        feedbackEl.innerHTML = '<span class="ofc-demo-feedback-badge ok">' + t('howToPlay.interactive.stepSuccessTitle') + '</span>';
         return;
       }
 
@@ -604,10 +617,54 @@
       wireDropTarget(rowEls[row], row);
     });
 
+    function cardElByIdx(idx) {
+      return root.querySelector('.ofc-card[data-idx="' + idx + '"]');
+    }
+
+    // v29: FLIP-style animation for the auto-correct path — capture each
+    // moved card's on-screen rect *before* the re-render, then after
+    // render() has moved it into its new (correct) slot, jump it back to
+    // the old position with a transform and immediately transition that
+    // transform to none. Reads as the card sliding from where it was
+    // dropped to where it belongs, with a brief glow while it moves.
+    function playMoveAnimation(idxs, beforeRects) {
+      idxs.forEach((idx, i) => {
+        const before = beforeRects[i];
+        const el = cardElByIdx(idx);
+        if (!before || !el) return;
+        const after = el.getBoundingClientRect();
+        const dx = before.left - after.left;
+        const dy = before.top - after.top;
+        if (!dx && !dy) return;
+        el.style.transition = 'none';
+        el.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+        el.classList.add('card-move-glow');
+        // Force a reflow so the browser registers the jump-back position
+        // above before we switch transition back on below — otherwise the
+        // translate(0,0) below would just apply instantly with no visible
+        // slide.
+        void el.offsetWidth;
+        el.style.transition = 'transform 0.45s ease';
+        el.style.transform = 'translate(0, 0)';
+        const cleanup = () => {
+          el.style.transition = '';
+          el.style.transform = '';
+          el.classList.remove('card-move-glow');
+          el.removeEventListener('transitionend', cleanup);
+        };
+        el.addEventListener('transitionend', cleanup);
+        // Belt-and-suspenders in case transitionend doesn't fire (e.g. the
+        // element gets re-rendered again before it does).
+        setTimeout(cleanup, 600);
+      });
+    }
+
     function confirmCurrentRound() {
       if (locked) return;
       locked = true;
       selected = null;
+      let pendingMoveIdxs = null;
+      let pendingBeforeRects = null;
       if (step === LAST_STEP) {
         // v21: this is the one round that keeps a real pass/fail check —
         // all three rows are complete here, so back >= middle >= front is
@@ -628,10 +685,22 @@
         // v21: no more blocking "wrong, try again" — silently move every
         // dealt card to its scripted row and explain the recommended
         // layout instead of making the visitor guess again.
+        // v29: capture the cards that are actually about to change row
+        // *before* mutating `placement`, so playMoveAnimation() below has
+        // an accurate "before" position to animate from.
+        const movedIdxs = placement
+          .map((_, idx) => idx)
+          .filter((idx) => placement[idx] !== correctRowFor(idx));
+        pendingMoveIdxs = movedIdxs;
+        pendingBeforeRects = movedIdxs.map((idx) => {
+          const el = cardElByIdx(idx);
+          return el ? el.getBoundingClientRect() : null;
+        });
         placement = placement.map((_, idx) => correctRowFor(idx));
         lastResult = 'corrected';
       }
       render();
+      if (pendingMoveIdxs && pendingMoveIdxs.length) playMoveAnimation(pendingMoveIdxs, pendingBeforeRects);
     }
 
     confirmBtn.addEventListener('click', () => {

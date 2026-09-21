@@ -142,6 +142,23 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
 }
 .btn-primary:hover { box-shadow: 0 14px 30px rgba(212, 175, 55, 0.4); }
 
+/* v29: give [disabled] buttons a clearly different look — previously a
+   disabled .btn-primary (e.g. "確認排列" before the row is full) kept its
+   full gold gradient and just silently stopped responding to clicks,
+   which read as broken rather than "not ready yet". Flattening the color
+   and dimming it makes disabled vs. active obvious at a glance. */
+.btn[disabled] {
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+  opacity: 0.55;
+}
+.btn-primary[disabled] {
+  background: rgba(245, 241, 230, 0.14);
+  color: rgba(245, 241, 230, 0.55);
+  box-shadow: none;
+}
+.btn-primary[disabled]:hover { box-shadow: none; transform: none; }
+
 .btn-outline {
   background: transparent;
   border-color: rgba(245, 241, 230, 0.35);
@@ -1643,6 +1660,20 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   box-shadow: 0 0 0 1px rgba(224, 87, 74, 0.35);
 }
 
+/* v29: fixed 3/5/5 empty slot placeholders — before this, an unfilled row
+   was just an empty flex container (the "long bar" the row-slots padding/
+   min-height produced), giving no visual cue for how many cards a row
+   still needs. Rendered by renderBoard() to always pad each row out to
+   TOTAL_MAX[row] boxes (3 for front, 5 for middle/back), card or empty. */
+.ofc-demo-slot-empty {
+  width: 56px;
+  height: 78px;
+  border-radius: 8px;
+  border: 1.5px dashed rgba(245, 241, 230, 0.16);
+  background: rgba(255, 255, 255, 0.02);
+  flex: 0 0 auto;
+}
+
 .ofc-demo-explain {
   margin-top: 18px;
   padding: 14px 18px;
@@ -1650,7 +1681,11 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   background: rgba(212, 175, 55, 0.06);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   font-size: var(--fs-sm);
-  color: var(--color-text-muted);
+  /* v29: brightened from --color-text-muted per user feedback — this is
+     the official rule explanation shown after a correct/corrected
+     placement, and it was reading too dim against the darker demo panel
+     background compared to the rest of the widget's text. */
+  color: var(--color-text);
 }
 .ofc-demo-explain::before {
   content: '▸ ';
@@ -1789,6 +1824,50 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   color: var(--color-text);
 }
 
+/* v29: rounds 1-4's confirm result used to read as a full sentence ending
+   in a colon ("有幾張牌放錯位置，已經幫你排到建議的正確位置：") immediately
+   above the separate .ofc-demo-explain paragraph below it, which looked
+   like the colon was introducing that paragraph even though they're two
+   unrelated elements. Replaced with a short pinned badge (JS adds
+   .has-badge + renders a single .ofc-demo-feedback-badge span instead of
+   the old <strong> sentence) — "成功"/"失敗" only, the explanation
+   paragraph already carries the actual detail. Only used for rounds 1-4;
+   the final round's real pass/fail result keeps its fuller sentence
+   (there the per-row category breakdown is genuinely informative). */
+.ofc-demo-feedback.has-badge {
+  position: relative;
+  padding-top: 28px;
+}
+.ofc-demo-feedback-badge {
+  position: absolute;
+  top: -11px;
+  left: 16px;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+}
+.ofc-demo-feedback-badge.ok {
+  background: linear-gradient(135deg, #5fc487, #2e8b57);
+  color: #eafff1;
+}
+.ofc-demo-feedback-badge.fail {
+  background: linear-gradient(135deg, var(--color-red-light), var(--color-red));
+  color: #fff0ee;
+}
+
+/* v29: FLIP-style "moved" glow — playMoveAnimation() in the JS slides a
+   card from its old on-screen position to its corrected slot, then adds
+   this class for the duration of that transition to draw the eye to
+   which cards actually moved. Removed again once the transition ends. */
+.ofc-card.card-move-glow {
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.55), 0 6px 16px rgba(212, 175, 55, 0.4);
+}
+
 /* v21: bomb-emoji foul reveal, overlaid centered on the widget. Hidden by
    default (opacity 0, no pointer events); JS toggles .boom-play (with a
    forced reflow in between so re-triggering after a reset restarts the
@@ -1821,6 +1900,7 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   .ofc-demo-row-label { flex-direction: row; align-items: baseline; justify-content: space-between; }
   .ofc-card { width: 48px; height: 68px; font-size: 0.95rem; }
   .ofc-card-suit { font-size: 1.1rem; }
+  .ofc-demo-slot-empty { width: 48px; height: 68px; }
 }
 
 /* --- Full-bleed "feature band" (v9/v10) ---
