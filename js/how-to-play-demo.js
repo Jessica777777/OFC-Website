@@ -448,14 +448,26 @@
     }
 
     function renderExplain() {
-      // v21: the per-round explanation now shows for BOTH outcomes a
-      // round 1-4 confirm can end in — a free placement that already
-      // matched the script ('success'), or one that got auto-corrected
-      // ('corrected') — since either way the explanation is "here's the
-      // recommended layout and why."
+      // v21: the per-round explanation shows for BOTH outcomes a round 1-4
+      // confirm can end in — a free placement that already matched the
+      // script ('success'), or one that got auto-corrected ('corrected')
+      // — since either way the explanation is "here's the recommended
+      // layout and why."
+      // v29b: the 成功/失敗 result used to be its own pinned badge in a
+      // separate .ofc-demo-feedback box directly above this explanation —
+      // per user feedback that felt like one extra box for what reads as
+      // a single message, so the badge now renders inline at the front of
+      // this same paragraph instead (see .ofc-demo-explain-badge), and
+      // .ofc-demo-feedback is no longer used for rounds 1-4 at all (still
+      // used for the final round's real pass/fail result below).
       if (step >= 1 && step < LAST_STEP && locked && (lastResult === 'success' || lastResult === 'corrected')) {
         explainEl.hidden = false;
-        explainEl.textContent = t('howToPlay.interactive.step' + step + '.explain');
+        const badgeClass = lastResult === 'success' ? 'ok' : 'fail';
+        const badgeText = lastResult === 'success'
+          ? t('howToPlay.interactive.stepSuccessTitle')
+          : t('howToPlay.interactive.correctedTitle');
+        explainEl.innerHTML = '<span class="ofc-demo-explain-badge ' + badgeClass + '">' + badgeText + '</span>'
+          + t('howToPlay.interactive.step' + step + '.explain');
       } else {
         explainEl.hidden = true;
       }
@@ -463,21 +475,14 @@
 
     function renderFeedback() {
       if (!lastResult) { feedbackEl.hidden = true; return; }
-      feedbackEl.hidden = false;
 
-      if (lastResult === 'corrected') {
-        // v29: was a full sentence ending in a colon, which looked like it
-        // was introducing the (separate) explanation paragraph below it.
-        // Now just a small pinned badge — see .ofc-demo-feedback-badge.
-        feedbackEl.className = 'ofc-demo-feedback corrected has-badge';
-        feedbackEl.innerHTML = '<span class="ofc-demo-feedback-badge fail">' + t('howToPlay.interactive.correctedTitle') + '</span>';
+      if (lastResult === 'success' || lastResult === 'corrected') {
+        // v29b: rounds 1-4 no longer use this box — their result is shown
+        // inline at the front of the explanation text (see renderExplain).
+        feedbackEl.hidden = true;
         return;
       }
-      if (lastResult === 'success') {
-        feedbackEl.className = 'ofc-demo-feedback success has-badge';
-        feedbackEl.innerHTML = '<span class="ofc-demo-feedback-badge ok">' + t('howToPlay.interactive.stepSuccessTitle') + '</span>';
-        return;
-      }
+      feedbackEl.hidden = false;
 
       const info = {
         front: rankCards(fullRowForEval('front')),

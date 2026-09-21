@@ -1811,51 +1811,36 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   border-left: 3px solid var(--color-red-light);
   color: var(--color-red-light);
 }
-/* v21: "corrected" outcome (rounds 1-4 after free placement) — deliberately
-   NOT the same gold as .success (that's reserved for "you placed it
-   exactly right"), and not an error tone either since nothing went wrong
-   procedurally. A muted, neutral variant using the site's existing
-   text-muted token reads as "noted / adjusted" rather than "correct" or
-   "incorrect". */
-.ofc-demo-feedback.corrected {
-  background: rgba(174, 189, 180, 0.08);
-  border: 1px solid rgba(174, 189, 180, 0.35);
-  border-left: 3px solid var(--color-text-muted);
-  color: var(--color-text);
-}
+/* v21-v29: "corrected" outcome (rounds 1-4 after free placement) used to
+   have its own .ofc-demo-feedback tone/box here. v29b moved that result
+   inline into .ofc-demo-explain instead (see .ofc-demo-explain-badge
+   below) — rounds 1-4 no longer set .corrected on .ofc-demo-feedback at
+   all, so this rule is intentionally removed rather than left dead. The
+   final round's real pass/fail result (.success / .foul above) is a
+   different, still-in-use case — it keeps its own richer sentence with a
+   per-row category breakdown, which doesn't fit as an inline badge. */
 
-/* v29: rounds 1-4's confirm result used to read as a full sentence ending
-   in a colon ("有幾張牌放錯位置，已經幫你排到建議的正確位置：") immediately
-   above the separate .ofc-demo-explain paragraph below it, which looked
-   like the colon was introducing that paragraph even though they're two
-   unrelated elements. Replaced with a short pinned badge (JS adds
-   .has-badge + renders a single .ofc-demo-feedback-badge span instead of
-   the old <strong> sentence) — "成功"/"失敗" only, the explanation
-   paragraph already carries the actual detail. Only used for rounds 1-4;
-   the final round's real pass/fail result keeps its fuller sentence
-   (there the per-row category breakdown is genuinely informative). */
-.ofc-demo-feedback.has-badge {
-  position: relative;
-  padding-top: 28px;
-}
-.ofc-demo-feedback-badge {
-  position: absolute;
-  top: -11px;
-  left: 16px;
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 14px;
+/* v29b: 成功/失敗 badge for rounds 1-4, now rendered inline at the very
+   front of the .ofc-demo-explain paragraph (by renderExplain() in the
+   JS) instead of a separate pinned box on .ofc-demo-feedback — per user
+   feedback that a standalone badge box felt like one extra element for
+   what reads as a single message. Small rounded chip, sized to sit next
+   to the "▸" prefix rather than compete with it. */
+.ofc-demo-explain-badge {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 2px 10px;
   border-radius: 999px;
   font-size: var(--fs-xs);
   font-weight: 700;
-  letter-spacing: 0.05em;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+  letter-spacing: 0.04em;
+  vertical-align: 1px;
 }
-.ofc-demo-feedback-badge.ok {
+.ofc-demo-explain-badge.ok {
   background: linear-gradient(135deg, #5fc487, #2e8b57);
   color: #eafff1;
 }
-.ofc-demo-feedback-badge.fail {
+.ofc-demo-explain-badge.fail {
   background: linear-gradient(135deg, var(--color-red-light), var(--color-red));
   color: #fff0ee;
 }
