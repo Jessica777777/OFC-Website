@@ -1079,6 +1079,12 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
   object-fit: contain;
   z-index: 1;
 }
+/* the "7 Card Stud" wordmark is a thinner mixed-case script, not the bold
+   all-caps sans the other five titles use, so at the same box height it
+   reads noticeably smaller/lighter -- bump just this one up. */
+.feature-card-logo--stud {
+  height: clamp(40px, 9.5vw, 64px);
+}
 a.feature-card {
   text-decoration: none;
   color: inherit;
