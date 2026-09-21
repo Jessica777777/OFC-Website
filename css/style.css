@@ -2152,7 +2152,10 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   margin: 30px 0 10px;
 }
 
-.gr-panel p { max-width: 720px; white-space: pre-line; }
+/* explanatory rule text reads as the primary content of this page,
+   not secondary copy -- override the site-wide muted-gray <p> color
+   with full text color for legibility. */
+.gr-panel p { max-width: 720px; white-space: pre-line; color: var(--color-text); }
 .gr-sub { font-weight: 600; color: var(--color-text); margin-bottom: 6px; max-width: 720px; }
 
 .gr-ph {

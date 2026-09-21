@@ -188,6 +188,28 @@
     tabsGroupLabel: { en: "Game Rules", "zh-Hant": "遊戲規則" }
   };
 
+  // v27 demo art: each game tab gets a table-felt photo banner with the
+  // game's gold wordmark burned in (same asset used on how-to-play.html's
+  // "更多玩法" cards). English-only wordmark PNGs by design -- matches the
+  // site's existing convention of leaving brand/logotype terms (e.g.
+  // "Fantasyland", "OFC SNG") untranslated across zh/en/ja.
+  var GR_BG = {
+    nlh: "assets/images/game-rules/table-nlh.jpg",
+    plo: "assets/images/game-rules/table-plo.jpg",
+    stud: "assets/images/game-rules/table-stud.jpg",
+    blackjack: "assets/images/game-rules/table-blackjack.jpg",
+    rummy: "assets/images/game-rules/table-rummy.jpg",
+    ginrummy: "assets/images/game-rules/table-ginrummy.jpg"
+  };
+  var GR_TITLE_IMG = {
+    nlh: "assets/images/game-rules/title-nlh.png",
+    plo: "assets/images/game-rules/title-plo.png",
+    stud: "assets/images/game-rules/title-stud.png",
+    blackjack: "assets/images/game-rules/title-blackjack.png",
+    rummy: "assets/images/game-rules/title-rummy.png",
+    ginrummy: "assets/images/game-rules/title-ginrummy.png"
+  };
+
   function contentLang() {
     // Reuse the site-wide language, but this page only has en / zh-Hant
     // source text -- "ja" falls back to English rather than being
@@ -397,6 +419,39 @@
     });
 
     panel.textContent = "";
+
+    var bg = GR_BG[id];
+    if (bg) {
+      var banner = document.createElement("div");
+      banner.className = "gr-hero-banner";
+      banner.style.backgroundImage = "url(" + bg + ")";
+      var inner = document.createElement("div");
+      inner.className = "gr-hero-banner-inner";
+      var tag = document.createElement("div");
+      tag.className = "gr-hero-banner-tag";
+      tag.appendChild(text(UI.tabsGroupLabel));
+      inner.appendChild(tag);
+      var titleImg = GR_TITLE_IMG[id];
+      if (titleImg) {
+        var logo = document.createElement("img");
+        logo.className = "gr-hero-banner-logo";
+        logo.src = titleImg;
+        logo.alt = txt(game.title);
+        logo.onerror = function () {
+          var h2fallback = document.createElement("h2");
+          h2fallback.textContent = txt(game.title);
+          this.replaceWith(h2fallback);
+        };
+        inner.appendChild(logo);
+      } else {
+        var h2 = document.createElement("h2");
+        h2.textContent = txt(game.title);
+        inner.appendChild(h2);
+      }
+      banner.appendChild(inner);
+      panel.appendChild(banner);
+    }
+
     game.blocks.forEach(function (b) { panel.appendChild(renderBlock(b)); });
 
     try { sessionStorage.setItem(GR_GAME_KEY, id); } catch (e) { /* ignore */ }
