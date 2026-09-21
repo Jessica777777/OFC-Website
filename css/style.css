@@ -557,7 +557,7 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
    now (see how-to-play.html), so the paragraph's max-width can grow
    without the block reading as a dense wall of text. */
 .htp-hero-text .eyebrow { font-size: calc(var(--fs-xs) * 1.35); }
-.htp-hero-text h1 { font-size: clamp(3rem, 6.4vw, 5.6rem); }
+.htp-hero-text h1 { font-size: clamp(2.6rem, 5.6vw, 4.8rem); }
 .htp-hero-text p {
   max-width: 640px;
   font-size: 1.4rem;
