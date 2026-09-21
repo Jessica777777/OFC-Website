@@ -75,20 +75,40 @@
   </section>
 
   <!-- CTA -->
-  <section class="section section-alt">
+  <!-- Unified with index.html / how-to-play.html's agent-girl two-column
+       CTA banner (previously this was the plain centered text+badges
+       block). Reuses the same agent-girl-fullbody-fade.png art and
+       .cta-banner / .cta-agent-grid / .cta-agent-portrait /
+       .cta-agent-content classes; title/desc/ageBadge text is shared with
+       howToPlay.cta.* (same "ready to download" messaging fits here too),
+       while tag/closing/imgAlt use page-specific gameRules.cta.* copy so
+       this page doesn't read as a literal copy-paste of the other two. -->
+  <section class="section" style="padding-top:120px;">
     <div class="container">
       <div class="cta-banner">
-        <h2 data-i18n="howToPlay.cta.title">準備好了嗎？</h2>
-        <p style="max-width:480px; margin:0 auto;" data-i18n="howToPlay.cta.desc">下載 OFC: Pineapple Poker，跟著新手教學一步步上手吧！</p>
-        <div class="store-badges" style="justify-content:center; margin-top:28px;">
-          <a href="https://apps.apple.com/app/id6448747558" class="store-badge" aria-label="前往 App Store 下載" data-i18n-aria-label="common.store.appleAria" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.365 1.43c0 1.14-.462 2.096-1.14 2.865-.79.9-2.087 1.6-3.16 1.51-.14-1.09.42-2.24 1.11-2.97.78-.85 2.13-1.49 3.19-1.4zM20.6 17.15c-.5 1.15-.74 1.66-1.38 2.68-.9 1.44-2.18 3.23-3.76 3.24-1.4.02-1.76-.92-3.66-.91-1.9.01-2.3.93-3.7.92-1.58-.01-2.79-1.63-3.69-3.07C2.02 16.9 1.5 12.5 3.15 9.7c1.15-1.95 3.02-3.09 4.78-3.09 1.44 0 2.35 1 3.55 1 1.16 0 1.87-1 3.55-1 1.35 0 2.78.74 3.8 2.02-3.34 1.83-2.8 6.5.77 8.52z"/></svg>
-            <span class="badge-text"><small>Download on the</small><span>App Store</span></span>
-          </a>
-          <a href="https://play.google.com/store/apps/details?id=io.mondraw.blackjack21" class="store-badge" aria-label="前往 Google Play 下載" data-i18n-aria-label="common.store.googleAria" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.6 2.6c-.4.3-.6.8-.6 1.4v16c0 .6.2 1.1.6 1.4l9-9.4-9-9.4zm10.1 10.4l2.3 2.4-9.9 5.7 7.6-8.1zm1-2l3.5-2c.6.4.9 1 .9 1.6s-.3 1.2-.9 1.6l-3.5-2 -.1-.1zm-1-1l-7.6-8 9.9 5.6-2.3 2.4z"/></svg>
-            <span class="badge-text"><small>GET IT ON</small><span>Google Play</span></span>
-          </a>
+        <div class="cta-agent-grid">
+          <div class="cta-agent-portrait">
+            <img src="assets/images/agent-girl-fullbody-fade.png" alt="特務手持撲克牌，準備帶你認識更多玩法" data-i18n-alt="gameRules.cta.imgAlt">
+          </div>
+          <div class="cta-agent-content">
+            <span class="transmission-tag" data-i18n="gameRules.cta.tag">【HQ 情報 // 全遊戲規則檔案】</span>
+            <h2 data-i18n="howToPlay.cta.title">行動已授權</h2>
+            <p style="max-width:480px;" data-i18n="howToPlay.cta.desc">下載 OFC: Pineapple Poker，跟著新手教學一步步上手吧！</p>
+            <p class="transmission-closing" style="max-width:480px;" data-i18n="gameRules.cta.closing">HQ 已將完整規則歸檔，剩下的就交給你了。</p>
+            <div class="store-badges">
+              <a href="https://apps.apple.com/app/id6448747558" class="store-badge" aria-label="前往 App Store 下載" data-i18n-aria-label="common.store.appleAria" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.365 1.43c0 1.14-.462 2.096-1.14 2.865-.79.9-2.087 1.6-3.16 1.51-.14-1.09.42-2.24 1.11-2.97.78-.85 2.13-1.49 3.19-1.4zM20.6 17.15c-.5 1.15-.74 1.66-1.38 2.68-.9 1.44-2.18 3.23-3.76 3.24-1.4.02-1.76-.92-3.66-.91-1.9.01-2.3.93-3.7.92-1.58-.01-2.79-1.63-3.69-3.07C2.02 16.9 1.5 12.5 3.15 9.7c1.15-1.95 3.02-3.09 4.78-3.09 1.44 0 2.35 1 3.55 1 1.16 0 1.87-1 3.55-1 1.35 0 2.78.74 3.8 2.02-3.34 1.83-2.8 6.5.77 8.52z"/></svg>
+                <span class="badge-text"><small>Download on the</small><span>App Store</span></span>
+              </a>
+              <a href="https://play.google.com/store/apps/details?id=io.mondraw.blackjack21" class="store-badge" aria-label="前往 Google Play 下載" data-i18n-aria-label="common.store.googleAria" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.6 2.6c-.4.3-.6.8-.6 1.4v16c0 .6.2 1.1.6 1.4l9-9.4-9-9.4zm10.1 10.4l2.3 2.4-9.9 5.7 7.6-8.1zm1-2l3.5-2c.6.4.9 1 .9 1.6s-.3 1.2-.9 1.6l-3.5-2 -.1-.1zm-1-1l-7.6-8 9.9 5.6-2.3 2.4z"/></svg>
+                <span class="badge-text"><small>GET IT ON</small><span>Google Play</span></span>
+              </a>
+            </div>
+            <div style="margin-top:22px;">
+              <span class="age-badge" data-i18n="howToPlay.cta.ageBadge">🔞 本遊戲適齡分級為 18+，遊戲內虛擬籌碼不可兌換現金或具現金價值之獎品</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
