@@ -655,6 +655,13 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
   filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.55));
 }
 
+/* About us hero uses the full crew-poster art (landing-hero-crew.png),
+   which reads better bigger than the single-portrait default above —
+   scoped to .page-about only so index.html's boss.png hero is untouched. */
+.page-about .trust-portrait img {
+  width: min(560px, 94vw);
+}
+
 /* --- Carousel engine (shared: B feature cards + C collectibles, v26) ---
    Both sections used to be different things — B was a static 4x2 CSS
    grid with no interaction at all, C was a native overflow-x/scroll-snap
@@ -2069,11 +2076,18 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
      card with nothing else of the hand in frame. New crop trims most of
      that empty top margin and cuts the bottom right where the third
      player's AAA row ends, so only the natural fingertip-on-card touch
-     point remains (no more stray stub below it). aspect-ratio updated to
-     match the new image's exact ratio, same invariant as v29b: cover has
-     nothing left to crop, so the whole (re-cropped) image always shows,
-     no matter the column's rendered width. */
-  aspect-ratio: 1284 / 1185;
+     point remains (no more stray stub below it).
+     v29e-followup: v29e's bottom cut turned out too tight -- user asked
+     for more of the finger to stay visible, not just a bare touch point.
+     Re-cropped again from the same pristine 1284x1340 original, keeping
+     the same top trim (dead felt removed) but this time keeping the
+     bottom edge as-is (1284x1210), so the whole finger from knuckle to
+     fingertip reads naturally instead of being cut mid-nail.
+     aspect-ratio updated to match the new image's exact ratio, same
+     invariant as v29b/v29e: cover has nothing left to crop, so the
+     whole (re-cropped) image always shows, no matter the column's
+     rendered width. */
+  aspect-ratio: 1284 / 1210;
   object-position: top;
 }
 
