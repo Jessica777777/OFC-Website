@@ -356,6 +356,25 @@
       return presetCount;
     }
 
+    // v29d-followup: after a round confirms — whether the placement was
+    // already correct or got auto-corrected — every one of this round's
+    // placed cards collapses to the leftmost open slots in its row (in
+    // ascending dealt-index order), so a confirmed round never sits with
+    // a gap at whatever slot the visitor happened to drop a card into.
+    // Per user feedback: previously only the auto-corrected cards got
+    // reassigned a fresh (left-packed) slot; an already-correct placement
+    // kept whatever slot the visitor dragged/clicked it into and did not
+    // snap left on confirm.
+    function packLeftAll() {
+      ROW_ORDER.forEach((row) => {
+        const presetCount = boardBefore(step)[row].length;
+        const idxs = placement
+          .map((loc, idx) => (loc === row ? idx : -1))
+          .filter((idx) => idx !== -1);
+        idxs.forEach((idx, i) => { liveSlot[idx] = presetCount + i; });
+      });
+    }
+
     function placeCard(idx, row, slotIndex) {
       if (locked) return;
       if (row !== 'tray') {
@@ -522,16 +541,50 @@
       // this same paragraph instead (see .ofc-demo-explain-badge), and
       // .ofc-demo-feedback is no longer used for rounds 1-4 at all (still
       // used for the final round's real pass/fail result below).
-      if (step >= 1 && step < LAST_STEP && locked && (lastResult === 'success' || lastResult === 'corrected')) {
-        explainEl.hidden = false;
-        const badgeClass = lastResult === 'success' ? 'ok' : 'fail';
-        const badgeText = lastResult === 'success'
-          ? t('howToPlay.interactive.stepSuccessTitle')
-          : t('howToPlay.interactive.correctedTitle');
-        explainEl.innerHTML = '<span class="ofc-demo-explain-badge ' + badgeClass + '">' + badgeText + '</span>'
-          + t('howToPlay.interactive.step' + step + '.explain');
+      // v29d-followup2: this box used to toggle the `hidden` attribute
+      // (display:none <-> block) between "before confirm" and "after
+      // confirm", which removed/added its margin+padding+border-left
+      // height from .ofc-demo's total height right at the moment of
+      // confirming. .ofc-demo's own height is exactly what its ::before
+      // background photo (background-size: cover) scales/positions
+      // against — so that height change made the photo itself visibly
+      // reposition on confirm ("背景牌桌圖...小位移再跳回來"), which in
+      // turn shifted where a card-table detail baked into that photo
+      // lands relative to the fixed row borders drawn on top of it (the
+      // decorative card-stack graphic seen sticking out past the 後墩 row
+      // border in one state and sitting fully inside it in another — both
+      // symptoms of the same underlying height jump).
+      //
+      // Fix: for rounds 1-4, always render this round's explain text (it's
+      // the same "recommended layout" copy regardless of success/corrected)
+      // as soon as the round becomes active — even before it's confirmed —
+      // with the result badge present but invisible (`visibility: hidden`
+      // on the badge itself), so the box already sits at its final height
+      // pre-confirm. Confirming just reveals the box (`.is-empty` toggles
+      // `visibility` in CSS, which doesn't collapse layout) and swaps in
+      // the real badge text — no height change, so the background photo
+      // underneath never has a reason to reposition.
+      if (step >= 1 && step < LAST_STEP) {
+        const isDone = locked && (lastResult === 'success' || lastResult === 'corrected');
+        explainEl.classList.toggle('is-empty', !isDone);
+        const explainText = t('howToPlay.interactive.step' + step + '.explain');
+        if (isDone) {
+          const badgeClass = lastResult === 'success' ? 'ok' : 'fail';
+          const badgeText = lastResult === 'success'
+            ? t('howToPlay.interactive.stepSuccessTitle')
+            : t('howToPlay.interactive.correctedTitle');
+          explainEl.innerHTML = '<span class="ofc-demo-explain-badge ' + badgeClass + '">' + badgeText + '</span>' + explainText;
+        } else {
+          // Same markup shape as the "done" branch (badge span + text) so
+          // the box's height matches exactly once it's revealed — the
+          // badge text just needs to be *some* similarly-sized string
+          // since it's invisible either way.
+          explainEl.innerHTML = '<span class="ofc-demo-explain-badge ok" style="visibility: hidden">'
+            + t('howToPlay.interactive.stepSuccessTitle') + '</span>' + explainText;
+        }
       } else {
-        explainEl.hidden = true;
+        explainEl.classList.add('is-empty');
+        explainEl.innerHTML = '';
       }
     }
 
@@ -746,35 +799,37 @@
         const legal = compareRank(info.middle, info.front) >= 0 && compareRank(info.back, info.middle) >= 0;
         lastResult = legal ? 'legal' : 'foul';
         if (!legal) triggerBoom();
-      } else if (scriptMatches()) {
-        lastResult = 'success';
       } else {
-        // v21: no more blocking "wrong, try again" — silently move every
-        // dealt card to its scripted row and explain the recommended
-        // layout instead of making the visitor guess again.
-        // v29: capture the cards that are actually about to change row
-        // *before* mutating `placement`, so playMoveAnimation() below has
-        // an accurate "before" position to animate from.
-        const movedIdxs = placement
+        // v29d-followup: capture EVERY placed card's current on-screen
+        // position before touching `placement`/`liveSlot` at all — this
+        // now covers the "already correct" outcome too (not just the
+        // auto-corrected one), because packLeftAll() below moves those
+        // cards as well (per user feedback: a correct placement used to
+        // keep whatever slot it was dropped in instead of also snapping
+        // left on confirm).
+        const trackedIdxs = placement
           .map((_, idx) => idx)
-          .filter((idx) => placement[idx] !== correctRowFor(idx));
-        pendingMoveIdxs = movedIdxs;
-        pendingBeforeRects = movedIdxs.map((idx) => {
+          .filter((idx) => placement[idx] !== 'tray');
+        pendingMoveIdxs = trackedIdxs;
+        pendingBeforeRects = trackedIdxs.map((idx) => {
           const el = cardElByIdx(idx);
           return el ? el.getBoundingClientRect() : null;
         });
-        placement = placement.map((_, idx) => correctRowFor(idx));
-        // v29d: a moved card's old liveSlot value belongs to the row it's
-        // leaving (and may well collide with something already in the
-        // row it's entering) — clear it first, then hand it the first
-        // open slot in its *new* row. Cards that were already correct
-        // (not in movedIdxs) keep whatever slot the visitor put them in.
-        movedIdxs.forEach((idx) => { delete liveSlot[idx]; });
-        movedIdxs.forEach((idx) => {
-          const newRow = placement[idx];
-          if (newRow !== 'tray') liveSlot[idx] = firstOpenSlot(newRow, idx);
-        });
-        lastResult = 'corrected';
+
+        if (scriptMatches()) {
+          lastResult = 'success';
+        } else {
+          // v21: no more blocking "wrong, try again" — silently move
+          // every dealt card to its scripted row and explain the
+          // recommended layout instead of making the visitor guess again.
+          placement = placement.map((_, idx) => correctRowFor(idx));
+          lastResult = 'corrected';
+        }
+        // v29d-followup: whichever outcome above, pack every one of this
+        // round's placed cards flush-left within its row (ascending
+        // dealt-index order) so a confirmed round never sits with a gap
+        // at whatever slot the visitor happened to drop a card into.
+        packLeftAll();
       }
       render();
       if (pendingMoveIdxs && pendingMoveIdxs.length) playMoveAnimation(pendingMoveIdxs, pendingBeforeRects);

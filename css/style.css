@@ -654,12 +654,6 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
   height: auto;
   filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.55));
 }
-/* About us hero uses the full crew-poster art (landing-hero-crew.png),
-   which reads better bigger than the single-portrait default above —
-   scoped to .page-about only so index.html's boss.png hero is untouched. */
-.page-about .trust-portrait img {
-  width: min(440px, 88vw);
-}
 
 /* --- Carousel engine (shared: B feature cards + C collectibles, v26) ---
    Both sections used to be different things — B was a static 4x2 CSS
@@ -1713,6 +1707,18 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
      placement, and it was reading too dim against the darker demo panel
      background compared to the rest of the widget's text. */
   color: var(--color-text);
+}
+/* v29d-followup2: this box no longer uses the `hidden` attribute (which
+   was display:none <-> block) — it stays in the layout flow at all times
+   now (see renderExplain() in the JS) and only toggles `visibility` here,
+   which does NOT collapse its height. Toggling `hidden` used to change
+   .ofc-demo's total height right when a round confirmed, and .ofc-demo's
+   height is exactly what its ::before background photo (background-size:
+   cover) scales/positions against — so the photo itself would visibly
+   reposition on every confirm. Keeping this box's height constant across
+   the confirm transition keeps the photo still. */
+.ofc-demo-explain.is-empty {
+  visibility: hidden;
 }
 .ofc-demo-explain::before {
   content: '▸ ';

@@ -196,7 +196,14 @@
                  "做得好！"／犯規 result is the first thing visible after
                  confirming, instead of sitting below both control rows. -->
             <div class="ofc-demo-feedback" id="ofcDemoFeedback" hidden></div>
-            <div class="ofc-demo-explain" id="ofcDemoExplain" hidden></div>
+            <!-- v29d-followup2: no `hidden` attribute here any more — this
+                 box now stays in the layout flow at all times (JS toggles
+                 an `is-empty` class that only sets `visibility`), so its
+                 height never disappears/reappears and shift the ::before
+                 background photo behind the whole widget. See renderExplain()
+                 in js/how-to-play-demo.js and .ofc-demo-explain.is-empty in
+                 css/style.css. -->
+            <div class="ofc-demo-explain is-empty" id="ofcDemoExplain"></div>
 
             <!-- v21: prev/next are now icon arrows (always enabled — free
                  navigation between rounds), with a dot-progress indicator
