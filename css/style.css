@@ -1516,7 +1516,19 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
      showing, most noticeably on the now-short step 0. Anchoring to the
      photo's own top edge instead keeps the crop's starting point fixed
      regardless of container height. */
-  background-position: center top;
+  /* v30-followup5: per user feedback ("希望這個皇冠在前墩跟中墩的中間"),
+     shift the crop up so the crest's crown sits in the gap between the
+     front and middle rows. A fixed pixel offset (not a percentage) keeps
+     this anchor stable regardless of .ofc-demo's height, same reasoning
+     as the "center top" switch in v30-followup -- see
+     how-to-play-page-task-context.md "v30-followup5" for how this
+     number was derived and why it's desktop-only (overridden back to
+     "center top" below 620px, where `cover`'s scale factor leaves almost
+     no vertical crop slack to shift in the first place; the source photo
+     is portrait (1100x1829) and a narrow/tall mobile container is scaled
+     to fit its height almost exactly, so there's nothing here for a
+     vertical offset to move). */
+  background-position: center -210px;
 }
 
 /* v30: .ofc-demo-progress (step badge + restart, its own row) and
@@ -2114,6 +2126,14 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 }
 
 @media (max-width: 620px) {
+  /* v30-followup5: reset the desktop-only -210px crown shift (see
+     .ofc-demo::before above) back to the original "center top" anchor.
+     Below this width `background-size: cover` scales the portrait source
+     photo almost exactly to the container's height (see the comment on
+     .ofc-demo::before), leaving barely any vertical slack to shift --
+     applying the desktop offset here just pushes the image out of frame
+     at the top instead of moving the crest within it. */
+  .ofc-demo::before { background-position: center top; }
   /* v29e-followup7: second round of "make it shorter" per user feedback
      ("互動小工具還是太高，整體再縮小一點") on top of the v29e-followup5
      board-height bug fix -- this time it's not a bug, just trimming
