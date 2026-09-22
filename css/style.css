@@ -2057,6 +2057,18 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
     aspect-ratio: 54 / 76;
   }
   .ofc-demo-row-slots { gap: 6px; }
+  /* v29e-followup6: the width formula above assumes a 6px gap between
+     items (the "4 * 6px" term) -- correct for `.ofc-demo-row-slots`
+     right above, but `#ofcDemoHand` (the dealt-but-not-yet-placed hand
+     tray, up to 5 cards) still had its base 10px gap, which the formula
+     didn't know about. That mismatch meant each hand card computed ~3-4px
+     wider than the tray actually had room for, so 5 cards still wrapped
+     to two lines there even though the board rows below were correctly
+     fixed -- confirmed by testing the hand tray specifically instead of
+     assuming the unscoped `.ofc-card` rule covered every container it
+     applies to. Matching the gap here makes the same "divide by 5" formula
+     correct for the hand tray too. */
+  .ofc-demo-hand { gap: 6px; }
   /* Font size still needs a number, but a fluid one instead of a step
      per breakpoint: scale with viewport width (a reasonable proxy for
      the card's own width here, since `.ofc-demo-row` is always a single
