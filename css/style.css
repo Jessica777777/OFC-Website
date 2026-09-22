@@ -1474,7 +1474,11 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   border: 1px solid var(--color-border);
   border-top: 3px solid var(--color-gold);
   border-radius: var(--radius);
-  padding: 28px;
+  /* v30: trimmed from 28px per user feedback ("互動小工具還是太高") --
+     part of a wider pass tightening this widget's internal spacing; see
+     .ofc-demo-topbar / .ofc-demo-footer below and
+     how-to-play-page-task-context.md "v30". */
+  padding: 18px 20px;
   box-shadow: var(--shadow-card);
   overflow: hidden;
 }
@@ -1498,12 +1502,32 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   background-position: center 25%;
 }
 
-.ofc-demo-progress {
+/* v30: .ofc-demo-progress (step badge + restart, its own row) and
+   .ofc-demo-head (round title + desc, another row below it) merged into
+   one .ofc-demo-topbar -- badge and title now share a line via
+   .ofc-demo-topbar-title, restart stays right-aligned. Saves a full row's
+   height versus the old two-row header. See how-to-play.html and
+   how-to-play-page-task-context.md "v30". */
+.ofc-demo-topbar {
   display: flex;
-  align-items: center;
+  align-items: baseline;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 18px;
+  gap: 8px 14px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border);
+}
+.ofc-demo-topbar-title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  min-width: 0;
+}
+.ofc-demo-topbar-title h3 {
+  margin: 0;
+  font-size: var(--fs-md);
 }
 #ofcDemoProgress {
   display: inline-block;
@@ -1515,8 +1539,9 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   background: rgba(212, 175, 55, 0.1);
   border: 1px solid var(--color-border);
   border-left: 3px solid var(--color-gold);
-  padding: 5px 12px;
+  padding: 4px 10px;
   border-radius: 4px;
+  white-space: nowrap;
 }
 .ofc-demo-restart {
   background: transparent;
@@ -1528,22 +1553,27 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   padding: 4px 0;
   text-decoration: underline;
   text-underline-offset: 3px;
+  white-space: nowrap;
 }
 .ofc-demo-restart:hover { color: var(--color-gold); }
 
-.ofc-demo-head { margin-bottom: 20px; }
-.ofc-demo-head h3 { margin-bottom: 6px; font-size: var(--fs-lg); }
-.ofc-demo-head p { margin: 0; font-size: var(--fs-sm); color: var(--color-text-muted); max-width: 620px; }
+/* v30: replaces the old .ofc-demo-head h3/p rules (that wrapper is gone —
+   see how-to-play.html). #ofcDemoDesc keeps the same look, just no longer
+   nested a level deep. */
+#ofcDemoDesc { margin: 0; font-size: var(--fs-sm); color: var(--color-text-muted); max-width: 620px; }
 
 /* --- Hand tray: also a drop target for "return this card to my hand" --- */
 .ofc-demo-hand {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  min-height: 92px;
+  gap: 8px;
+  /* v30: was 92px min-height (sized for the old 88px-tall card); trimmed
+     to match the smaller card below plus its own padding, instead of
+     reserving extra dead space above/below the cards. */
+  min-height: 60px;
   align-items: center;
-  padding: 14px;
-  margin-bottom: 20px;
+  padding: 8px 10px;
+  margin-bottom: 12px;
   border: 1.5px dashed var(--color-border);
   border-radius: var(--radius-sm);
   background: rgba(0, 0, 0, 0.18);
@@ -1570,12 +1600,17 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 /* --- Playing cards: deliberately skeuomorphic (cream face, red/black
    suit ink) so they read as real cards against the dark felt panel --- */
 .ofc-card {
-  /* v29d: enlarged from 56x78 per user feedback that the slot/drop
-     "trigger box" boundary felt too small to reliably hit — kept in
-     lockstep with .ofc-demo-slot-empty below so filled and empty slots
-     stay the same footprint. */
-  width: 64px;
-  height: 88px;
+  /* v30: sized back down from v29d's 64x88 (which itself grew from 56x78
+     for hit-target reasons) to 56x76 — still comfortably clickable, but
+     smaller than the desktop board/hand tray needs to be to fit this
+     widget's new compact height budget. Kept in lockstep with
+     .ofc-demo-slot-empty below so filled and empty slots stay the same
+     footprint. Rank/suit font sizes bumped up (was 1.1rem/1.3rem) so they
+     fill more of the smaller face, per user feedback referencing a mobile
+     OFC game's card style — same "bigger rank/suit" direction already
+     applied to the mobile breakpoint in v29e-followup7. */
+  width: 56px;
+  height: 76px;
   border-radius: 8px;
   background: linear-gradient(165deg, #faf6ea, #efe6cf);
   color: #1a1a1a;
@@ -1585,10 +1620,10 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: 1px;
   font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 1.1rem;
+  font-weight: 800;
+  font-size: 1.32rem;
   line-height: 1;
   cursor: pointer;
   transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
@@ -1596,7 +1631,7 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 }
 .ofc-card:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35); }
 .ofc-card.is-red { color: var(--color-red); }
-.ofc-card-suit { font-size: 1.3rem; }
+.ofc-card-suit { font-size: 1.55rem; }
 .ofc-card.selected {
   outline: 3px solid var(--color-gold);
   outline-offset: 1px;
@@ -1617,30 +1652,38 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 .ofc-demo-board {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 6px;
 }
 .ofc-demo-row {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 14px;
+  gap: 10px;
+  padding: 7px 10px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.02);
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .ofc-demo-row-label {
-  flex: 0 0 74px;
+  /* v30: narrowed from a 74px column (sized for two stacked lines) to a
+     compact 42px tag, per user feedback referencing a mobile OFC game
+     where the row label sits tight against the card row instead of
+     taking its own wide column. */
+  flex: 0 0 42px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 1px;
   font-weight: 700;
   color: var(--color-gold-light);
+  font-size: var(--fs-sm);
+  line-height: 1.2;
+  text-align: center;
 }
 .ofc-demo-row-cap {
   font-family: ui-monospace, 'SFMono-Regular', 'Courier New', monospace;
   font-weight: 500;
-  font-size: var(--fs-xs);
+  font-size: 0.68rem;
   color: var(--color-text-faint);
   letter-spacing: 0.02em;
 }
@@ -1648,8 +1691,10 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   flex: 1;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  min-height: 78px;
+  gap: 8px;
+  /* v30: matches the new 76px .ofc-card/.ofc-demo-slot-empty height,
+     was 78px in lockstep with the old 88px-tall card. */
+  min-height: 76px;
   align-items: center;
   padding: 6px;
   border-radius: var(--radius-sm);
@@ -1678,9 +1723,9 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
    still needs. Rendered by renderBoard() to always pad each row out to
    TOTAL_MAX[row] boxes (3 for front, 5 for middle/back), card or empty. */
 .ofc-demo-slot-empty {
-  /* v29d: enlarged in lockstep with .ofc-card above — see that comment. */
-  width: 64px;
-  height: 88px;
+  /* v30: kept in lockstep with .ofc-card above — see that comment. */
+  width: 56px;
+  height: 76px;
   border-radius: 8px;
   border: 1.5px dashed rgba(245, 241, 230, 0.16);
   background: rgba(255, 255, 255, 0.02);
@@ -1718,6 +1763,7 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 .ofc-demo-desc-wrap {
   position: relative;
   display: grid;
+  margin-bottom: 14px;
 }
 .ofc-demo-desc-wrap > * {
   grid-area: 1 / 1;
@@ -1754,8 +1800,26 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  margin-top: 22px;
+  gap: 8px;
+}
+
+/* v30: #ofcDemoStep5Controls (confirm/reset) and #ofcDemoNavControls
+   (prev/dots/next) used to be two separate full-width .ofc-demo-controls
+   rows, stacked one above the other. how-to-play.html now wraps both in
+   this shared footer so they share one row instead -- confirm/reset on
+   the left, nav on the right, each only as wide as its own content (see
+   .ofc-demo-nav below, whose own space-between becomes a no-op once it's
+   no longer stretched to the full row width). On step 0 (intro) only the
+   nav side is visible; a single flex child under justify-content:
+   space-between lands at flex-start, so it stays left-aligned without any
+   extra rule. */
+.ofc-demo-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 12px;
 }
 
 /* v21: prev/dots/next nav row. Default layout spreads the three children
@@ -1780,13 +1844,16 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  /* v30: was 40x40 — shrunk in step with the rest of the footer now that
+     it shares a row with the confirm/reset buttons instead of getting a
+     full-width row of its own. */
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: 1px solid var(--color-border);
   background: rgba(212, 175, 55, 0.08);
   color: var(--color-gold-light);
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   line-height: 1;
   cursor: pointer;
   transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
@@ -1806,7 +1873,7 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   width: auto;
   height: auto;
   border-radius: var(--radius-sm);
-  padding: 11px 26px;
+  padding: 9px 22px;
   font-size: var(--fs-sm);
   font-family: var(--font-body);
   font-weight: 600;
@@ -1824,11 +1891,11 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 .ofc-demo-dots {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 .ofc-demo-dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: rgba(245, 241, 230, 0.18);
   transition: background-color 0.2s ease, transform 0.2s ease;
@@ -2034,7 +2101,10 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   .ofc-demo-board { gap: 8px; }
   .ofc-demo-row-slots { padding: 4px; }
   .ofc-demo-hand { padding: 10px; margin-bottom: 12px; }
-  .ofc-demo-controls { margin-top: 14px; }
+  /* v30: .ofc-demo-controls no longer carries margin-top itself (see the
+     base rule) now that confirm/reset and prev/dots/next share one
+     .ofc-demo-footer row -- this replaces the old rule that set it here. */
+  .ofc-demo-footer { margin-top: 10px; }
   /* v29e-followup5: `.ofc-demo-row-label`'s desktop rule sets
      `flex: 0 0 74px` to fix its WIDTH as a narrow side column next to the
      row's slots (side-by-side layout). Here `.ofc-demo-row` switches to

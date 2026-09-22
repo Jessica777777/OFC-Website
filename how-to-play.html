@@ -164,23 +164,30 @@
                js/how-to-play-demo.js and
                how-to-play-page-task-context.md "v21"/"v22". -->
           <div class="ofc-demo" id="ofcDemo">
-            <div class="ofc-demo-progress">
-              <span id="ofcDemoProgress">第 1 步／共 6 步</span>
+            <!-- v30: step badge and round title merged onto one line (was
+                 two separate rows: .ofc-demo-progress above .ofc-demo-head)
+                 per user feedback referencing a mobile OFC game's compact
+                 layout ("互動小工具還是太高，整體再縮小一點" + reference
+                 screenshots). .ofc-demo-head is gone; #ofcDemoDesc /
+                 #ofcDemoResult's shared wrapper now sits directly under this
+                 topbar instead of nested inside it. See css/style.css
+                 .ofc-demo-topbar and how-to-play-page-task-context.md "v30". -->
+            <div class="ofc-demo-topbar">
+              <div class="ofc-demo-topbar-title">
+                <span id="ofcDemoProgress">第 1 步／共 6 步</span>
+                <h3 id="ofcDemoTitle">看完教學了嗎？來試試看吧</h3>
+              </div>
               <button type="button" class="ofc-demo-restart" id="ofcDemoRestart" data-i18n="howToPlay.interactive.restart">從頭開始</button>
             </div>
 
-            <div class="ofc-demo-head">
-              <h3 id="ofcDemoTitle">看完教學了嗎？來試試看吧</h3>
-              <!-- v29e-followup3: desc and result now share the same grid
-                   cell (see .ofc-demo-desc-wrap in css/style.css) so this
-                   wrapper's height is always the taller of the two,
-                   regardless of which one is showing -- no JS measurement
-                   needed, and no separate reserved block below the board
-                   any more. See renderResult() in js/how-to-play-demo.js. -->
-              <div class="ofc-demo-desc-wrap">
-                <p id="ofcDemoDesc">用一組真實的示範手牌，一輪一輪實際練習排牌——可以用點選或拖曳的方式放牌，排完按「確認排列」看看有沒有犯規。</p>
-                <div class="ofc-demo-result" id="ofcDemoResult"></div>
-              </div>
+            <!-- v29e-followup3: desc and result share the same grid cell
+                 (see .ofc-demo-desc-wrap in css/style.css) so this wrapper's
+                 height is always the taller of the two, regardless of which
+                 one is showing -- no JS measurement needed. See
+                 renderResult() in js/how-to-play-demo.js. -->
+            <div class="ofc-demo-desc-wrap">
+              <p id="ofcDemoDesc">用一組真實的示範手牌，一輪一輪實際練習排牌——可以用點選或拖曳的方式放牌，排完按「確認排列」看看有沒有犯規。</p>
+              <div class="ofc-demo-result" id="ofcDemoResult"></div>
             </div>
 
             <div class="ofc-demo-hand" id="ofcDemoHand" aria-label="你的手牌"></div>
@@ -209,28 +216,37 @@
                  js/how-to-play-demo.js). One less block in the widget's
                  vertical flow. -->
 
-            <!-- v21: prev/next are now icon arrows (always enabled — free
-                 navigation between rounds), with a dot-progress indicator
-                 between them. The prev arrow is entirely absent (not just
-                 disabled) on step 0; step 0's arrow slot instead shows a
-                 plain text "start practice" CTA, left-aligned via
-                 .ofc-demo-nav.is-intro (see how-to-play-page-task-context.md
-                 "v21"). -->
-            <div class="ofc-demo-controls ofc-demo-nav" id="ofcDemoNavControls">
-              <button type="button" class="ofc-demo-arrow" id="ofcDemoPrev" data-i18n-aria-label="howToPlay.interactive.prev" aria-label="上一步">‹</button>
-              <div class="ofc-demo-dots" id="ofcDemoDots" aria-hidden="true"></div>
-              <button type="button" class="ofc-demo-arrow" id="ofcDemoNext" data-i18n-aria-label="howToPlay.interactive.next" aria-label="下一步">›</button>
-            </div>
+            <!-- v30: the confirm/reset row and the prev/dots/next row used
+                 to be two separate full-width .ofc-demo-controls blocks,
+                 stacked one above the other -- a second row's worth of
+                 height even though neither needs the full width. Wrapping
+                 both in .ofc-demo-footer puts them on one line (confirm/
+                 reset left, nav right), matching the compact reference
+                 layout. See css/style.css .ofc-demo-footer. -->
+            <div class="ofc-demo-footer">
+              <!-- v22: no data-i18n on Confirm any more — after a lock (on a
+                   non-final round) js/how-to-play-demo.js relabels it to
+                   "Next" itself, and a static data-i18n would fight that by
+                   resetting the label back to "Confirm" on every language
+                   switch. Its text always starts as the confirm label via
+                   the first render() call on load. -->
+              <div class="ofc-demo-controls" id="ofcDemoStep5Controls" hidden>
+                <button type="button" class="btn btn-primary btn-sm" id="ofcDemoConfirm" disabled>確認排列</button>
+                <button type="button" class="btn btn-outline btn-sm" id="ofcDemoReset" hidden data-i18n="howToPlay.interactive.reset">重新排列</button>
+              </div>
 
-            <!-- v22: no data-i18n on Confirm any more — after a lock (on a
-                 non-final round) js/how-to-play-demo.js relabels it to
-                 "Next" itself, and a static data-i18n would fight that by
-                 resetting the label back to "Confirm" on every language
-                 switch. Its text always starts as the confirm label via the
-                 first render() call on load. -->
-            <div class="ofc-demo-controls" id="ofcDemoStep5Controls" hidden>
-              <button type="button" class="btn btn-primary btn-sm" id="ofcDemoConfirm" disabled>確認排列</button>
-              <button type="button" class="btn btn-outline btn-sm" id="ofcDemoReset" hidden data-i18n="howToPlay.interactive.reset">重新排列</button>
+              <!-- v21: prev/next are now icon arrows (always enabled — free
+                   navigation between rounds), with a dot-progress indicator
+                   between them. The prev arrow is entirely absent (not just
+                   disabled) on step 0; step 0's arrow slot instead shows a
+                   plain text "start practice" CTA, left-aligned via
+                   .ofc-demo-nav.is-intro (see how-to-play-page-task-context.md
+                   "v21"). -->
+              <div class="ofc-demo-controls ofc-demo-nav" id="ofcDemoNavControls">
+                <button type="button" class="ofc-demo-arrow" id="ofcDemoPrev" data-i18n-aria-label="howToPlay.interactive.prev" aria-label="上一步">‹</button>
+                <div class="ofc-demo-dots" id="ofcDemoDots" aria-hidden="true"></div>
+                <button type="button" class="ofc-demo-arrow" id="ofcDemoNext" data-i18n-aria-label="howToPlay.interactive.next" aria-label="下一步">›</button>
+              </div>
             </div>
 
             <!-- v29e-followup4: was a plain "💥" emoji; replaced with the
