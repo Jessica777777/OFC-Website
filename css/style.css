@@ -1702,80 +1702,52 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   background: rgba(212, 175, 55, 0.22);
 }
 
-.ofc-demo-explain {
+/* v29e-followup3: replaces the old .ofc-demo-explain box below the
+   board (removed) -- the per-round result now slides in over
+   #ofcDemoDesc instead of occupying its own separate space, so the
+   widget carries no extra reserved height for it at all. Both
+   #ofcDemoDesc and #ofcDemoResult are grid children sharing the same
+   grid area: CSS sizes a shared area to whichever occupant is tallest,
+   so .ofc-demo-desc-wrap's height is pinned to max(desc, result) for
+   this round the moment both are rendered, and never changes again for
+   the rest of that round -- confirming just cross-fades/slides which
+   one is visible, so the ::before background photo (background-size:
+   cover, scaled against .ofc-demo's total height) never has a height
+   change to react to. See renderResult()/playResultSlideIn() in
+   js/how-to-play-demo.js. */
+.ofc-demo-desc-wrap {
   position: relative;
-  margin-top: 18px;
-  padding: 14px 18px;
-  border-left: 3px solid var(--color-gold);
-  background: rgba(212, 175, 55, 0.06);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  display: grid;
+}
+.ofc-demo-desc-wrap > * {
+  grid-area: 1 / 1;
+}
+#ofcDemoDesc {
+  transition: opacity 0.2s ease;
+}
+#ofcDemoDesc.is-covered {
+  opacity: 0;
+}
+.ofc-demo-result {
+  margin: 0;
   font-size: var(--fs-sm);
-  /* v29: brightened from --color-text-muted per user feedback — this is
-     the official rule explanation shown after a correct/corrected
-     placement, and it was reading too dim against the darker demo panel
-     background compared to the rest of the widget's text. */
   color: var(--color-text);
+  opacity: 0;
+  /* v29e-followup3: slides in from the right per user preference; bumped
+     from an initial 24px/0.3s (felt too subtle in review) to 56px/0.4s so
+     the motion actually reads as "sliding in" rather than a faint fade. */
+  transform: translateX(56px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
 }
-/* v29d-followup2: this box no longer uses the `hidden` attribute (which
-   was display:none <-> block) — it stays in the layout flow at all times
-   now (see renderExplain() in the JS) and only toggles `visibility` here,
-   which does NOT collapse its height. Toggling `hidden` used to change
-   .ofc-demo's total height right when a round confirmed, and .ofc-demo's
-   height is exactly what its ::before background photo (background-size:
-   cover) scales/positions against — so the photo itself would visibly
-   reposition on every confirm. Keeping this box's height constant across
-   the confirm transition keeps the photo still. */
-.ofc-demo-explain.is-empty {
-  visibility: hidden;
+.ofc-demo-result.is-shown {
+  opacity: 1;
+  transform: translateX(0);
 }
-
-/* v29e-followup2: rounds 1-4, pre-confirm state. The badge+explain text
-   inside .ofc-demo-explain-real stays in the layout (invisible via
-   .is-pending) purely to keep .ofc-demo-explain's own height pinned to
-   whatever the eventual real explanation needs -- unchanged from the
-   v29d-followup2 fix, still needed so .ofc-demo's ::before background
-   photo never has a reason to reposition on confirm.
-   What's new: instead of leaving the whole box looking blank while
-   waiting (per user feedback -- a big empty gold-bordered strip sitting
-   between the board and the confirm button read as unfinished/broken),
-   an absolutely-positioned overlay now fills that same box with a plain
-   "arrange, then confirm" hint. It's positioned over the invisible real
-   content rather than inline with it, so it never affects the box's
-   flow height -- confirming just swaps which one is visible, exactly
-   like the badge swap already did, with no height change either way. */
-.ofc-demo-explain-real.is-pending {
-  visibility: hidden;
-}
-.ofc-demo-explain-pending {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  padding: 14px 18px;
-  font-size: var(--fs-sm);
-  font-style: italic;
-  color: var(--color-text-muted);
-}
-.ofc-demo-explain-pending-arrow {
-  color: var(--color-gold);
-  font-weight: 700;
-  font-style: normal;
-  margin-right: 4px;
-}
-.ofc-demo-explain::before {
+.ofc-demo-result::before {
   content: '▸ ';
   color: var(--color-gold);
   font-weight: 700;
-}
-/* v29e-followup2: while the pre-confirm hint overlay is showing, the
-   overlay is not opaque (it shares the callout's translucent look), so
-   this container-level "▸" prefix -- which belongs to .ofc-demo-explain
-   itself, not to the (hidden) .ofc-demo-explain-real span -- would still
-   paint through at the top of the box, above the overlay's own centered
-   text. The overlay carries its own arrow (.ofc-demo-explain-pending-arrow),
-   so suppress this one while pending to avoid a stray second arrow. */
-.ofc-demo-explain.is-pending::before {
-  content: none;
 }
 
 .ofc-demo-controls {
@@ -1898,20 +1870,21 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 }
 /* v21-v29: "corrected" outcome (rounds 1-4 after free placement) used to
    have its own .ofc-demo-feedback tone/box here. v29b moved that result
-   inline into .ofc-demo-explain instead (see .ofc-demo-explain-badge
-   below) — rounds 1-4 no longer set .corrected on .ofc-demo-feedback at
+   inline into the round explanation instead (see .ofc-demo-result-badge
+   below) -- rounds 1-4 no longer set .corrected on .ofc-demo-feedback at
    all, so this rule is intentionally removed rather than left dead. The
    final round's real pass/fail result (.success / .foul above) is a
-   different, still-in-use case — it keeps its own richer sentence with a
+   different, still-in-use case -- it keeps its own richer sentence with a
    per-row category breakdown, which doesn't fit as an inline badge. */
 
-/* v29b: 成功/失敗 badge for rounds 1-4, now rendered inline at the very
-   front of the .ofc-demo-explain paragraph (by renderExplain() in the
-   JS) instead of a separate pinned box on .ofc-demo-feedback — per user
-   feedback that a standalone badge box felt like one extra element for
-   what reads as a single message. Small rounded chip, sized to sit next
-   to the "▸" prefix rather than compete with it. */
-.ofc-demo-explain-badge {
+/* v29b: 成功/失敗 badge for rounds 1-4, rendered inline at the very front
+   of the round result text (by renderResult() in the JS -- see
+   .ofc-demo-result in the block above) instead of a separate pinned box
+   on .ofc-demo-feedback -- per user feedback that a standalone badge box
+   felt like one extra element for what reads as a single message. Small
+   rounded chip, sized to sit next to the "▸" prefix rather than compete
+   with it. */
+.ofc-demo-result-badge {
   display: inline-block;
   margin-right: 8px;
   padding: 2px 10px;
@@ -1921,11 +1894,11 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   letter-spacing: 0.04em;
   vertical-align: 1px;
 }
-.ofc-demo-explain-badge.ok {
+.ofc-demo-result-badge.ok {
   background: linear-gradient(135deg, #5fc487, #2e8b57);
   color: #eafff1;
 }
-.ofc-demo-explain-badge.fail {
+.ofc-demo-result-badge.fail {
   background: linear-gradient(135deg, var(--color-red-light), var(--color-red));
   color: #fff0ee;
 }

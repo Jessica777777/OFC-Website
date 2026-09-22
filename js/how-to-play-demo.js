@@ -205,7 +205,7 @@
     const progressEl = root.querySelector('#ofcDemoProgress');
     const restartBtn = root.querySelector('#ofcDemoRestart');
     const handEl = root.querySelector('#ofcDemoHand');
-    const explainEl = root.querySelector('#ofcDemoExplain');
+    const resultEl = root.querySelector('#ofcDemoResult');
     const navControls = root.querySelector('#ofcDemoNavControls');
     const prevBtn = root.querySelector('#ofcDemoPrev');
     const nextBtn = root.querySelector('#ofcDemoNext');
@@ -528,76 +528,63 @@
       });
     }
 
-    function renderExplain() {
-      // v21: the per-round explanation shows for BOTH outcomes a round 1-4
-      // confirm can end in — a free placement that already matched the
-      // script ('success'), or one that got auto-corrected ('corrected')
-      // — since either way the explanation is "here's the recommended
-      // layout and why."
-      // v29b: the 成功/失敗 result used to be its own pinned badge in a
-      // separate .ofc-demo-feedback box directly above this explanation —
-      // per user feedback that felt like one extra box for what reads as
-      // a single message, so the badge now renders inline at the front of
-      // this same paragraph instead (see .ofc-demo-explain-badge), and
-      // .ofc-demo-feedback is no longer used for rounds 1-4 at all (still
-      // used for the final round's real pass/fail result below).
-      // v29d-followup2: this box used to toggle the `hidden` attribute
-      // (display:none <-> block) between "before confirm" and "after
-      // confirm", which removed/added its margin+padding+border-left
-      // height from .ofc-demo's total height right at the moment of
-      // confirming. .ofc-demo's own height is exactly what its ::before
-      // background photo (background-size: cover) scales/positions
-      // against — so that height change made the photo itself visibly
-      // reposition on confirm ("背景牌桌圖...小位移再跳回來"), which in
-      // turn shifted where a card-table detail baked into that photo
-      // lands relative to the fixed row borders drawn on top of it (the
-      // decorative card-stack graphic seen sticking out past the 後墩 row
-      // border in one state and sitting fully inside it in another — both
-      // symptoms of the same underlying height jump).
-      //
-      // Fix: for rounds 1-4, always render this round's explain text (it's
-      // the same "recommended layout" copy regardless of success/corrected)
-      // as soon as the round becomes active — even before it's confirmed —
-      // with the result badge present but invisible (`visibility: hidden`
-      // on the badge itself), so the box already sits at its final height
-      // pre-confirm. Confirming just reveals the box (`.is-empty` toggles
-      // `visibility` in CSS, which doesn't collapse layout) and swaps in
-      // the real badge text — no height change, so the background photo
-      // underneath never has a reason to reposition.
+    // v29e-followup3: the per-round explanation used to live in its own
+    // box below the board (`.ofc-demo-explain`), which -- across v29d-
+    // followup2 and v29e-followup2 -- had to stay in the layout at its
+    // full final height at all times (even pre-confirm, invisible or
+    // showing a placeholder hint) purely so `.ofc-demo`'s total height
+    // never changed at the moment of confirming (that height change was
+    // what made the ::before background photo visibly reposition, see
+    // those versions' notes). That box was still a real chunk of extra
+    // vertical space the widget carried on every round, which is what
+    // read as "this thing is too tall" per user feedback.
+    //
+    // This version removes that box entirely. The result (badge + the
+    // same "recommended layout" explanation) now slides in *over*
+    // #ofcDemoDesc -- the round's own instructions text, right under the
+    // title -- instead of occupying its own separate space below the
+    // board. #ofcDemoDesc and #ofcDemoResult are siblings inside
+    // .ofc-demo-desc-wrap, a `display: grid` container with both children
+    // sharing the same grid area (see css/style.css): CSS grid sizes a
+    // shared area to whichever occupant is tallest, so the wrapper's
+    // height is pinned to max(desc height, result height) for this round
+    // as soon as both are rendered, and stays exactly that height whether
+    // the result is showing or not -- no separate reserved block, and no
+    // JS measurement needed to keep the height from jumping at confirm.
+    function renderResult() {
       if (step >= 1 && step < LAST_STEP) {
         const isDone = locked && (lastResult === 'success' || lastResult === 'corrected');
-        explainEl.classList.remove('is-empty');
-        explainEl.classList.toggle('is-pending', !isDone);
-        const explainText = t('howToPlay.interactive.step' + step + '.explain');
-        const badgeClass = lastResult === 'success' ? 'ok' : 'fail';
-        const badgeText = lastResult === 'success'
-          ? t('howToPlay.interactive.stepSuccessTitle')
-          : t('howToPlay.interactive.correctedTitle');
-        // v29e-followup2: the real per-round explanation (badge + copy)
-        // always renders into .ofc-demo-explain-real, whether or not the
-        // round is confirmed yet -- pre-confirm it is just invisible
-        // (.is-pending), same trick as before, so this box's height never
-        // changes at the moment of confirming (see the CSS comment on
-        // .ofc-demo-explain-pending for why that matters -- the ::before
-        // background photo repositions if .ofc-demo's height moves).
-        // What is new is that the pre-confirm state is no longer *blank*:
-        // an absolutely-positioned .ofc-demo-explain-pending overlay
-        // (does not affect flow height) now fills the same box with a
-        // plain "arrange, then confirm" hint instead of leaving it
-        // looking like empty, unfinished space (per user feedback).
-        let html = '<span class="ofc-demo-explain-real' + (isDone ? '' : ' is-pending') + '">'
-          + '<span class="ofc-demo-explain-badge ' + badgeClass + '">' + badgeText + '</span>' + explainText
-          + '</span>';
-        if (!isDone) {
-          html += '<div class="ofc-demo-explain-pending">'
-            + '<span class="ofc-demo-explain-pending-arrow">\u25b8</span> '
-            + t('howToPlay.interactive.explainPending') + '</div>';
+        descEl.classList.toggle('is-covered', isDone);
+        if (isDone) {
+          const explainText = t('howToPlay.interactive.step' + step + '.explain');
+          const badgeClass = lastResult === 'success' ? 'ok' : 'fail';
+          const badgeText = lastResult === 'success'
+            ? t('howToPlay.interactive.stepSuccessTitle')
+            : t('howToPlay.interactive.correctedTitle');
+          resultEl.innerHTML = '<span class="ofc-demo-result-badge ' + badgeClass + '">' + badgeText + '</span>' + explainText;
+        } else {
+          resultEl.innerHTML = '';
+          resultEl.classList.remove('is-shown');
         }
-        explainEl.innerHTML = html;
       } else {
-        explainEl.classList.add('is-empty');
-        explainEl.innerHTML = '';
+        descEl.classList.remove('is-covered');
+        resultEl.innerHTML = '';
+        resultEl.classList.remove('is-shown');
       }
+    }
+
+    // Called once, right when confirmCurrentRound() flips a round 1-4
+    // round from unconfirmed to success/corrected, to slide #ofcDemoResult
+    // in over #ofcDemoDesc. Separate from renderResult() itself (which
+    // just renders the current state with no animation) so that
+    // navigating to a round doesn't replay the slide -- only the actual
+    // confirm action does.
+    function playResultSlideIn() {
+      resultEl.classList.remove('is-shown');
+      void resultEl.offsetWidth;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => { resultEl.classList.add('is-shown'); });
+      });
     }
 
     function renderFeedback() {
@@ -605,7 +592,7 @@
 
       if (lastResult === 'success' || lastResult === 'corrected') {
         // v29b: rounds 1-4 no longer use this box — their result is shown
-        // inline at the front of the explanation text (see renderExplain).
+        // inline at the front of the round result text (see renderResult).
         feedbackEl.hidden = true;
         return;
       }
@@ -714,7 +701,7 @@
       renderHand();
       renderHint();
       renderBoard();
-      renderExplain();
+      renderResult();
       renderFeedback();
       renderControls();
     }
@@ -845,6 +832,7 @@
       }
       render();
       if (pendingMoveIdxs && pendingMoveIdxs.length) playMoveAnimation(pendingMoveIdxs, pendingBeforeRects);
+      if (step < LAST_STEP) playResultSlideIn();
     }
 
     confirmBtn.addEventListener('click', () => {

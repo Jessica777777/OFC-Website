@@ -171,7 +171,16 @@
 
             <div class="ofc-demo-head">
               <h3 id="ofcDemoTitle">看完教學了嗎？來試試看吧</h3>
-              <p id="ofcDemoDesc">用一組真實的示範手牌，一輪一輪實際練習排牌——可以用點選或拖曳的方式放牌，排完按「確認排列」看看有沒有犯規。</p>
+              <!-- v29e-followup3: desc and result now share the same grid
+                   cell (see .ofc-demo-desc-wrap in css/style.css) so this
+                   wrapper's height is always the taller of the two,
+                   regardless of which one is showing -- no JS measurement
+                   needed, and no separate reserved block below the board
+                   any more. See renderResult() in js/how-to-play-demo.js. -->
+              <div class="ofc-demo-desc-wrap">
+                <p id="ofcDemoDesc">用一組真實的示範手牌，一輪一輪實際練習排牌——可以用點選或拖曳的方式放牌，排完按「確認排列」看看有沒有犯規。</p>
+                <div class="ofc-demo-result" id="ofcDemoResult"></div>
+              </div>
             </div>
 
             <div class="ofc-demo-hand" id="ofcDemoHand" aria-label="你的手牌"></div>
@@ -196,14 +205,6 @@
                  "做得好！"／犯規 result is the first thing visible after
                  confirming, instead of sitting below both control rows. -->
             <div class="ofc-demo-feedback" id="ofcDemoFeedback" hidden></div>
-            <!-- v29d-followup2: no `hidden` attribute here any more — this
-                 box now stays in the layout flow at all times (JS toggles
-                 an `is-empty` class that only sets `visibility`), so its
-                 height never disappears/reappears and shift the ::before
-                 background photo behind the whole widget. See renderExplain()
-                 in js/how-to-play-demo.js and .ofc-demo-explain.is-empty in
-                 css/style.css. -->
-            <div class="ofc-demo-explain is-empty" id="ofcDemoExplain"></div>
 
             <!-- v21: prev/next are now icon arrows (always enabled — free
                  navigation between rounds), with a dot-progress indicator
