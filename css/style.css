@@ -1516,19 +1516,38 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
      showing, most noticeably on the now-short step 0. Anchoring to the
      photo's own top edge instead keeps the crop's starting point fixed
      regardless of container height. */
-  /* v30-followup5: per user feedback ("希望這個皇冠在前墩跟中墩的中間"),
-     shift the crop up so the crest's crown sits in the gap between the
-     front and middle rows. A fixed pixel offset (not a percentage) keeps
-     this anchor stable regardless of .ofc-demo's height, same reasoning
-     as the "center top" switch in v30-followup -- see
-     how-to-play-page-task-context.md "v30-followup5" for how this
-     number was derived and why it's desktop-only (overridden back to
-     "center top" below 620px, where `cover`'s scale factor leaves almost
-     no vertical crop slack to shift in the first place; the source photo
-     is portrait (1100x1829) and a narrow/tall mobile container is scaled
-     to fit its height almost exactly, so there's nothing here for a
-     vertical offset to move). */
-  background-position: center -210px;
+  /* v30-followup5/6: per user feedback ("希望這個皇冠在前墩跟中墩的中間"),
+     shift the crop so the crest's crown sits in the gap between the front
+     and middle rows.
+     v30-followup5 first tried a fixed pixel offset (`center -210px`),
+     tuned against a Playwright viewport width that turned out not to
+     match this page's real layout: .ofc-demo sits in a 2-column
+     `.feature-split` grid inside `.container-wide` (max-width 1520px),
+     so its actual rendered width on a normal desktop browser is only
+     ~430-725px, not the full viewport -- confirmed wrong once the user
+     screenshotted their own (much wider) browser window, where the fixed
+     px offset put the crest above the front row instead of between front
+     and middle.
+     v30-followup6 replaces it with a PERCENTAGE anchor instead, which is
+     what actually stays correct across every real desktop width: with
+     `background-size: cover` scaling by WIDTH here (true for every
+     desktop width down to 620px -- see the mobile override below),
+     `background-position-y: P%` keeps the image's own P%-from-top point
+     aligned with the container's P%-from-top point regardless of how
+     much the image got scaled to reach that width. In other words the
+     crop point is pinned to a fixed FRACTION of the photo, not a fixed
+     pixel count, so it lands at the same relative spot in the widget
+     whether the widget is 430px or 725px wide. `center 28%` was picked
+     by testing candidate percentages with Playwright and eyeballing
+     screenshots at 700/852/1160/1440/1728px widths (all land the crest
+     consistently in the front/middle gap) -- see
+     how-to-play-page-task-context.md "v30-followup6". Height still
+     varies a little between steps (~641-682px, see v30-followup2), which
+     nudges the crop by a few px since this formula's constant term is
+     `containerHeight * P%`, but that's a small, mostly imperceptible
+     drift, not the kind of "lands in a completely different spot" bug
+     the original v30-followup fix was chasing. */
+  background-position: center 28%;
 }
 
 /* v30: .ofc-demo-progress (step badge + restart, its own row) and
@@ -2126,13 +2145,15 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 }
 
 @media (max-width: 620px) {
-  /* v30-followup5: reset the desktop-only -210px crown shift (see
-     .ofc-demo::before above) back to the original "center top" anchor.
-     Below this width `background-size: cover` scales the portrait source
-     photo almost exactly to the container's height (see the comment on
-     .ofc-demo::before), leaving barely any vertical slack to shift --
-     applying the desktop offset here just pushes the image out of frame
-     at the top instead of moving the crest within it. */
+  /* v30-followup5/6: reset the desktop-only crown shift (`center 28%`,
+     see .ofc-demo::before above) back to the original "center top"
+     anchor. Below this width `background-size: cover` scales the
+     portrait source photo almost exactly to the container's height (see
+     the comment on .ofc-demo::before), leaving barely any vertical slack
+     to shift -- applying the desktop offset here just pushes the crest
+     out of frame instead of repositioning it. Per user feedback this
+     round ("手機版之後還要調整，先處理電腦版"), mobile is intentionally
+     left as-is for now and will get its own pass later. */
   .ofc-demo::before { background-position: center top; }
   /* v29e-followup7: second round of "make it shorter" per user feedback
      ("互動小工具還是太高，整體再縮小一點") on top of the v29e-followup5
