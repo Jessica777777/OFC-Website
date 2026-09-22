@@ -2020,8 +2020,21 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 }
 
 @media (max-width: 620px) {
-  .ofc-demo { padding: 20px; }
-  .ofc-demo-row { flex-direction: column; align-items: stretch; gap: 10px; }
+  /* v29e-followup7: second round of "make it shorter" per user feedback
+     ("互動小工具還是太高，整體再縮小一點") on top of the v29e-followup5
+     board-height bug fix -- this time it's not a bug, just trimming
+     padding/margins/gaps that were sized for the roomier desktop layout
+     down to something tighter for a single mobile column, plus a smaller
+     .ofc-demo-board row gap and a shorter card aspect-ratio (see below).
+     None of these numbers are load-bearing for anything else on mobile
+     (.ofc-demo-row-label / .ofc-card sizing above stays fluid/unchanged),
+     so they're safe to just turn down. */
+  .ofc-demo { padding: 14px; }
+  .ofc-demo-row { flex-direction: column; align-items: stretch; gap: 6px; padding: 10px; }
+  .ofc-demo-board { gap: 8px; }
+  .ofc-demo-row-slots { padding: 4px; }
+  .ofc-demo-hand { padding: 10px; margin-bottom: 12px; }
+  .ofc-demo-controls { margin-top: 14px; }
   /* v29e-followup5: `.ofc-demo-row-label`'s desktop rule sets
      `flex: 0 0 74px` to fix its WIDTH as a narrow side column next to the
      row's slots (side-by-side layout). Here `.ofc-demo-row` switches to
@@ -2054,7 +2067,12 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   .ofc-card, .ofc-demo-slot-empty {
     width: calc((100% - 4 * 6px) / 5);
     height: auto;
-    aspect-ratio: 54 / 76;
+    /* v29e-followup7: shorter than the desktop 54/76 ratio (was kept in
+       lockstep with it) -- per user feedback the rank/suit text should
+       fill more of the card face, and a squarer card both leaves more
+       vertical room for a bigger font (below) and trims a further slice
+       off .ofc-demo-board's height, on top of the v29e-followup5 fix. */
+    aspect-ratio: 54 / 64;
   }
   .ofc-demo-row-slots { gap: 6px; }
   /* v29e-followup6: the width formula above assumes a 6px gap between
@@ -2075,8 +2093,13 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
      full-width column on mobile), clamped so it never gets unreadably
      small on a narrow phone or oversized once .ofc-demo hits its 620px
      upper bound. */
-  .ofc-card { font-size: clamp(0.6rem, 3.1vw, 0.95rem); }
-  .ofc-card-suit { font-size: clamp(0.72rem, 3.6vw, 1.1rem); }
+  /* v29e-followup7: bumped up per user feedback ("撲克牌的數字跟花色可以
+     佔整張撲克牌比多一點") -- larger clamp values at both ends so the
+     rank/suit text reads as filling the card face instead of floating in
+     the middle of it, paired with the shorter aspect-ratio above and the
+     tighter .ofc-card gap below. */
+  .ofc-card { font-size: clamp(0.72rem, 3.8vw, 1.05rem); gap: 1px; }
+  .ofc-card-suit { font-size: clamp(0.88rem, 4.4vw, 1.25rem); }
 }
 
 /* --- Full-bleed "feature band" (v9/v10) ---
