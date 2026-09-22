@@ -1481,6 +1481,14 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   padding: 18px 20px;
   box-shadow: var(--shadow-card);
   overflow: hidden;
+  /* v30-followup3: this is a game-style interactive widget (step badge,
+     card labels, explanation copy) rather than reading content, and the
+     mouse-drag text-select highlight it was picking up read as a visual
+     bug in screenshots. Disable text selection across the whole widget;
+     the left-hand prose outside .ofc-demo is untouched and stays
+     selectable as normal page text. */
+  user-select: none;
+  -webkit-user-select: none;
 }
 /* v22: the real OFC table felt photo, as a ::before layer instead of a
    background-image directly on .ofc-demo, so scrim + photo composite in
