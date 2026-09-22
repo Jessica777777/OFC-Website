@@ -213,7 +213,6 @@
     const roundControls = root.querySelector('#ofcDemoStep5Controls');
     const confirmBtn = root.querySelector('#ofcDemoConfirm');
     const resetBtn = root.querySelector('#ofcDemoReset');
-    const feedbackEl = root.querySelector('#ofcDemoFeedback');
     const boomEl = root.querySelector('#ofcDemoBoom');
     const hintEl = root.querySelector('#ofcDemoHint');
     const rowEls = {
@@ -330,8 +329,6 @@
       dragIdx = null;
       quotaHintVisible = false;
       liveSlot = {};
-      feedbackEl.hidden = true;
-      feedbackEl.className = 'ofc-demo-feedback';
       ROW_ORDER.forEach((row) => rowEls[row].classList.remove('result-ok', 'result-foul'));
     }
 
@@ -551,17 +548,26 @@
     // as soon as both are rendered, and stays exactly that height whether
     // the result is showing or not -- no separate reserved block, and no
     // JS measurement needed to keep the height from jumping at confirm.
+    //
+    // v29e-followup5: the final round's real pass/fail result used to be a
+    // separate box (#ofcDemoFeedback) below the board -- one more block of
+    // vertical space the widget always carried once a round was confirmed.
+    // Per user feedback ("此段文字應該要跟其他段一樣是覆蓋在標題下方文字欄"),
+    // the final round now shares this exact same overlay too: same badge +
+    // slide-in mechanism as rounds 1-4, just with buildFinalResultHtml()
+    // supplying the richer per-row text instead of the round's canned
+    // explanation. The badge itself carries the red "犯規了！" tone via the
+    // existing .ofc-demo-result-badge.fail styling -- no separate tinted
+    // box needed any more.
     function renderResult() {
-      if (step >= 1 && step < LAST_STEP) {
-        const isDone = locked && (lastResult === 'success' || lastResult === 'corrected');
+      if (step >= 1 && step <= LAST_STEP) {
+        const isFinal = step === LAST_STEP;
+        const isDone = isFinal
+          ? locked && (lastResult === 'legal' || lastResult === 'foul')
+          : locked && (lastResult === 'success' || lastResult === 'corrected');
         descEl.classList.toggle('is-covered', isDone);
         if (isDone) {
-          const explainText = t('howToPlay.interactive.step' + step + '.explain');
-          const badgeClass = lastResult === 'success' ? 'ok' : 'fail';
-          const badgeText = lastResult === 'success'
-            ? t('howToPlay.interactive.stepSuccessTitle')
-            : t('howToPlay.interactive.correctedTitle');
-          resultEl.innerHTML = '<span class="ofc-demo-result-badge ' + badgeClass + '">' + badgeText + '</span>' + explainText;
+          resultEl.innerHTML = isFinal ? buildFinalResultHtml() : buildRoundResultHtml();
         } else {
           resultEl.innerHTML = '';
           resultEl.classList.remove('is-shown');
@@ -573,31 +579,21 @@
       }
     }
 
-    // Called once, right when confirmCurrentRound() flips a round 1-4
-    // round from unconfirmed to success/corrected, to slide #ofcDemoResult
-    // in over #ofcDemoDesc. Separate from renderResult() itself (which
-    // just renders the current state with no animation) so that
-    // navigating to a round doesn't replay the slide -- only the actual
-    // confirm action does.
-    function playResultSlideIn() {
-      resultEl.classList.remove('is-shown');
-      void resultEl.offsetWidth;
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => { resultEl.classList.add('is-shown'); });
-      });
+    function buildRoundResultHtml() {
+      const explainText = t('howToPlay.interactive.step' + step + '.explain');
+      const badgeClass = lastResult === 'success' ? 'ok' : 'fail';
+      const badgeText = lastResult === 'success'
+        ? t('howToPlay.interactive.stepSuccessTitle')
+        : t('howToPlay.interactive.correctedTitle');
+      return '<span class="ofc-demo-result-badge ' + badgeClass + '">' + badgeText + '</span>' + explainText;
     }
 
-    function renderFeedback() {
-      if (!lastResult) { feedbackEl.hidden = true; return; }
-
-      if (lastResult === 'success' || lastResult === 'corrected') {
-        // v29b: rounds 1-4 no longer use this box — their result is shown
-        // inline at the front of the round result text (see renderResult).
-        feedbackEl.hidden = true;
-        return;
-      }
-      feedbackEl.hidden = false;
-
+    // Same per-row pass/fail evaluation renderFeedback() used to do, but
+    // returns an HTML string for #ofcDemoResult instead of writing into
+    // the now-removed #ofcDemoFeedback box. Still applies the .result-ok /
+    // .result-foul classes directly on the board rows -- that highlight is
+    // independent of the text box and stays exactly as before.
+    function buildFinalResultHtml() {
       const info = {
         front: rankCards(fullRowForEval('front')),
         middle: rankCards(fullRowForEval('middle')),
@@ -608,32 +604,43 @@
 
       if (frontOk && backOk) {
         ROW_ORDER.forEach((row) => rowEls[row].classList.add('result-ok'));
-        feedbackEl.className = 'ofc-demo-feedback success';
         const body = t('howToPlay.interactive.resultSuccessBody')
           .replace('{back}', categoryName(info.back))
           .replace('{middle}', categoryName(info.middle))
           .replace('{front}', categoryName(info.front));
-        feedbackEl.innerHTML = '<strong>' + t('howToPlay.interactive.resultSuccessTitle') + '</strong>' + body;
-      } else {
-        const lines = [];
-        if (!frontOk) {
-          rowEls.front.classList.add('result-foul');
-          rowEls.middle.classList.add('result-foul');
-          lines.push(t('howToPlay.interactive.resultFoulLineFrontMiddle')
-            .replace('{front}', categoryName(info.front))
-            .replace('{middle}', categoryName(info.middle)));
-        }
-        if (!backOk) {
-          rowEls.middle.classList.add('result-foul');
-          rowEls.back.classList.add('result-foul');
-          lines.push(t('howToPlay.interactive.resultFoulLineMiddleBack')
-            .replace('{middle}', categoryName(info.middle))
-            .replace('{back}', categoryName(info.back)));
-        }
-        lines.push(t('howToPlay.interactive.resultFoulHint'));
-        feedbackEl.className = 'ofc-demo-feedback foul';
-        feedbackEl.innerHTML = '<strong>' + t('howToPlay.interactive.resultFoulTitle') + '</strong>' + lines.join('<br>');
+        return '<span class="ofc-demo-result-badge ok">' + t('howToPlay.interactive.stepSuccessTitle') + '</span>' + body;
       }
+      const lines = [];
+      if (!frontOk) {
+        rowEls.front.classList.add('result-foul');
+        rowEls.middle.classList.add('result-foul');
+        lines.push(t('howToPlay.interactive.resultFoulLineFrontMiddle')
+          .replace('{front}', categoryName(info.front))
+          .replace('{middle}', categoryName(info.middle)));
+      }
+      if (!backOk) {
+        rowEls.middle.classList.add('result-foul');
+        rowEls.back.classList.add('result-foul');
+        lines.push(t('howToPlay.interactive.resultFoulLineMiddleBack')
+          .replace('{middle}', categoryName(info.middle))
+          .replace('{back}', categoryName(info.back)));
+      }
+      lines.push(t('howToPlay.interactive.resultFoulHint'));
+      return '<span class="ofc-demo-result-badge fail">' + t('howToPlay.interactive.resultFoulTitle') + '</span>' + lines.join('<br>');
+    }
+
+    // Called once, right when confirmCurrentRound() flips any round
+    // (1-4, or the final pass/fail round) from unconfirmed to its result,
+    // to slide #ofcDemoResult in over #ofcDemoDesc. Separate from
+    // renderResult() itself (which just renders the current state with no
+    // animation) so that navigating to a round doesn't replay the slide --
+    // only the actual confirm action does.
+    function playResultSlideIn() {
+      resultEl.classList.remove('is-shown');
+      void resultEl.offsetWidth;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => { resultEl.classList.add('is-shown'); });
+      });
     }
 
     function renderHint() {
@@ -702,7 +709,6 @@
       renderHint();
       renderBoard();
       renderResult();
-      renderFeedback();
       renderControls();
     }
 
@@ -832,7 +838,10 @@
       }
       render();
       if (pendingMoveIdxs && pendingMoveIdxs.length) playMoveAnimation(pendingMoveIdxs, pendingBeforeRects);
-      if (step < LAST_STEP) playResultSlideIn();
+      // v29e-followup5: was `if (step < LAST_STEP)` -- the final round's
+      // pass/fail result now uses the same #ofcDemoResult slide-in as
+      // rounds 1-4 (see renderResult() above), so it plays unconditionally.
+      playResultSlideIn();
     }
 
     confirmBtn.addEventListener('click', () => {
@@ -847,13 +856,22 @@
 
     resetBtn.addEventListener('click', () => { resetRoundState(); render(); });
 
+    // v29e-followup5: per user feedback ("手榴彈特效可以是爆炸效果嗎？"),
+    // the grenade image stays but now reads as an actual explosion instead
+    // of just an icon popping in -- a radial flash + a few flying debris
+    // bits (both pure CSS, see .ofc-demo-boom-flash / -debris in
+    // css/style.css) play alongside it, and the whole widget gets a short
+    // shake. `root` here IS #ofcDemo (see initOfcDemo(root) below), so the
+    // shake class goes straight on it.
     function triggerBoom() {
       boomEl.classList.remove('boom-play');
+      root.classList.remove('ofc-demo-shake');
       // Restart the CSS animation even if it's already mid-play (e.g. the
       // visitor reset and fouled again) by forcing a reflow between the
       // remove and the re-add.
       void boomEl.offsetWidth;
       boomEl.classList.add('boom-play');
+      root.classList.add('ofc-demo-shake');
     }
 
     document.querySelectorAll('.lang-switch button[data-lang]').forEach((btn) => {

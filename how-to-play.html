@@ -201,10 +201,13 @@
               </div>
             </div>
 
-            <!-- v22: feedback moved up here (right after the board) so the
-                 "做得好！"／犯規 result is the first thing visible after
-                 confirming, instead of sitting below both control rows. -->
-            <div class="ofc-demo-feedback" id="ofcDemoFeedback" hidden></div>
+            <!-- v29e-followup5: the standalone #ofcDemoFeedback box that used
+                 to sit here (final round's pass/fail result) has been
+                 removed -- that result now slides in over #ofcDemoDesc,
+                 sharing the same overlay rounds 1-4 already use (see
+                 .ofc-demo-desc-wrap above and buildFinalResultHtml() in
+                 js/how-to-play-demo.js). One less block in the widget's
+                 vertical flow. -->
 
             <!-- v21: prev/next are now icon arrows (always enabled — free
                  navigation between rounds), with a dot-progress indicator
@@ -237,8 +240,17 @@
                  See .ofc-demo-boom / .ofc-demo-boom img in css/style.css —
                  the animation is now split between the outer wrapper
                  (opacity fade) and the img itself (scale/rotate), since an
-                 <img> can't also be the flex-centering container. -->
+                 <img> can't also be the flex-centering container.
+                 v29e-followup5: added a radial flash + flying debris bits
+                 (both pure CSS) behind the grenade so the reveal reads as
+                 an actual explosion, not just an icon popping in — plus a
+                 short shake on #ofcDemo itself (.ofc-demo-shake, toggled
+                 by triggerBoom() in the JS). -->
             <div class="ofc-demo-boom" id="ofcDemoBoom" aria-hidden="true">
+              <div class="ofc-demo-boom-flash"></div>
+              <div class="ofc-demo-boom-debris">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
               <img src="assets/images/foul-grenade.png" alt="" />
             </div>
           </div>
