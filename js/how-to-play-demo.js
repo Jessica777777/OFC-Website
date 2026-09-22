@@ -469,8 +469,23 @@
       handEl.innerHTML = '';
       const labelKey = round.discard.length > 0 ? 'howToPlay.interactive.handLabel' : 'howToPlay.interactive.handLabelAllIn';
       handEl.setAttribute('aria-label', t(labelKey));
+      // v30-followup: as cards leave the tray (placed on the board), an
+      // invisible same-size "ghost" card takes their spot instead of just
+      // leaving nothing behind -- keeps #ofcDemoHand's own row height full
+      // for as long as this round lasts, so the tray doesn't visibly
+      // shrink/jump each time the last card or two get placed (most
+      // noticeable in round 1, where all 5 dealt cards leave the tray).
+      // Mirrors the same "always render this many boxes" idea renderBoard()
+      // already uses for empty board slots.
       placement.forEach((loc, idx) => {
-        if (loc === 'tray') handEl.appendChild(makeCardEl(round.dealt[idx], { idx, selected: selected === idx }));
+        if (loc === 'tray') {
+          handEl.appendChild(makeCardEl(round.dealt[idx], { idx, selected: selected === idx }));
+        } else {
+          const ghost = document.createElement('div');
+          ghost.className = 'ofc-card ofc-card-ghost';
+          ghost.setAttribute('aria-hidden', 'true');
+          handEl.appendChild(ghost);
+        }
       });
       handEl.classList.toggle('can-drop', !locked && selected !== null && placement[selected] !== 'tray');
     }

@@ -1499,7 +1499,16 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
     linear-gradient(165deg, rgba(18, 14, 10, 0.32), rgba(8, 8, 10, 0.48)),
     url('../assets/images/ofc-table-bg.jpg');
   background-size: cover;
-  background-position: center 25%;
+  /* v30-followup: was "center 25%" -- tuned back when every step rendered
+     at roughly the same (taller) height. Since v30 compacted the topbar/
+     footer, step 0 (intro, no board yet) is noticeably shorter than the
+     other steps, and `background-size: cover` recomputes the visible crop
+     against .ofc-demo's current height -- so the same 25%-from-top anchor
+     landed at a different point in the photo depending on which step was
+     showing, most noticeably on the now-short step 0. Anchoring to the
+     photo's own top edge instead keeps the crop's starting point fixed
+     regardless of container height. */
+  background-position: center top;
 }
 
 /* v30: .ofc-demo-progress (step badge + restart, its own row) and
@@ -1646,6 +1655,16 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 .ofc-card.preset:hover { transform: none; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); }
 .ofc-card[draggable="true"] { cursor: grab; }
 .ofc-card.dragging { opacity: 0.35; cursor: grabbing; }
+
+/* v30-followup: invisible same-size stand-in for a card that has left
+   #ofcDemoHand (see renderHand() in the JS) -- keeps the tray's own row
+   height constant as cards get placed, instead of the tray box shrinking
+   down to its bare min-height once the last card or two are gone. */
+.ofc-card-ghost {
+  visibility: hidden;
+  pointer-events: none;
+  box-shadow: none;
+}
 
 /* --- The three rows: label + capacity on one side, card slots (also a
    drop target) on the other --- */
