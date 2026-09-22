@@ -461,8 +461,27 @@
     function renderHand() {
       const round = currentRound();
       if (!round) {
-        handEl.hidden = true;
+        // v30-followup2: step 0 (intro, before "開始練習") used to hide
+        // #ofcDemoHand entirely (`hidden = true`), which meant its full
+        // height (~94px including margin) only appeared once the learner
+        // moved into round 1 -- the single biggest jump in #ofcDemo's
+        // total height between any two adjacent steps, on top of the
+        // per-round variance in .desc text length that's unavoidable
+        // without truncating real instructions. Rendering the same 5
+        // ghost placeholders round 1 will show (ROUNDS[1].dealt.length --
+        // round 1 is always the next step from here) keeps the tray's
+        // reserved height present from the very first screen, so entering
+        // round 1 no longer visibly grows the widget.
+        handEl.hidden = false;
         handEl.innerHTML = '';
+        handEl.setAttribute('aria-label', t('howToPlay.interactive.handLabel'));
+        const introCount = (ROUNDS[1] && ROUNDS[1].dealt.length) || 5;
+        for (let i = 0; i < introCount; i++) {
+          const ghost = document.createElement('div');
+          ghost.className = 'ofc-card ofc-card-ghost';
+          ghost.setAttribute('aria-hidden', 'true');
+          handEl.appendChild(ghost);
+        }
         return;
       }
       handEl.hidden = false;
@@ -535,7 +554,15 @@
         const capEl = rowEls[row].querySelector('.ofc-demo-row-cap');
         const total = presetCount + (round ? dealtIn(row).length : 0);
         const cap = round ? openCap(row) : 0;
-        capEl.textContent = total + '/' + TOTAL_MAX[row] + (round && cap === 0 ? ' ' + t('howToPlay.interactive.rowLocked') : '');
+        // v30-followup2: per user feedback, the final round (step ===
+        // LAST_STEP) is a review/confirm step rather than an active
+        // placement round like 2-4 -- by this point the back row is
+        // always the one sitting at cap 0 (this round's data never adds
+        // to it), so the "（這輪不開放）" hint that's genuinely useful
+        // during rounds 2-4 (which row can still take a card varies each
+        // time) just reads as clutter on the final row's label.
+        const showLockedHint = round && cap === 0 && step !== LAST_STEP;
+        capEl.textContent = total + '/' + TOTAL_MAX[row] + (showLockedHint ? ' ' + t('howToPlay.interactive.rowLocked') : '');
         rowEls[row].classList.toggle('full', total >= TOTAL_MAX[row]);
       });
     }
