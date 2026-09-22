@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="page-about">
 
 <header class="site-header">
   <nav class="nav container">
@@ -54,22 +54,32 @@
 
 <main>
   <!-- HERO：改用跟首頁「HQ 傳令」信任區塊相同的 .trust / .trust-grid / .trust-portrait
-       排版語彙（原本這裡只是純文字置中的 .hero，跟全站其他頁面已經升級過的
-       「大圖敘事」視覺完全不搭）。右側重用 boss.png（首頁信任區塊已在用的同一張
-       西裝插畫），這裡代表 Mondraw 幕後坐鎮的核心團隊，eyebrow 也改成跟其他頁
-       一致的【HQ ○○ // ○○○○】括號標籤格式。 -->
+       排版語彙。v28 更新：右側主圖從單人肖像 boss.png 換成完整陣容海報裁切版，
+       中間曾試過自己用色彩距離（chroma-key）手動去背＋手動清地板陰影的
+       about-hero-crew.png（來源是舊素材 poster-pineapple-cropped.jpg）；
+       v29 改用「素材／landing page」資料夾內、美術本來就提供的已去背版本
+       OFC_landing去背.png，直接裁掉四周透明留白後另存為
+       landing-hero-crew.png（1270×1695），邊緣品質比自己土法去背更乾淨，
+       首頁 Hero 仍維持單人肖像 boss.png 不變，只有 About us 這頁換成群像版。
+       前者（去背）取代原本吃在圖片裡的淺灰色背景方塊，讓角色群像直接融入頁面
+       深色背景；左下角持槍小場景維持原樣，未額外處理。這樣角色群像＋牌局的
+       構圖比單一肖像更有海報感、更呼應「認識我們的世界觀」而非「這是老闆」的
+       敘事。.trust-portrait img 本身用 width:min(320px,80vw) + height:auto，
+       沒有寫死 aspect-ratio，換圖不需要動 CSS。eyebrow 沿用跟其他頁一致的
+       【HQ ○○ // ○○○○】括號標籤格式。 -->
   <section class="section trust">
     <div class="container trust-grid">
       <div class="transmission">
         <span class="transmission-tag" data-i18n="about.hero.eyebrow">【HQ 檔案 // 幕後特務檔案】</span>
-        <h1 data-i18n="about.hero.title">用心打造每一張牌桌</h1>
-        <p class="transmission-lead" data-i18n="about.hero.desc">
-          我們是 Mondraw，一支熱愛牌桌遊戲的開發團隊。OFC 撲克：大菠蘿 是我們投入策略遊戲設計與公平競技體驗打造的作品，
-          希望讓喜歡動腦與講求刺激的玩家，都能在同一個地方找到樂趣。
-        </p>
+        <h1 data-i18n="about.hero.title">每一手牌，都是我們的任務</h1>
+        <p class="transmission-lead" data-i18n="about.hero.desc">我們是 Mondraw，一群熱愛牌局，也熱愛打造遊戲的開發者。</p>
+        <p data-i18n="about.hero.desc2">我們希望，打開手機就能隨時進入牌桌。不需要準備實體牌具、籌碼，也不需要等待牌友到齊，動動手指，就能開始一場精彩對局。</p>
+        <p data-i18n="about.hero.desc3">OFC 撲克：大菠蘿 以 OFC 為核心，帶來經典 OFC、OFC Joker 與 OFC SNG 等多種玩法，同時收錄德州撲克、奧馬哈／PLO、Blackjack 21 與 Rummy 等熟悉的牌桌遊戲。從排牌策略到即時對戰，每種玩法都有不同的節奏與挑戰，讓每一次入場都能找到新的玩法。</p>
+        <p data-i18n="about.hero.desc4">我們的團隊來自行動應用與遊戲開發領域，持續專注於玩法設計、遊戲體驗與社交互動。我們希望把熟悉的牌桌樂趣帶進手機，讓全球玩家隨時都能找到屬於自己的牌桌。</p>
+        <p class="transmission-closing" data-i18n="about.hero.closing">任務已啟動。下一手，等你出牌。</p>
       </div>
       <div class="trust-portrait">
-        <img src="assets/images/boss.png" alt="西裝紳士插畫，象徵在幕後坐鎮指揮的 Mondraw 核心團隊" data-i18n-alt="about.hero.imgAlt">
+        <img src="assets/images/landing-hero-crew.png" alt="四位特務角色圍繞著排開的 OFC 三墩牌局，象徵 Mondraw 打造的牌桌世界觀" data-i18n-alt="about.hero.imgAlt">
       </div>
     </div>
   </section>
@@ -80,24 +90,29 @@
   <section class="section section-feature">
     <div class="container-wide">
       <div class="section-head">
-        <div class="eyebrow" data-i18n="about.mission.tag">【HQ 情報 // 核心價值檔案】</div>
-        <h2 data-i18n="about.mission.title">我們的準則</h2>
+        <div class="eyebrow" data-i18n="about.mission.tag">【HQ 情報 // 核心行動準則】</div>
+        <h2 data-i18n="about.mission.title">我們相信的牌桌</h2>
       </div>
-      <div class="grid grid-3">
+      <div class="grid grid-4">
         <div class="card mission-card">
           <div class="icon" aria-hidden="true">01</div>
-          <h3 data-i18n="about.mission.card1.title">我們的使命</h3>
-          <p style="font-size:0.9rem;" data-i18n="about.mission.card1.desc">打造公平、有趣、且能持續進步的牌桌遊戲體驗，讓每位玩家都能安心享受遊戲。</p>
+          <h3 data-i18n="about.mission.card1.title">公平，是每場對局的起點</h3>
+          <p style="font-size:0.9rem;" data-i18n="about.mission.card1.desc">每一手牌都應該有公平競爭的機會。我們持續優化遊戲機制與對局體驗，讓玩家能專注於判斷、策略與每一次出牌。</p>
         </div>
         <div class="card mission-card">
           <div class="icon" aria-hidden="true">02</div>
-          <h3 data-i18n="about.mission.card2.title">玩家優先</h3>
-          <p style="font-size:0.9rem;" data-i18n="about.mission.card2.desc">我們重視每一則玩家回饋，並持續依照社群意見改善遊戲內容與機制。</p>
+          <h3 data-i18n="about.mission.card2.title">玩家，就是我們的情報來源</h3>
+          <p style="font-size:0.9rem;" data-i18n="about.mission.card2.desc">每一則回饋，都是我們持續進化的重要線索。我們傾聽玩家的聲音，從實際遊玩經驗中發現問題、調整細節，讓每一次更新都更接近理想的牌桌體驗。</p>
         </div>
         <div class="card mission-card">
           <div class="icon" aria-hidden="true">03</div>
-          <h3 data-i18n="about.mission.card3.title">負責任娛樂</h3>
-          <p style="font-size:0.9rem;" data-i18n="about.mission.card3.desc">遊戲內僅提供虛擬籌碼，不涉及真實金錢賭博，並提醒玩家適度娛樂、量力而為。</p>
+          <h3 data-i18n="about.mission.card3.title">好玩，也要玩得安心</h3>
+          <p style="font-size:0.9rem;" data-i18n="about.mission.card3.desc">我們提供的是虛擬籌碼與遊戲體驗，不涉及真實金錢賭博。我們也鼓勵玩家適度遊玩、量力而為，讓每一場對局都保持在輕鬆愉快的節奏。</p>
+        </div>
+        <div class="card mission-card">
+          <div class="icon" aria-hidden="true">04</div>
+          <h3 data-i18n="about.mission.card4.title">持續進化，沒有最終任務</h3>
+          <p style="font-size:0.9rem;" data-i18n="about.mission.card4.desc">從一張牌、一個操作，到完整的牌桌體驗，我們持續打磨每個細節。因為對我們來說，完成一款遊戲不是任務的終點，而是下一場行動的開始。</p>
         </div>
       </div>
     </div>
