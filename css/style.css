@@ -1703,6 +1703,7 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 }
 
 .ofc-demo-explain {
+  position: relative;
   margin-top: 18px;
   padding: 14px 18px;
   border-left: 3px solid var(--color-gold);
@@ -1727,10 +1728,54 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 .ofc-demo-explain.is-empty {
   visibility: hidden;
 }
+
+/* v29e-followup2: rounds 1-4, pre-confirm state. The badge+explain text
+   inside .ofc-demo-explain-real stays in the layout (invisible via
+   .is-pending) purely to keep .ofc-demo-explain's own height pinned to
+   whatever the eventual real explanation needs -- unchanged from the
+   v29d-followup2 fix, still needed so .ofc-demo's ::before background
+   photo never has a reason to reposition on confirm.
+   What's new: instead of leaving the whole box looking blank while
+   waiting (per user feedback -- a big empty gold-bordered strip sitting
+   between the board and the confirm button read as unfinished/broken),
+   an absolutely-positioned overlay now fills that same box with a plain
+   "arrange, then confirm" hint. It's positioned over the invisible real
+   content rather than inline with it, so it never affects the box's
+   flow height -- confirming just swaps which one is visible, exactly
+   like the badge swap already did, with no height change either way. */
+.ofc-demo-explain-real.is-pending {
+  visibility: hidden;
+}
+.ofc-demo-explain-pending {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 14px 18px;
+  font-size: var(--fs-sm);
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+.ofc-demo-explain-pending-arrow {
+  color: var(--color-gold);
+  font-weight: 700;
+  font-style: normal;
+  margin-right: 4px;
+}
 .ofc-demo-explain::before {
   content: '▸ ';
   color: var(--color-gold);
   font-weight: 700;
+}
+/* v29e-followup2: while the pre-confirm hint overlay is showing, the
+   overlay is not opaque (it shares the callout's translucent look), so
+   this container-level "▸" prefix -- which belongs to .ofc-demo-explain
+   itself, not to the (hidden) .ofc-demo-explain-real span -- would still
+   paint through at the top of the box, above the overlay's own centered
+   text. The overlay carries its own arrow (.ofc-demo-explain-pending-arrow),
+   so suppress this one while pending to avoid a stray second arrow. */
+.ofc-demo-explain.is-pending::before {
+  content: none;
 }
 
 .ofc-demo-controls {

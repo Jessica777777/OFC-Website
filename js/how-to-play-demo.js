@@ -566,22 +566,34 @@
       // underneath never has a reason to reposition.
       if (step >= 1 && step < LAST_STEP) {
         const isDone = locked && (lastResult === 'success' || lastResult === 'corrected');
-        explainEl.classList.toggle('is-empty', !isDone);
+        explainEl.classList.remove('is-empty');
+        explainEl.classList.toggle('is-pending', !isDone);
         const explainText = t('howToPlay.interactive.step' + step + '.explain');
-        if (isDone) {
-          const badgeClass = lastResult === 'success' ? 'ok' : 'fail';
-          const badgeText = lastResult === 'success'
-            ? t('howToPlay.interactive.stepSuccessTitle')
-            : t('howToPlay.interactive.correctedTitle');
-          explainEl.innerHTML = '<span class="ofc-demo-explain-badge ' + badgeClass + '">' + badgeText + '</span>' + explainText;
-        } else {
-          // Same markup shape as the "done" branch (badge span + text) so
-          // the box's height matches exactly once it's revealed — the
-          // badge text just needs to be *some* similarly-sized string
-          // since it's invisible either way.
-          explainEl.innerHTML = '<span class="ofc-demo-explain-badge ok" style="visibility: hidden">'
-            + t('howToPlay.interactive.stepSuccessTitle') + '</span>' + explainText;
+        const badgeClass = lastResult === 'success' ? 'ok' : 'fail';
+        const badgeText = lastResult === 'success'
+          ? t('howToPlay.interactive.stepSuccessTitle')
+          : t('howToPlay.interactive.correctedTitle');
+        // v29e-followup2: the real per-round explanation (badge + copy)
+        // always renders into .ofc-demo-explain-real, whether or not the
+        // round is confirmed yet -- pre-confirm it is just invisible
+        // (.is-pending), same trick as before, so this box's height never
+        // changes at the moment of confirming (see the CSS comment on
+        // .ofc-demo-explain-pending for why that matters -- the ::before
+        // background photo repositions if .ofc-demo's height moves).
+        // What is new is that the pre-confirm state is no longer *blank*:
+        // an absolutely-positioned .ofc-demo-explain-pending overlay
+        // (does not affect flow height) now fills the same box with a
+        // plain "arrange, then confirm" hint instead of leaving it
+        // looking like empty, unfinished space (per user feedback).
+        let html = '<span class="ofc-demo-explain-real' + (isDone ? '' : ' is-pending') + '">'
+          + '<span class="ofc-demo-explain-badge ' + badgeClass + '">' + badgeText + '</span>' + explainText
+          + '</span>';
+        if (!isDone) {
+          html += '<div class="ofc-demo-explain-pending">'
+            + '<span class="ofc-demo-explain-pending-arrow">\u25b8</span> '
+            + t('howToPlay.interactive.explainPending') + '</div>';
         }
+        explainEl.innerHTML = html;
       } else {
         explainEl.classList.add('is-empty');
         explainEl.innerHTML = '';
