@@ -1629,6 +1629,16 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   background: rgba(255, 255, 255, 0.02);
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
+/* v29e-followup4: the row title + capacity caption used to sit directly
+   on top of .ofc-demo::before's real-table background photo with no
+   backdrop of their own. That photo has bright/busy props scattered
+   across it (crown emblem, pocket watch, cigar) at fixed positions, so
+   depending on the widget's rendered height (which varies with viewport
+   width/step content), whichever prop happens to land behind a row
+   label made it unreadable — pure luck of the scroll position, not tied
+   to any one row. A small opaque tag background fixes this regardless
+   of what ends up behind it, matching the existing monospace "intel tag"
+   look already used for .ofc-demo-row-cap. */
 .ofc-demo-row-label {
   flex: 0 0 74px;
   display: flex;
@@ -1636,6 +1646,9 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   gap: 4px;
   font-weight: 700;
   color: var(--color-gold-light);
+  background: rgba(10, 8, 6, 0.6);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
 }
 .ofc-demo-row-cap {
   font-family: ui-monospace, 'SFMono-Regular', 'Courier New', monospace;
@@ -1750,11 +1763,21 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   font-weight: 700;
 }
 
+/* v29e-followup4: same backdrop-chip fix as .ofc-demo-row-label above —
+   both control rows (nav prev/dots/next, and confirm/reset) used to float
+   directly on .ofc-demo::before's background photo with no backdrop of
+   their own, so whichever prop in the photo (pocket watch, cigar, chips)
+   happened to land behind them made the buttons hard to read. Shared by
+   both #ofcDemoNavControls and #ofcDemoStep5Controls. */
 .ofc-demo-controls {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 12px;
   margin-top: 22px;
+  background: rgba(10, 8, 6, 0.6);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
 }
 
 /* v21: prev/dots/next nav row. Default layout spreads the three children
@@ -1911,30 +1934,50 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.55), 0 6px 16px rgba(212, 175, 55, 0.4);
 }
 
-/* v21: bomb-emoji foul reveal, overlaid centered on the widget. Hidden by
-   default (opacity 0, no pointer events); JS toggles .boom-play (with a
-   forced reflow in between so re-triggering after a reset restarts the
-   animation instead of no-op'ing because the class was already present). */
+/* v21: foul reveal, overlaid centered on the widget. Hidden by default
+   (opacity 0, no pointer events); JS toggles .boom-play (with a forced
+   reflow in between so re-triggering after a reset restarts the
+   animation instead of no-op'ing because the class was already present).
+   v29e-followup4: was a plain "💥" emoji text node directly inside this
+   div; now an <img> (assets/images/foul-grenade.png, a real grenade
+   stamped "FOULED" from the site's own art library) sits inside instead.
+   An <img> can't be the flex-centering container AND the thing being
+   scaled/rotated at once, so the animation is split: this outer div still
+   just fades opacity in/out, and the scale/rotate part of the original
+   single keyframe moved to the img child below. */
 .ofc-demo-boom {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 5rem;
   opacity: 0;
   pointer-events: none;
   z-index: 5;
 }
+.ofc-demo-boom img {
+  width: 132px;
+  height: auto;
+  filter: drop-shadow(0 14px 26px rgba(0, 0, 0, 0.6));
+}
 .ofc-demo-boom.boom-play {
+  animation: ofcBoomFade 0.9s ease-out;
+}
+.ofc-demo-boom.boom-play img {
   animation: ofcBoomPlay 0.9s ease-out;
 }
+@keyframes ofcBoomFade {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { opacity: 0; }
+}
 @keyframes ofcBoomPlay {
-  0% { opacity: 0; transform: scale(0.3) rotate(-8deg); }
-  30% { opacity: 1; transform: scale(1.3) rotate(4deg); }
-  50% { opacity: 1; transform: scale(1) rotate(-2deg); }
-  75% { opacity: 1; transform: scale(1.08) rotate(0deg); }
-  100% { opacity: 0; transform: scale(1.35) rotate(0deg); }
+  0% { transform: scale(0.3) rotate(-8deg); }
+  30% { transform: scale(1.3) rotate(4deg); }
+  50% { transform: scale(1) rotate(-2deg); }
+  75% { transform: scale(1.08) rotate(0deg); }
+  100% { transform: scale(1.35) rotate(0deg); }
 }
 
 @media (max-width: 620px) {

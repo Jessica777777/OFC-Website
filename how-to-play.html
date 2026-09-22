@@ -230,7 +230,17 @@
               <button type="button" class="btn btn-outline btn-sm" id="ofcDemoReset" hidden data-i18n="howToPlay.interactive.reset">重新排列</button>
             </div>
 
-            <div class="ofc-demo-boom" id="ofcDemoBoom" aria-hidden="true">💥</div>
+            <!-- v29e-followup4: was a plain "💥" emoji; replaced with the
+                 site's own foul-grenade artwork (an actual grenade stamped
+                 "FOULED") so the reveal matches the "小心別爆牌！" copy and
+                 the site's own visual language instead of a generic emoji.
+                 See .ofc-demo-boom / .ofc-demo-boom img in css/style.css —
+                 the animation is now split between the outer wrapper
+                 (opacity fade) and the img itself (scale/rotate), since an
+                 <img> can't also be the flex-centering container. -->
+            <div class="ofc-demo-boom" id="ofcDemoBoom" aria-hidden="true">
+              <img src="assets/images/foul-grenade.png" alt="" />
+            </div>
           </div>
         </div>
       </div>
