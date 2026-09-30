@@ -26,22 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.querySelector('[data-year]');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // Top video banner: mute/unmute toggle (video autoplays muted by default
-  // so browsers allow autoplay; this button lets the visitor turn sound on).
-  const heroVideo = document.querySelector('.video-hero-media');
-  const muteBtn = document.querySelector('.video-hero-mute');
-  if (heroVideo && muteBtn) {
-    const iconMuted = muteBtn.querySelector('.icon-muted');
-    const iconUnmuted = muteBtn.querySelector('.icon-unmuted');
-    muteBtn.addEventListener('click', () => {
-      heroVideo.muted = !heroVideo.muted;
-      const isMuted = heroVideo.muted;
-      iconMuted.hidden = !isMuted;
-      iconUnmuted.hidden = isMuted;
-      muteBtn.setAttribute('aria-label', isMuted ? '開啟聲音' : '靜音');
-    });
-  }
-
   // --- Shared carousel engine (v26) ---
   // Powers both the B "feature" carousel and the C "collectibles"
   // carousel (see css/style.css's "Carousel engine" comment for the
@@ -201,8 +185,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const iconPlay = playPauseBtn.querySelector('.icon-play');
       const lang = (window.OFC_I18N_CURRENT) || 'zh';
       const dict = (typeof I18N !== 'undefined' && I18N[lang]) || {};
-      if (iconPause) iconPause.hidden = userPaused;
-      if (iconPlay) iconPlay.hidden = !userPaused;
+      // toggleAttribute, not `.hidden = …`: these icons are <svg> elements,
+      // and SVGElement has no `hidden` IDL property — assigning it only sets
+      // a JS expando and never touches the attribute, which is why both
+      // icons used to render side by side. CSS `svg[hidden]` does the hiding.
+      if (iconPause) iconPause.toggleAttribute('hidden', userPaused);
+      if (iconPlay) iconPlay.toggleAttribute('hidden', !userPaused);
       playPauseBtn.setAttribute('aria-label', (userPaused ? dict['common.carousel.play'] : dict['common.carousel.pause']) || 'Play/pause');
     }
     if (playPauseBtn) {

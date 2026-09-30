@@ -55,6 +55,10 @@
    the "flash of white" the user saw between full-page navigations on this
    otherwise all-dark site — see how-to-play-page-task-context.md "v24". */
 html { scroll-behavior: smooth; background: var(--color-bg); }
+/* The UA's [hidden]{display:none} only targets HTML elements, so an <svg
+   hidden> still renders — this is what made the carousel play/pause (and the
+   old video mute) buttons show both icons side by side. */
+svg[hidden] { display: none !important; }
 
 body {
   margin: 0;
@@ -368,38 +372,30 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
   left: 0; right: 0; bottom: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 14px clamp(16px, 4vw, 40px) 18px;
+  justify-content: flex-start;
+  padding: 0 clamp(20px, 4vw, 64px) clamp(22px, 4vw, 44px);
+  pointer-events: none; /* only the CTA itself should catch clicks */
 }
-.video-hero-tag {
-  font-size: var(--fs-xs);
+/* Desktop/tablet "Play Now" CTA on top of the trailer. The video fills most
+   of the first screen on desktop, so this gives visitors a download action
+   without scrolling. Hidden on phones, where the video is short and the A
+   section's store badges are right below it. */
+.video-hero-cta {
+  pointer-events: auto;
+  padding: 16px 34px;
+  font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-  color: var(--color-text);
-  background: rgba(10, 10, 13, 0.55);
-  padding: 8px 16px;
-  border-radius: 999px;
-  border: 1px solid var(--color-border);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(242, 216, 121, 0.35), 0 0 32px rgba(212, 175, 55, 0.28);
 }
-.video-hero-mute {
-  flex: 0 0 auto;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 1px solid var(--color-border);
-  background: rgba(10, 10, 13, 0.55);
-  color: var(--color-text);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+.video-hero-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(242, 216, 121, 0.6), 0 0 40px rgba(212, 175, 55, 0.45);
 }
-.video-hero-mute svg { width: 20px; height: 20px; }
-.video-hero-mute:hover { background: rgba(10, 10, 13, 0.8); }
+.video-hero-cta svg { margin-left: -4px; }
 @media (max-width: 700px) {
   .video-hero { aspect-ratio: 16 / 10; max-height: none; }
-  .video-hero-tag { font-size: 0.72rem; padding: 6px 12px; }
+  .video-hero-bar { display: none; }
 }
 
 @media (max-width: 860px) {
@@ -694,6 +690,13 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
   flex-wrap: wrap;
 }
 .carousel-dots { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+@media (max-width: 620px) {
+  /* 8 dots x 34px + the play/pause button overflowed a ~390px phone and
+     wrapped the dots onto a second line; narrower dots keep one row. */
+  .carousel-controls { gap: 14px; }
+  .carousel-dots { gap: 6px; }
+  .carousel-dot { width: 24px; }
+}
 .carousel-dot {
   appearance: none;
   border: none;
@@ -859,8 +862,8 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
   position: absolute;
   top: 42%;
   transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: rgba(10, 10, 13, 0.72);
   border: 1px solid var(--color-border);
@@ -872,7 +875,7 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
   z-index: 5;
   transition: border-color 0.15s ease, color 0.15s ease;
 }
-.carousel-arrow svg { width: 20px; height: 20px; }
+.carousel-arrow svg { width: 26px; height: 26px; }
 .carousel-arrow:hover { border-color: var(--color-gold); color: var(--color-gold-light); }
 /* v26: the carousel is now full-bleed (its viewport is no longer capped
    at the 1160px .container), so the arrows sit near the padded edge of
@@ -884,8 +887,8 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
 .carousel-arrow-prev { left: clamp(4px, 1.5vw, 20px); }
 .carousel-arrow-next { right: clamp(4px, 1.5vw, 20px); }
 @media (max-width: 620px) {
-  .carousel-arrow { width: 36px; height: 36px; }
-  .carousel-arrow svg { width: 16px; height: 16px; }
+  .carousel-arrow { width: 44px; height: 44px; }
+  .carousel-arrow svg { width: 20px; height: 20px; }
 }
 
 /* --- Sections --- */
