@@ -1411,10 +1411,11 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 
 /* --- Social icon buttons (header .social-row-sm + footer .social-row) ---
    Resting state stays on-brand (gunmetal disc, gold hairline, gold glyph) so
-   the icons don't fight the site's red/gold palette; the platform's own brand
-   colour only appears on hover/focus as a confirmation of where the link goes.
-   Per-platform hover colours: add .social-ig / .social-x rules when those
-   accounts go live. */
+   the icons don't fight the site's red/gold palette; each platform's own
+   colours only appear on hover/focus as confirmation of where the link goes.
+   IG / X links ship with the `hidden` attribute until their accounts exist;
+   the explicit [hidden] rule is needed because `display:flex` below would
+   otherwise override the UA's [hidden]{display:none}. */
 .social-row-sm a,
 .social-row a {
   border-radius: 999px;
@@ -1424,10 +1425,13 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   box-shadow: inset 0 1px 0 rgba(242, 216, 121, 0.12);
   transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease,
               box-shadow 0.18s ease, transform 0.18s ease;
 }
+.social-row-sm a[hidden],
+.social-row a[hidden] { display: none; }
 .social-row-sm a svg,
 .social-row a svg { display: block; }
 .social-row-sm a:hover,
@@ -1439,15 +1443,58 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   transform: translateY(-1px);
   outline: none;
 }
+
+/* Facebook: the official 2019+ mark is a disc with the "f" knocked out and
+   its stem running off the bottom edge. The SVG path *is* that disc, so the
+   button itself becomes the logo: the path is painted in the disc colour and
+   the button background shows through the "f".
+   Rest  = gunmetal disc, gold "f", same gold hairline as IG / X
+   Hover = official look: #1877f2 disc, white "f". */
+.social-row-sm a.social-fb,
+.social-row a.social-fb {
+  /* keep the shared 1px border so all three discs are the same size;
+     clip the gold fill to the content box so it only shows through the "f" */
+  background: var(--color-gold);
+  background-clip: content-box;
+  color: var(--color-surface);
+  box-shadow: none;
+}
+.social-row-sm a.social-fb svg,
+.social-row a.social-fb svg { width: 100%; height: 100%; }
+.social-row-sm a.social-fb svg path,
+.social-row a.social-fb svg path { fill: currentColor; }
 .social-row-sm a.social-fb:hover,
 .social-row a.social-fb:hover,
 .social-row-sm a.social-fb:focus-visible,
 .social-row a.social-fb:focus-visible {
-  background: #1877f2;
+  background: #fff;
+  color: #1877f2;
   border-color: #1877f2;
-  color: #fff;
-  box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.28), 0 6px 16px rgba(24, 119, 242, 0.25);
+  box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.3), 0 6px 16px rgba(24, 119, 242, 0.25);
 }
+
+/* Instagram: brand gradient disc + white glyph on hover */
+.social-row-sm a.social-ig:hover,
+.social-row a.social-ig:hover,
+.social-row-sm a.social-ig:focus-visible,
+.social-row a.social-ig:focus-visible {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 0 3px rgba(214, 36, 159, 0.28), 0 6px 16px rgba(214, 36, 159, 0.22);
+}
+
+/* X: black disc + white glyph on hover (light ring so it reads on our near-black bg) */
+.social-row-sm a.social-x:hover,
+.social-row a.social-x:hover,
+.social-row-sm a.social-x:focus-visible,
+.social-row a.social-x:focus-visible {
+  background: #000;
+  border-color: rgba(255, 255, 255, 0.7);
+  color: #fff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.14), 0 6px 16px rgba(0, 0, 0, 0.5);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .social-row-sm a, .social-row a { transition: none; }
   .social-row-sm a:hover, .social-row a:hover { transform: none; }
