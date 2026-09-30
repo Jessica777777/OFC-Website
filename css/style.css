@@ -1938,6 +1938,20 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   background: var(--color-gold);
   color: var(--color-bg);
   border-color: var(--color-gold);
+  /* v30-followup7: per user feedback (two screenshots of the widget's
+     bottom edge, "不要點了開始練習後底圖往下長一點點") -- .ofc-demo-footer's
+     height is set by its tallest child, and this CTA button (step 0's
+     only visible footer content) rendered ~5.3px shorter than the
+     confirm/reset .btn.btn-sm buttons that take over the footer from
+     step 1 onward (different padding/font-size, close but not equal).
+     That made the whole widget ~5px shorter on step 0 than every other
+     step, so clicking "開始練習" visibly grew the widget by that amount.
+     Pinning this button's height to match .btn-sm's actual rendered
+     height (measured via Playwright, see
+     how-to-play-page-task-context.md "v30-followup7") keeps the footer
+     -- and so the whole widget -- the same height on step 0 as on every
+     later step. */
+  min-height: 41px;
 }
 .ofc-demo-arrow.ofc-demo-cta:hover {
   background: var(--color-gold-light);
