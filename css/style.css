@@ -1607,8 +1607,12 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 
 /* v30: replaces the old .ofc-demo-head h3/p rules (that wrapper is gone —
    see how-to-play.html). #ofcDemoDesc keeps the same look, just no longer
-   nested a level deep. */
-#ofcDemoDesc { margin: 0; font-size: var(--fs-sm); color: var(--color-text-muted); max-width: 620px; }
+   nested a level deep. v30-followup8: color bumped from --color-text-muted
+   (dull grey-green) to --color-text per user request to brighten this
+   instructional text; matches --color-text already used by .ofc-demo-result
+   below, so the pre-confirm hint and the post-confirm result read at the
+   same brightness instead of one being dimmer than the other. */
+#ofcDemoDesc { margin: 0; font-size: var(--fs-sm); color: var(--color-text); max-width: 620px; }
 
 /* --- Hand tray: also a drop target for "return this card to my hand" --- */
 .ofc-demo-hand {
