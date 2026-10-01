@@ -1923,8 +1923,18 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   /* v30: narrowed from a 74px column (sized for two stacked lines) to a
      compact 42px tag, per user feedback referencing a mobile OFC game
      where the row label sits tight against the card row instead of
-     taking its own wide column. */
-  flex: 0 0 42px;
+     taking its own wide column.
+     v30-followup9: 42px fit every CJK label (2-3 characters) but not the
+     English "Middle" (54.6px needed at this font-size/weight) -- flex-shrink
+     is 0 here, so the browser let that one flex item grow past its 42px
+     basis to fit the word instead of wrapping it, while Front/Back stayed
+     at 42px. That made the middle row's card area start ~12px further
+     right than the front/back rows' -- a real misalignment, only visible
+     in English (every zh/ja label still measures <= 42px). Bumped the
+     basis to 56px, just past "Middle"'s measured width, so all three
+     columns render at the same width in every language instead of only
+     the odd-one-out word growing. */
+  flex: 0 0 56px;
   display: flex;
   flex-direction: column;
   align-items: center;
