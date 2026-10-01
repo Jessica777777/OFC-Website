@@ -1606,6 +1606,18 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   color: #fff;
   box-shadow: 0 0 0 3px rgba(214, 36, 159, 0.28), 0 6px 16px rgba(214, 36, 159, 0.22);
 }
+/* v31: the white glyph sits right over the gradient's pale-yellow corner
+   (#fdf497), which is close enough to white that the camera outline nearly
+   disappeared there -- read by the user as the icon looking "washed out" /
+   whitish. A soft dark drop-shadow behind the glyph (not a background
+   change) restores contrast in that corner without affecting the rest of
+   the icon or the FB/X glyphs. */
+.social-row-sm a.social-ig:hover svg,
+.social-row a.social-ig:hover svg,
+.social-row-sm a.social-ig:focus-visible svg,
+.social-row a.social-ig:focus-visible svg {
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.55)) drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.4));
+}
 
 /* X: black disc + white glyph on hover (light ring so it reads on our near-black bg) */
 .social-row-sm a.social-x:hover,
