@@ -2668,6 +2668,26 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   --fs-md: 1.16rem;
   --fs-lg: 1.24rem;
 }
+/* v31: the v10 type bump above cascades to every descendant of <body>,
+   including .site-header/.site-footer -- which aren't this page's own
+   copy, they're the same shared nav/footer markup every other page uses
+   and are supposed to render identically everywhere. Because this page's
+   <nav> sits inside <body class="page-how-to-play">, it was silently
+   inheriting the ~6-8% bump (16px->17px, --fs-* all up a notch), making
+   the logo/links/button look visibly bigger here than on index/about/
+   faq/game-rules -- reported by the user as the nav "放大"
+   (enlarging) when navigating onto this page. Resetting both chrome
+   regions back to the site's base scale keeps the v10 bump scoped to
+   this page's own <main> content, which is what it was meant for. */
+.page-how-to-play .site-header,
+.page-how-to-play .site-footer {
+  font-size: 16px;
+  --fs-xs: 0.8rem;
+  --fs-sm: 0.92rem;
+  --fs-base: 1rem;
+  --fs-md: 1.08rem;
+  --fs-lg: 1.15rem;
+}
 
 /* v16: the v15 eyebrow copy grew from 2-4 character tags into full HQ
    briefing phrases ("【HQ 訓令 // OFC 基礎協議】"), and the letter-spacing
