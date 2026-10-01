@@ -1596,12 +1596,22 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.3), 0 6px 16px rgba(24, 119, 242, 0.25);
 }
 
-/* Instagram: brand gradient disc + white glyph on hover */
+/* Instagram: brand gradient disc + white glyph on hover.
+   v31b: was a radial-gradient with its center at "30% 107%" (deliberately
+   below the box, to match IG's own brand art) -- renders fully filled in
+   Chromium, but a >100% position for a `circle` radial-gradient is a known
+   cross-browser edge case, and the user's own screenshots showed the top
+   of the disc falling back to flat dark (the page background showing
+   through) instead of blue, i.e. the gradient wasn't painting that area
+   at all in their browser. A corner-to-corner linear-gradient has no
+   center-position math to get wrong, so it's guaranteed to fill the whole
+   box in every browser; same five brand colours, same visual direction
+   (warm yellow/orange bottom-left -> pink/magenta -> blue/purple top-right). */
 .social-row-sm a.social-ig:hover,
 .social-row a.social-ig:hover,
 .social-row-sm a.social-ig:focus-visible,
 .social-row a.social-ig:focus-visible {
-  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+  background: linear-gradient(45deg, #fdf497 0%, #fd5949 35%, #d6249f 55%, #833ab4 70%, #285aeb 100%);
   border-color: transparent;
   color: #fff;
   box-shadow: 0 0 0 3px rgba(214, 36, 159, 0.28), 0 6px 16px rgba(214, 36, 159, 0.22);
