@@ -354,11 +354,27 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
   max-height: 78vh;
   overflow: hidden;
   background: #000;
+  isolation: isolate; /* keeps the blurred ::before backdrop inside this box */
+}
+/* Never crop the trailer: event videos carry title text at the very top and
+   key art at the bottom, so `cover` (which trimmed top/bottom once the 78vh
+   cap kicked in on wide screens) cut the words off. The video is now
+   `contain`ed, and any leftover side space is filled with a blurred, dimmed
+   copy of the poster frame so the banner still reads as full-bleed.
+   When swapping the monthly video, refresh hero-video-poster.jpg too —
+   this backdrop uses it. */
+.video-hero::before {
+  content: "";
+  position: absolute;
+  inset: -60px;
+  background: url("../assets/images/hero-video-poster.jpg") center / cover no-repeat;
+  filter: blur(24px) brightness(0.62) saturate(1.15);
+  z-index: -1;
 }
 .video-hero-media {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 .video-hero-overlay {
@@ -394,7 +410,7 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
 }
 .video-hero-cta svg { margin-left: -4px; }
 @media (max-width: 700px) {
-  .video-hero { aspect-ratio: 16 / 10; max-height: none; }
+  .video-hero { max-height: none; } /* keep 16:9 so nothing is cropped */
   .video-hero-bar { display: none; }
 }
 
