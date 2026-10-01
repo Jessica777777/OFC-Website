@@ -813,7 +813,9 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
      wrapped the dots onto a second line; narrower dots keep one row. */
   .carousel-controls { gap: 14px; }
   .carousel-dots { gap: 6px; }
-  .carousel-dot { width: 24px; }
+  /* .carousel-dots prefix: this block sits above the base .carousel-dot
+     rule, so it needs the extra specificity to win (it silently lost before). */
+  .carousel-dots .carousel-dot { width: 24px; }
 }
 .carousel-dot {
   appearance: none;
