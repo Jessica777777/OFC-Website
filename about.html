@@ -11,6 +11,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script>
+  /* Hide the page until js/i18n.js has translated it when the visitor's saved
+     language isn't Chinese (prevents a flash of Chinese text). See style.css. */
+  (function () {
+    try {
+      var l = localStorage.getItem('ofc-lang');
+      if (l === 'en' || l === 'ja') {
+        var h = document.documentElement;
+        h.setAttribute('data-i18n-pending', '');
+        h.lang = l;
+        setTimeout(function () { h.removeAttribute('data-i18n-pending'); }, 1500);
+      }
+    } catch (e) {}
+  })();
+</script>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="page-about">

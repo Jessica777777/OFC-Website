@@ -11,6 +11,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script>
+  /* Hide the page until js/i18n.js has translated it when the visitor's saved
+     language isn't Chinese (prevents a flash of Chinese text). See style.css. */
+  (function () {
+    try {
+      var l = localStorage.getItem('ofc-lang');
+      if (l === 'en' || l === 'ja') {
+        var h = document.documentElement;
+        h.setAttribute('data-i18n-pending', '');
+        h.lang = l;
+        setTimeout(function () { h.removeAttribute('data-i18n-pending'); }, 1500);
+      }
+    } catch (e) {}
+  })();
+</script>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -60,21 +75,32 @@
        三語文字與下方 <video> 的預設 aria-label 即可，外層結構不用動。
        若之後的影片有聲音，需要再加回聲音開關按鈕。 -->
   <section class="video-hero">
-    <video class="video-hero-media" autoplay muted loop playsinline
-      poster="assets/images/hero-video-poster.jpg"
-      aria-label="OFC 撲克：大菠蘿 10 月限時活動預告：Ghost Heist" data-i18n-aria-label="index.video.aria">
-      <source src="assets/videos/hero-event-trailer.mp4" type="video/mp4">
-    </video>
-    <div class="video-hero-overlay"></div>
-    <!-- Desktop/tablet-only CTA (hidden <=700px, see .video-hero-cta in style.css):
-         the video fills most of the first screen on desktop, so give visitors
-         a download action right on it. The trailer has no audio track, so the
-         old mute toggle was removed. -->
-    <div class="video-hero-bar">
-      <a href="https://ofcpineapplepo.onelink.me/tBwC/zkwrf90e" class="btn btn-primary video-hero-cta" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11-6.86a1 1 0 0 0 0-1.72l-11-6.86A1 1 0 0 0 8 5.14z"/></svg>
-        <span data-i18n="common.nav.downloadBtn">立即遊玩</span>
-      </a>
+    <!-- .video-hero-frame is always exactly the size of the visible video
+         (16:9, centred), so the CTA stays on the footage itself even when the
+         side space is filled by the blurred backdrop on wide screens. -->
+    <div class="video-hero-frame">
+      <video class="video-hero-media" autoplay muted loop playsinline
+        poster="assets/images/hero-video-poster.jpg"
+        aria-label="OFC 撲克：大菠蘿 10 月限時活動預告：Ghost Heist" data-i18n-aria-label="index.video.aria">
+        <source src="assets/videos/hero-event-trailer.mp4" type="video/mp4">
+      </video>
+      <div class="video-hero-overlay"></div>
+      <!-- Desktop/tablet-only CTA (hidden <=700px, see .video-hero-cta in style.css):
+           the video fills most of the first screen on desktop, so give visitors
+           a download action right on it. The trailer has no audio track, so the
+           old mute toggle was removed. -->
+      <div class="video-hero-bar">
+        <a href="https://ofcpineapplepo.onelink.me/tBwC/zkwrf90e" class="video-hero-cta" target="_blank" rel="noopener">
+          <img class="video-hero-cta-icon" src="assets/images/app-icon-180.png" alt="" width="52" height="52">
+          <span class="video-hero-cta-text">
+            <strong data-i18n="common.nav.downloadBtn">立即遊玩</strong>
+            <small data-i18n="index.video.ctaSub">免費下載・iOS／Android</small>
+          </span>
+          <span class="video-hero-cta-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" focusable="false"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </span>
+        </a>
+      </div>
     </div>
   </section>
 

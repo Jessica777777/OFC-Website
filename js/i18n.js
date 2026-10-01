@@ -39,6 +39,7 @@ const I18N = {
     'index.head.title': 'OFC 撲克：大菠蘿｜全球玩家都在玩的 OFC',
     'index.head.description': 'OFC 撲克：大菠蘿 —— 集結全球玩家的 OFC 大菠蘿撲克，達成 Fantasyland、挑戰 Progressive／Joker／SNG 等任務模式，隨時切換 Blackjack 21、德州撲克等牌桌。立即下載，展開你的下一場行動！',
     'index.video.aria': 'OFC 撲克：大菠蘿 10 月限時活動預告：Ghost Heist',
+    'index.video.ctaSub': '免費下載・iOS／Android',
     'index.hero.eyebrow': '特務行動 × OFC 大菠蘿撲克',
     'index.hero.title': '坐上牌桌，<br>展開你的下一場行動',
     'index.hero.desc': 'OFC 撲克：大菠蘿 集結全球玩家，在OFC撲克（Open Face Chinese Poker）的牌桌上一較高下：達成 Fantasyland 資格、挑戰 OFC進階模式、OFC鬼牌、OFC SNG 等任務模式，也能隨時切換到 Blackjack 21、德州撲克等牌桌，換個節奏繼續行動。',
@@ -309,6 +310,7 @@ const I18N = {
     'index.head.title': 'OFC: Pineapple Poker | Open Face Chinese Poker on Mobile',
     'index.head.description': 'OFC: Pineapple Poker — a free strategy mobile game built around Open Face Chinese Poker (OFC), with a classic Blackjack mode you can switch to anytime. Play against players worldwide. Download now!',
     'index.video.aria': 'OFC: Pineapple Poker October limited-time event teaser: Ghost Heist',
+    'index.video.ctaSub': 'Free on iOS & Android',
     'index.hero.eyebrow': 'OFC Open Face Chinese Poker',
     'index.hero.title': 'Take a seat.<br>Become the sharpest card counter at the table.',
     'index.hero.desc': 'OFC: Pineapple Poker is a strategy card game built around Open Face Chinese Poker — cinematic table atmosphere and real-player tension for players who love to calculate every move. Want a change of pace? Switch to the classic Blackjack mode anytime for a quick, casual hand.',
@@ -577,6 +579,7 @@ const I18N = {
     'index.head.title': 'OFCポーカー：パイナップル｜オープンフェイス中国ポーカー',
     'index.head.description': 'OFCポーカー：パイナップル —— オープンフェイス中国ポーカー（OFC）を中心にした無料の戦略スマホゲーム。いつでもクラシックなブラックジャックモードに切り替え可能。世界中のプレイヤーと腕を競おう。今すぐダウンロード！',
     'index.video.aria': 'OFCポーカー：パイナップル 10月期間限定イベント予告：Ghost Heist',
+    'index.video.ctaSub': '無料・iOS／Android',
     'index.hero.eyebrow': 'OFC オープンフェイス中国ポーカー',
     'index.hero.title': 'テーブルに着いて、<br>最強のカードカウンターになろう',
     'index.hero.desc': 'OFCポーカー：パイナップル は「オープンフェイス中国ポーカー（Open Face Chinese Poker）」を中心にした戦略カードゲームです。映画のようなテーブルの雰囲気とリアルプレイヤーとの駆け引きで、計算派プレイヤーも思う存分楽しめます。気分を変えたいときは、いつでもクラシックなブラックジャックモードへ。',
@@ -885,6 +888,9 @@ function applyI18n(lang) {
   document.querySelectorAll('.lang-switch-label').forEach((el) => {
     el.textContent = LANG_LABEL[lang] || LANG_LABEL.zh;
   });
+
+  // Page is translated: reveal it (see the anti-flash <head> snippet).
+  document.documentElement.removeAttribute('data-i18n-pending');
 }
 
 /* Dropdown open/close (v13): each .lang-switch now holds a
@@ -929,4 +935,10 @@ function initLangToggle() {
   document.addEventListener('click', () => closeAllExcept(null));
 }
 
+// Translate right away: this script is loaded at the end of <body>, so the
+// whole DOM above it already exists — no need to wait for DOMContentLoaded
+// (waiting is what let the untranslated Chinese paint first). The dropdown
+// wiring + a second apply still run on DOMContentLoaded as before, which also
+// re-fires ofc:langchange after main.js has registered its listeners.
+try { applyI18n(ofcGetLang()); } catch (e) { document.documentElement.removeAttribute('data-i18n-pending'); }
 document.addEventListener('DOMContentLoaded', initLangToggle);

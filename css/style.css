@@ -59,6 +59,12 @@ html { scroll-behavior: smooth; background: var(--color-bg); }
    hidden> still renders — this is what made the carousel play/pause (and the
    old video mute) buttons show both icons side by side. */
 svg[hidden] { display: none !important; }
+/* Anti-flash for non-Chinese visitors: every page's HTML ships in Chinese and
+   js/i18n.js swaps the text in afterwards, so a visitor who picked EN/JA saw
+   a split-second of Chinese on every navigation. An inline <head> script sets
+   html[data-i18n-pending] when the stored language isn't zh; applyI18n()
+   removes it once the page is translated (with a 1.5s safety timeout). */
+html[data-i18n-pending] body { visibility: hidden; }
 
 body {
   margin: 0;
@@ -371,6 +377,15 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
   filter: blur(24px) brightness(0.62) saturate(1.15);
   z-index: -1;
 }
+.video-hero-frame {
+  position: relative;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  margin: 0 auto;
+  /* lets the CTA size itself in cqw = % of the visible video width */
+  container-type: inline-size;
+}
 .video-hero-media {
   width: 100%;
   height: 100%;
@@ -389,26 +404,113 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 0 clamp(20px, 4vw, 64px) clamp(22px, 4vw, 44px);
+  padding: 0 3cqw 2.6cqw;
   pointer-events: none; /* only the CTA itself should catch clicks */
 }
-/* Desktop/tablet "Play Now" CTA on top of the trailer. The video fills most
-   of the first screen on desktop, so this gives visitors a download action
-   without scrolling. Hidden on phones, where the video is short and the A
-   section's store badges are right below it. */
+/* Desktop/tablet "Play Now" CTA on top of the trailer (inside
+   .video-hero-frame, so it always sits on the footage). Styled as an
+   app-store-like "dossier tab": dark glass + gold hairline, app icon,
+   two-line label and a gold arrow disc — reads as a game download action
+   rather than a generic pill. Hidden on phones, where the video is short
+   and the A section's store badges are right below it. */
+/* Everything below is in em off a font-size tied to the video width
+   (cqw), so the button keeps the same footprint relative to the footage —
+   about 22% of the video width — and never collides with the event art
+   (the Ghost Heist medal starts at ~27% from the left). */
 .video-hero-cta {
   pointer-events: auto;
-  padding: 16px 34px;
-  font-size: 1.05rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(242, 216, 121, 0.35), 0 0 32px rgba(212, 175, 55, 0.28);
+  font-size: clamp(11px, 1.15cqw, 17px);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85em;
+  padding: 0.6em 0.7em 0.6em 0.6em;
+  border-radius: 1.15em;
+  background: linear-gradient(135deg, rgba(25, 22, 28, 0.82), rgba(10, 10, 13, 0.72));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  box-shadow: inset 0 1px 0 rgba(242, 216, 121, 0.18), 0 12px 32px rgba(0, 0, 0, 0.55);
+  color: var(--color-text);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
-.video-hero-cta:hover {
+/* light sweep across the button on hover */
+.video-hero-cta::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: -60%;
+  width: 40%;
+  background: linear-gradient(100deg, transparent, rgba(242, 216, 121, 0.18), transparent);
+  transform: skewX(-18deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+.video-hero-cta:hover,
+.video-hero-cta:focus-visible {
   transform: translateY(-2px);
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(242, 216, 121, 0.6), 0 0 40px rgba(212, 175, 55, 0.45);
+  border-color: var(--color-gold-light);
+  box-shadow: inset 0 1px 0 rgba(242, 216, 121, 0.25), 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 28px rgba(212, 175, 55, 0.35);
+  outline: none;
 }
-.video-hero-cta svg { margin-left: -4px; }
+.video-hero-cta:hover::after { left: 120%; }
+.video-hero-cta-icon {
+  width: 3.3em;
+  height: 3.3em;
+  border-radius: 0.75em;
+  display: block;
+  flex: 0 0 auto;
+  box-shadow: 0 0 0 1px rgba(242, 216, 121, 0.35), 0 4px 10px rgba(0, 0, 0, 0.45);
+}
+.video-hero-cta-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+.video-hero-cta-text strong {
+  font-family: var(--font-heading);
+  font-size: 1.32em;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: var(--color-gold-light);
+}
+/* Japanese "今すぐプレイ" is wider than 立即遊玩 / Play Now */
+:lang(ja) .video-hero-cta-text strong { font-size: 1.16em; letter-spacing: 0.01em; }
+.video-hero-cta-text small {
+  font-size: 0.8em;
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+}
+.video-hero-cta-arrow {
+  width: 2.7em;
+  height: 2.7em;
+  margin-left: 0.3em;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold));
+  color: #16120a;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
+  transition: transform 0.2s ease;
+}
+.video-hero-cta-arrow svg { width: 1.3em; height: 1.3em; }
+.video-hero-cta:hover .video-hero-cta-arrow { transform: translateX(3px); }
+/* Narrow videos (tablets): the 11px font floor would make the button take
+   30%+ of the frame, so drop the sub-line, then the app icon. */
+@container (max-width: 960px) {
+  .video-hero-cta-text small { display: none; }
+}
+@container (max-width: 720px) {
+  .video-hero-cta-icon { display: none; }
+  .video-hero-cta { padding-left: 1.1em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .video-hero-cta, .video-hero-cta::after, .video-hero-cta-arrow { transition: none; }
+}
 @media (max-width: 700px) {
   .video-hero { max-height: none; } /* keep 16:9 so nothing is cropped */
   .video-hero-bar { display: none; }
