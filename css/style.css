@@ -2856,7 +2856,18 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 
 .gr-switch {
   position: sticky;
-  top: 68px;
+  /* v35: matches .site-header's actual rendered height (measured with
+     Playwright bounding boxes: 97px from 341px viewport width up through
+     desktop widths -- the header doesn't change height, so this never
+     needed the media-query override below to differ). The previous
+     68px guess sat 29px short of the header's real height, so once
+     stuck this bar's top ~29px rendered underneath the translucent
+     blurred header instead of below it, showing a ghosted overlap of
+     its own content through the header on scroll (reported by user as
+     "往下滾動時，卡的位置不對" on a game-rules page). See
+     game-rules-static-plan.md for the game-rules pages this bar is
+     used on. */
+  top: 97px;
   z-index: 90;
   background: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
@@ -3066,7 +3077,11 @@ a.gr-tab { display: inline-block; text-decoration: none; }
 .gr-rank-table td .gr-hand { margin: 0; justify-content: flex-end; }
 
 @media (max-width: 640px) {
-  .gr-switch { top: 0; }
+  /* same 97px as the base rule above -- the header's height doesn't
+     actually change down to 341px, so this used to be a guess (top: 0)
+     that was just as wrong as the old 68px default, not a real
+     narrow-viewport case. */
+  .gr-switch { top: 97px; }
   .gr-step { grid-template-columns: 1fr; gap: 2px; }
   .gr-vrow { grid-template-columns: 1fr; }
   .gr-amount { justify-self: start; }
@@ -3077,4 +3092,12 @@ a.gr-tab { display: inline-block; text-decoration: none; }
   .gr-card-suit { height: 11px; }
   .gr-hand-group { padding: 4px; gap: 4px; }
   .gr-hand-arrow { font-size: 1.05rem; }
+}
+
+/* v35: below 341px the header wraps to a second line (measured 108.23px
+   tall vs. 97px above that width), so the sticky tab bar needs a touch
+   more clearance here too or the same ghosting bug reappears on very
+   narrow phones. */
+@media (max-width: 340px) {
+  .gr-switch { top: 109px; }
 }
