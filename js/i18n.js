@@ -40,6 +40,12 @@ const I18N = {
     'index.head.description': 'OFC 撲克：大菠蘿 —— 集結全球玩家的 OFC 大菠蘿撲克，達成 Fantasyland、挑戰 Progressive／Joker／SNG 等任務模式，隨時切換 Blackjack 21、德州撲克等牌桌。立即下載，展開你的下一場行動！',
     'index.video.aria': 'OFC 撲克：大菠蘿 10 月限時活動預告：Ghost Heist',
     'index.video.ctaSub': '免費下載・iOS／Android',
+    'howToPlay.more.card.nlh.imgAlt': '無限注德州撲克牌桌氛圍圖',
+    'howToPlay.more.card.plo.imgAlt': '限注奧馬哈牌桌氛圍圖',
+    'howToPlay.more.card.stud.imgAlt': '七張梭哈牌桌氛圍圖',
+    'howToPlay.more.card.blackjack.imgAlt': '21點牌桌氛圍圖',
+    'howToPlay.more.card.rummy.imgAlt': 'Rummy 牌桌氛圍圖',
+    'howToPlay.more.card.ginrummy.imgAlt': 'Gin Rummy 牌桌氛圍圖',
     'index.hero.h1Main': 'OFC 撲克：大菠蘿',
     'index.hero.h1Sep': ' — ',
     'index.hero.h1Sub': 'Open Face Chinese Poker (OFC) App',
@@ -314,6 +320,12 @@ const I18N = {
     'index.head.description': 'Play Open Face Chinese Poker (OFC) free with OFC: Pineapple Poker, the OFC poker app for iOS & Android. Play Chinese poker online with friends.',
     'index.video.aria': 'OFC: Pineapple Poker October limited-time event teaser: Ghost Heist',
     'index.video.ctaSub': 'Free on iOS & Android',
+    'howToPlay.more.card.nlh.imgAlt': 'No-Limit Hold\'em table scene',
+    'howToPlay.more.card.plo.imgAlt': 'Pot-Limit Omaha (PLO) table scene',
+    'howToPlay.more.card.stud.imgAlt': '7 Card Stud table scene',
+    'howToPlay.more.card.blackjack.imgAlt': 'Blackjack table scene',
+    'howToPlay.more.card.rummy.imgAlt': 'Rummy table scene',
+    'howToPlay.more.card.ginrummy.imgAlt': 'Gin Rummy table scene',
     'index.hero.h1Main': 'Open Face Chinese Poker (OFC) App',
     'index.hero.h1Sep': ' – ',
     'index.hero.h1Sub': 'OFC: Pineapple Poker',
@@ -586,6 +598,12 @@ const I18N = {
     'index.head.description': 'Open Face Chinese Poker（OFC）を無料でプレイ！OFCポーカー：パイナップルはiOS・Android対応のOFCポーカーアプリ。友達や世界中のプレイヤーとオンライン対戦しよう。',
     'index.video.aria': 'OFCポーカー：パイナップル 10月期間限定イベント予告：Ghost Heist',
     'index.video.ctaSub': '無料・iOS／Android',
+    'howToPlay.more.card.nlh.imgAlt': 'ノーリミットホールデムのテーブルイメージ',
+    'howToPlay.more.card.plo.imgAlt': 'ポットリミットオマハ（PLO）のテーブルイメージ',
+    'howToPlay.more.card.stud.imgAlt': 'セブンカードスタッドのテーブルイメージ',
+    'howToPlay.more.card.blackjack.imgAlt': 'ブラックジャックのテーブルイメージ',
+    'howToPlay.more.card.rummy.imgAlt': 'ラミーのテーブルイメージ',
+    'howToPlay.more.card.ginrummy.imgAlt': 'ジンラミーのテーブルイメージ',
     'index.hero.h1Main': 'Open Face Chinese Poker (OFC) アプリ',
     'index.hero.h1Sep': ' – ',
     'index.hero.h1Sub': 'OFCポーカー：パイナップル',
@@ -840,14 +858,14 @@ const OFC_LANG_KEY = 'ofc-lang';
 function ofcGetLang() {
   try {
     const v = localStorage.getItem(OFC_LANG_KEY);
-    return LANGS.includes(v) ? v : 'zh';
+    return LANGS.includes(v) ? v : 'en';
   } catch (e) {
-    return 'zh';
+    return 'en';
   }
 }
 
 function ofcSetLang(lang) {
-  if (!LANGS.includes(lang)) lang = 'zh';
+  if (!LANGS.includes(lang)) lang = 'en';
   try { localStorage.setItem(OFC_LANG_KEY, lang); } catch (e) { /* ignore (private browsing, etc.) */ }
   applyI18n(lang);
   // v26: lets any dynamically-generated UI (e.g. the carousel's JS-built
@@ -858,9 +876,9 @@ function ofcSetLang(lang) {
 }
 
 function applyI18n(lang) {
-  const dict = I18N[lang] || I18N.zh;
+  const dict = I18N[lang] || I18N.en;
   window.OFC_I18N_CURRENT = lang;
-  document.documentElement.lang = lang === 'en' ? 'en' : (lang === 'ja' ? 'ja' : 'zh-Hant');
+  document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : (lang === 'ja' ? 'ja' : 'en');
 
   document.querySelectorAll('[data-i18n]').forEach((el) => {
     const key = el.getAttribute('data-i18n');
@@ -895,7 +913,7 @@ function applyI18n(lang) {
   // short label (中/EN/日) on the collapsed button, since the switch is no
   // longer three always-visible buttons but a single trigger + menu.
   document.querySelectorAll('.lang-switch-label').forEach((el) => {
-    el.textContent = LANG_LABEL[lang] || LANG_LABEL.zh;
+    el.textContent = LANG_LABEL[lang] || LANG_LABEL.en;
   });
 
   // Page is translated: reveal it (see the anti-flash <head> snippet).

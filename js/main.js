@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     function relabelDots() {
-      const lang = (window.OFC_I18N_CURRENT) || 'zh';
+      const lang = (window.OFC_I18N_CURRENT) || 'en';
       // Note: I18N is declared with `const` in js/i18n.js, so — unlike a
       // `var` or function declaration — it never becomes a property of
       // `window`. It's still reachable as a bare identifier here because
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!playPauseBtn) return;
       const iconPause = playPauseBtn.querySelector('.icon-pause');
       const iconPlay = playPauseBtn.querySelector('.icon-play');
-      const lang = (window.OFC_I18N_CURRENT) || 'zh';
+      const lang = (window.OFC_I18N_CURRENT) || 'en';
       const dict = (typeof I18N !== 'undefined' && I18N[lang]) || {};
       // toggleAttribute, not `.hidden = …`: these icons are <svg> elements,
       // and SVGElement has no `hidden` IDL property — assigning it only sets

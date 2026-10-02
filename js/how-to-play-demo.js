@@ -108,7 +108,7 @@
   const LAST_STEP = ROUNDS.length - 1;
 
   function t(key) {
-    const lang = (typeof ofcGetLang === 'function') ? ofcGetLang() : 'zh';
+    const lang = (typeof ofcGetLang === 'function') ? ofcGetLang() : 'en';
     // Note: I18N is declared with `const` in js/i18n.js, so it never becomes
     // a `window` property (unlike `var`/function declarations) even though
     // both files are classic scripts sharing one global scope — read the
