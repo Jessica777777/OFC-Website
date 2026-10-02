@@ -3010,12 +3010,23 @@ a.gr-tab { display: inline-block; text-decoration: none; }
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.gr-prow { display: grid; grid-template-columns: 7.5rem 1fr auto; align-items: center; gap: 6px 16px; }
+.gr-prow { display: grid; grid-template-columns: minmax(7.5rem, max-content) 1fr auto; align-items: center; gap: 6px 16px; }
 .gr-kind {
   font-family: ui-monospace, 'SFMono-Regular', 'Courier New', monospace;
   font-size: var(--fs-sm);
   letter-spacing: 0.04em;
   color: var(--color-text);
+}
+/* The payout label column above is sized (and letter-spaced) for short
+   English words like "Push"/"Bust"; Chinese/Japanese labels such as
+   "プッシュ（引き分け）" or "ブラックジャック" are longer and don't carry
+   Latin-style tracking well, so they wrapped mid-word inside the fixed
+   7.5rem column with extra-looking gaps. minmax(...,max-content) above lets
+   the column grow to fit, and :lang() here drops the monospace tracking
+   for CJK text specifically (English labels are untouched). */
+:lang(zh-Hant) .gr-kind, :lang(ja) .gr-kind {
+  font-family: var(--font-body);
+  letter-spacing: normal;
 }
 
 /* shared poker-hand ranking table (NLH / PLO / 7 Card Stud) */

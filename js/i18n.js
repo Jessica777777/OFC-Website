@@ -929,6 +929,22 @@ function ofcRetargetLinks(lang) {
 function ofcSetLang(lang) {
   if (!LANGS.includes(lang)) lang = 'en';
   try { localStorage.setItem(OFC_LANG_KEY, lang); } catch (e) { /* ignore (private browsing, etc.) */ }
+  // Keep a ?lang= param (added by cross-language links, e.g. ja/how-to-play.html
+  // -> game-rules.html?...&lang=ja) in sync with a manual switch. ofcGetLang()
+  // always prefers the URL param over localStorage, so leaving a stale param
+  // in place after the user picks a new language from the dropdown made every
+  // later re-render that calls ofcGetLang() (e.g. game-rules.html's
+  // contentLang(), re-run on "ofc:langchange") snap straight back to the old
+  // language, even though the static data-i18n chrome above had already
+  // switched -- the exact "dropdown says one language, content says another"
+  // bug reported against game-rules.html.
+  try {
+    const url = new URL(window.location.href);
+    if (url.searchParams.has('lang')) {
+      url.searchParams.set('lang', lang);
+      window.history.replaceState(null, '', url);
+    }
+  } catch (e) { /* ignore */ }
   applyI18n(lang);
   // v26: lets any dynamically-generated UI (e.g. the carousel's JS-built
   // dot buttons and play/pause label in js/main.js) re-read I18N and
