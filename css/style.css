@@ -1596,55 +1596,37 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.3), 0 6px 16px rgba(24, 119, 242, 0.25);
 }
 
-/* Instagram: brand gradient disc + white glyph on hover.
-   v31b: was a radial-gradient with its center at "30% 107%" (deliberately
-   below the box, to match IG's own brand art) -- renders fully filled in
-   Chromium, but a >100% position for a `circle` radial-gradient is a known
-   cross-browser edge case, and the user's own screenshots showed the top
-   of the disc falling back to flat dark (the page background showing
-   through) instead of blue, i.e. the gradient wasn't painting that area
-   at all in their browser. A corner-to-corner linear-gradient has no
-   center-position math to get wrong, so it's guaranteed to fill the whole
-   box in every browser; same five brand colours, same visual direction
-   (warm yellow/orange bottom-left -> pink/magenta -> blue/purple top-right).
-   v31c: the user then saw a hard seam partway up the disc, with a visibly
-   different gradient above vs below it. The shared base rule above
-   animates `background` itself (`transition: background 0.18s ease, ...`),
-   and interpolating between two *different kinds* of gradient (the rest
-   state's radial-gradient and this rule's linear-gradient) frame-by-frame
-   is undefined/unreliable across browsers -- this is almost certainly
-   what produced the seam (not reproducible in this environment's
-   Chromium, consistent with it being a browser-specific interpolation
-   glitch). IG's background transition is dropped below so the swap is an
-   instant cut instead of an animated cross-fade; border-color/color/
-   box-shadow/transform still animate normally. FB and X are untouched --
-   their hover backgrounds are flat colours, which don't have this risk. */
+/* Instagram: brand icon image on hover (v31d).
+   Three rounds of CSS gradients (radial, then linear, then a non-animated
+   linear) each fixed one browser-specific rendering glitch but the user
+   kept seeing a different one (a dark unfilled gap, then a hard seam) --
+   evidently specific to their browser and not reproducible here, so
+   rather than keep guessing at gradient syntax, this swaps in the user's
+   own reference Instagram icon as a plain background image instead of a
+   CSS gradient. A raster image has no interpolation/position math to get
+   wrong, so it renders identically everywhere. The glyph is baked into
+   the image, so the inline SVG is just hidden on hover (kept in the
+   markup for the resting on-brand gunmetal state). Source image cropped
+   tight to the circle's own edges (so background-size:cover fills the
+   disc with no leftover padding) and pngquant/optipng'd down to ~8.7KB. */
 .social-row-sm a.social-ig:hover,
 .social-row a.social-ig:hover,
 .social-row-sm a.social-ig:focus-visible,
 .social-row a.social-ig:focus-visible {
-  background: linear-gradient(45deg, #fdf497 0%, #fd5949 35%, #d6249f 55%, #833ab4 70%, #285aeb 100%);
+  background: url('../assets/images/icon-instagram-color.png') center / cover no-repeat;
   border-color: transparent;
-  color: #fff;
   box-shadow: 0 0 0 3px rgba(214, 36, 159, 0.28), 0 6px 16px rgba(214, 36, 159, 0.22);
+}
+.social-row-sm a.social-ig:hover svg,
+.social-row a.social-ig:hover svg,
+.social-row-sm a.social-ig:focus-visible svg,
+.social-row a.social-ig:focus-visible svg {
+  opacity: 0;
 }
 .social-row-sm a.social-ig,
 .social-row a.social-ig {
   transition: border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
 }
-/* v31: the white glyph sits right over the gradient's pale-yellow corner
-   (#fdf497), which is close enough to white that the camera outline nearly
-   disappeared there -- read by the user as the icon looking "washed out" /
-   whitish. A soft dark drop-shadow behind the glyph (not a background
-   change) restores contrast in that corner without affecting the rest of
-   the icon or the FB/X glyphs. */
-.social-row-sm a.social-ig:hover svg,
-.social-row a.social-ig:hover svg,
-.social-row-sm a.social-ig:focus-visible svg,
-.social-row a.social-ig:focus-visible svg {
-  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.55)) drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.4));
-}
-
 /* X: black disc + white glyph on hover (light ring so it reads on our near-black bg) */
 .social-row-sm a.social-x:hover,
 .social-row a.social-x:hover,
