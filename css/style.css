@@ -2872,8 +2872,15 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   cursor: pointer;
   transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
 }
+/* game-rules static pages (game-rules-static-plan.md) use <a class="gr-tab">
+   page links instead of the old JS <button role="tab">, so this needs the
+   anchor reset + the "current page" look driven by aria-current instead of
+   aria-selected. aria-selected is kept too for as long as the legacy
+   dynamic game-rules.html (?game=) still renders JS <button> tabs. */
+a.gr-tab { display: inline-block; text-decoration: none; }
 .gr-tab:hover { color: var(--color-text); border-color: var(--color-gold); }
-.gr-tab[aria-selected="true"] {
+.gr-tab[aria-selected="true"],
+.gr-tab[aria-current="page"] {
   color: var(--color-bg);
   background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold));
   border-color: var(--color-gold);
