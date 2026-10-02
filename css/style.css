@@ -1606,7 +1606,19 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
    at all in their browser. A corner-to-corner linear-gradient has no
    center-position math to get wrong, so it's guaranteed to fill the whole
    box in every browser; same five brand colours, same visual direction
-   (warm yellow/orange bottom-left -> pink/magenta -> blue/purple top-right). */
+   (warm yellow/orange bottom-left -> pink/magenta -> blue/purple top-right).
+   v31c: the user then saw a hard seam partway up the disc, with a visibly
+   different gradient above vs below it. The shared base rule above
+   animates `background` itself (`transition: background 0.18s ease, ...`),
+   and interpolating between two *different kinds* of gradient (the rest
+   state's radial-gradient and this rule's linear-gradient) frame-by-frame
+   is undefined/unreliable across browsers -- this is almost certainly
+   what produced the seam (not reproducible in this environment's
+   Chromium, consistent with it being a browser-specific interpolation
+   glitch). IG's background transition is dropped below so the swap is an
+   instant cut instead of an animated cross-fade; border-color/color/
+   box-shadow/transform still animate normally. FB and X are untouched --
+   their hover backgrounds are flat colours, which don't have this risk. */
 .social-row-sm a.social-ig:hover,
 .social-row a.social-ig:hover,
 .social-row-sm a.social-ig:focus-visible,
@@ -1615,6 +1627,10 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   border-color: transparent;
   color: #fff;
   box-shadow: 0 0 0 3px rgba(214, 36, 159, 0.28), 0 6px 16px rgba(214, 36, 159, 0.22);
+}
+.social-row-sm a.social-ig,
+.social-row a.social-ig {
+  transition: border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
 }
 /* v31: the white glyph sits right over the gradient's pale-yellow corner
    (#fdf497), which is close enough to white that the camera outline nearly
