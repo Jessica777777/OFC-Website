@@ -204,6 +204,29 @@ const I18N = {
     'gameRules.cta.closing': 'HQ 已將完整規則歸檔，剩下的就交給你了。',
     'gameRules.cta.imgAlt': '特務手持撲克牌，準備帶你認識更多玩法',
 
+    // v36: per-game SEO (static game-rules/<id>.html pages) -- see
+    // claude/game-rules-static-plan.md step 4. title <=60 chars (EN),
+    // EN description <=155 chars.
+    'gameRules.nlh.head.title': '無限注德州撲克規則教學｜OFC 撲克：大菠蘿',
+    'gameRules.nlh.head.description': '無限注德州撲克規則完整教學：底牌、翻牌、轉牌、河牌怎麼下注，如何湊出最強五張牌，OFC 撲克：大菠蘿官方規則說明。',
+    'gameRules.nlh.h1': '無限注德州撲克規則',
+    'gameRules.plo.head.title': '限注奧馬哈（PLO）規則教學｜OFC 撲克：大菠蘿',
+    'gameRules.plo.head.description': '限注奧馬哈（PLO）規則完整教學：四張底牌、彩池注碼上限、如何用 2 張底牌＋3 張公用牌組牌，OFC 撲克：大菠蘿官方規則說明。',
+    'gameRules.plo.h1': '限注奧馬哈（PLO）規則',
+    'gameRules.stud.head.title': '七張梭哈規則教學｜OFC 撲克：大菠蘿',
+    'gameRules.stud.head.description': '七張梭哈規則完整教學：沒有公用牌，七張裡怎麼湊出最強五張，位置怎麼依明牌牌力變化，OFC 撲克：大菠蘿官方規則說明。',
+    'gameRules.stud.h1': '七張梭哈規則',
+    'gameRules.blackjack.head.title': '21點規則與賠率教學｜OFC 撲克：大菠蘿',
+    'gameRules.blackjack.head.description': '21點規則完整教學：怎麼在不爆牌的情況下贏過莊家，保險、雙倍下注、分牌怎麼玩，完整賠率表一次看，OFC 撲克：大菠蘿官方規則說明。',
+    'gameRules.blackjack.h1': '21點規則',
+    'gameRules.rummy.head.title': 'Rummy 規則教學｜OFC 撲克：大菠蘿',
+    'gameRules.rummy.head.description': 'Rummy 規則完整教學：怎麼抽牌、拆牌、湊出合法牌組，率先出完手牌就獲勝，OFC 撲克：大菠蘿官方規則說明。',
+    'gameRules.rummy.h1': 'Rummy 規則',
+    'gameRules.ginrummy.head.title': 'Gin Rummy 規則教學｜OFC 撲克：大菠蘿',
+    'gameRules.ginrummy.head.description': 'Gin Rummy 規則完整教學：怎麼湊牌組、降低 Deadwood，抓對時機 Knock 或 Gin 拿下一局，OFC 撲克：大菠蘿官方規則說明。',
+    'gameRules.ginrummy.h1': 'Gin Rummy 規則',
+    'gameRules.switchAria': '選擇玩法',
+
     // v4 interactive walkthrough (js/how-to-play-demo.js) — restored after
     // an accidental overwrite; see README "v26 修復" note.
     'howToPlay.interactive.restart': '從頭開始',
@@ -493,6 +516,29 @@ const I18N = {
     'gameRules.cta.closing': 'HQ has the full rulebook on file — the rest is up to you.',
     'gameRules.cta.imgAlt': 'An agent holding a hand of cards, ready to walk you through more games',
 
+    // v36: per-game SEO (static game-rules/<id>.html pages) -- see
+    // claude/game-rules-static-plan.md step 4. title <=60 chars (EN),
+    // EN description <=155 chars.
+    'gameRules.nlh.head.title': 'No Limit Hold\'em Rules: How to Play | OFC: Pineapple Poker',
+    'gameRules.nlh.head.description': 'Learn No Limit Hold\'em: hole cards, flop, turn, river, and how to build the best five-card hand. Full rules and hand rankings in OFC: Pineapple Poker.',
+    'gameRules.nlh.h1': 'No Limit Hold\'em Rules',
+    'gameRules.plo.head.title': 'PLO Rules: How to Play | OFC: Pineapple Poker',
+    'gameRules.plo.head.description': 'Learn Pot-Limit Omaha (PLO): four hole cards, pot-size betting limits, and how to build your best hand. Full rules in OFC: Pineapple Poker.',
+    'gameRules.plo.h1': 'PLO (Pot-Limit Omaha) Rules',
+    'gameRules.stud.head.title': '7 Card Stud Rules: How to Play | OFC: Pineapple Poker',
+    'gameRules.stud.head.description': 'Learn 7 Card Stud: no community cards, bring-ins, and how betting position shifts with exposed cards. Full rules in OFC: Pineapple Poker.',
+    'gameRules.stud.h1': '7 Card Stud Rules',
+    'gameRules.blackjack.head.title': 'Blackjack Rules: How to Play | OFC: Pineapple Poker',
+    'gameRules.blackjack.head.description': 'Learn Blackjack: beat the dealer without busting, plus insurance, splits, double downs, and full payout tables in OFC: Pineapple Poker.',
+    'gameRules.blackjack.h1': 'Blackjack Rules',
+    'gameRules.rummy.head.title': 'Rummy Rules: How to Play | OFC: Pineapple Poker',
+    'gameRules.rummy.head.description': 'Learn Rummy: draw, meld, and be first to empty your hand. Full rules and scoring in OFC: Pineapple Poker.',
+    'gameRules.rummy.h1': 'Rummy Rules',
+    'gameRules.ginrummy.head.title': 'Gin Rummy Rules: How to Play | OFC: Pineapple Poker',
+    'gameRules.ginrummy.head.description': 'Learn Gin Rummy: build melds, keep Deadwood low, and know when to Knock or go Gin. Full rules in OFC: Pineapple Poker.',
+    'gameRules.ginrummy.h1': 'Gin Rummy Rules',
+    'gameRules.switchAria': 'Choose a game',
+
     'howToPlay.interactive.restart': 'Start Over',
     'howToPlay.interactive.rowFront': 'Front',
     'howToPlay.interactive.rowMiddle': 'Middle',
@@ -750,9 +796,9 @@ const I18N = {
     'howToPlay.sng.imgAlt': 'OFC SNG のプレイ画面：2人のプレイヤーが完全に同じ手札を配られ、結果は異なる',
     'howToPlay.more.eyebrow': '【HQ 任務 // その他の作戦】',
     'howToPlay.more.title': 'さらなる任務が待っている',
-    'howToPlay.more.desc': 'アプリには無限注テキサスホールデム、PLO（オマハ）、7 Card Stud、ブラックジャック、Rummy、Gin Rummy に加え、Pineapple OFC、OFC Joker、OFC SNG などの上級 OFC バリエーション、そして「エージェントミッション」システムも収録。ダウンロード後にぜひ探索してみてください。各ゲームの詳しいルールは下のカードから確認できます。',
+    'howToPlay.more.desc': 'アプリにはノーリミットホールデム、PLO（オマハ）、7 Card Stud、ブラックジャック、Rummy、Gin Rummy に加え、Pineapple OFC、OFC Joker、OFC SNG などの上級 OFC バリエーション、そして「エージェントミッション」システムも収録。ダウンロード後にぜひ探索してみてください。各ゲームの詳しいルールは下のカードから確認できます。',
     'howToPlay.more.viewRules': '作戦ルールを見る',
-    'howToPlay.more.card.nlh.title': '無限注テキサスホールデム',
+    'howToPlay.more.card.nlh.title': 'ノーリミットホールデム',
     'howToPlay.more.card.nlh.desc': 'プリフロップ、フロップ、ターン、リバー——4回のベッティングで最強の5枚を作る。',
     'howToPlay.more.card.plo.title': 'PLO（オマハ）',
     'howToPlay.more.card.plo.desc': '4枚のホールカードから始め、ホール2枚＋コミュニティ3枚で組む。ベットはポットサイズが上限。',
@@ -765,11 +811,11 @@ const I18N = {
     'howToPlay.more.card.ginrummy.title': 'Gin Rummy',
     'howToPlay.more.card.ginrummy.desc': '1対1で対戦。デッドウッドが少ないほど有利。タイミングを見てノックまたはジンを狙う。',
     'gameRules.head.title': 'その他のゲームルール｜OFCポーカー：パイナップル',
-    'gameRules.head.description': '無限注テキサスホールデム、PLO、7 Card Stud、ブラックジャック、Rummy、Gin Rummy——ルール、ハンドランキング、配当表をまとめて確認。',
+    'gameRules.head.description': 'ノーリミットホールデム、PLO、7 Card Stud、ブラックジャック、Rummy、Gin Rummy——ルール、ハンドランキング、配当表をまとめて確認。',
     'gameRules.hero.back': '← 遊び方に戻る',
     'gameRules.hero.eyebrow': 'その他のゲームルール',
     'gameRules.hero.title': '他のゲームはどう遊ぶ？',
-    'gameRules.hero.desc': '無限注テキサスホールデム、PLO、7 Card Stud、ブラックジャック、Rummy、Gin Rummy——ここに掲載しているルールと配当表はすべてアプリ内 How to Play 画面から。下のタブでゲームを選んでください。',
+    'gameRules.hero.desc': 'ノーリミットホールデム、PLO、7 Card Stud、ブラックジャック、Rummy、Gin Rummy——ここに掲載しているルールと配当表はすべてアプリ内 How to Play 画面から。下のタブでゲームを選んでください。',
     'howToPlay.cta.tag': '【本部招集 // エージェント入隊命令】',
     'howToPlay.cta.title': '作戦、承認済み',
     'howToPlay.cta.desc': 'OFCポーカー：パイナップル をダウンロードして、内蔵チュートリアルで始めましょう！',
@@ -779,6 +825,29 @@ const I18N = {
     'gameRules.cta.tag': '【本部情報 // 全ルールファイル】',
     'gameRules.cta.closing': '本部にはすべてのルールが記録されている——あとは君次第だ。',
     'gameRules.cta.imgAlt': 'トランプを手にしたエージェント、他のゲームも案内する準備ができている',
+
+    // v36: per-game SEO (static game-rules/<id>.html pages) -- see
+    // claude/game-rules-static-plan.md step 4. title <=60 chars (EN),
+    // EN description <=155 chars.
+    'gameRules.nlh.head.title': 'ノーリミットホールデムのルール | OFCポーカー：パイナップル',
+    'gameRules.nlh.head.description': 'ノーリミットホールデムのルールを解説。ホールカードからフロップ、ターン、リバーまで、最強の5枚を作る方法が分かる。OFCポーカー：パイナップル公式ガイド。',
+    'gameRules.nlh.h1': 'ノーリミットホールデムのルール',
+    'gameRules.plo.head.title': 'PLO（ポットリミットオマハ）のルール | OFCポーカー：パイナップル',
+    'gameRules.plo.head.description': 'PLO（ポットリミットオマハ）のルールを解説。4枚のホールカードとポットサイズのベット上限、役の作り方が分かる。OFCポーカー：パイナップル公式ガイド。',
+    'gameRules.plo.h1': 'PLO（ポットリミットオマハ）のルール',
+    'gameRules.stud.head.title': 'セブンカードスタッドのルール | OFCポーカー：パイナップル',
+    'gameRules.stud.head.description': 'セブンカードスタッドのルールを解説。コミュニティカードなしで7枚から最強の5枚を作る方法とポジションの決まり方が分かる。OFCポーカー：パイナップル公式ガイド。',
+    'gameRules.stud.h1': 'セブンカードスタッドのルール',
+    'gameRules.blackjack.head.title': 'ブラックジャックのルールと配当 | OFCポーカー：パイナップル',
+    'gameRules.blackjack.head.description': 'ブラックジャックのルールを解説。21を超えずディーラーに勝つ方法、保険やダブルダウン、スプリット、配当表まで。OFCポーカー：パイナップル公式ガイド。',
+    'gameRules.blackjack.h1': 'ブラックジャックのルール',
+    'gameRules.rummy.head.title': 'ラミーのルール | OFCポーカー：パイナップル',
+    'gameRules.rummy.head.description': 'ラミーのルールを解説。ドローとメルドを繰り返し、誰よりも早く手札を出し切れば勝ち。OFCポーカー：パイナップル公式ガイド。',
+    'gameRules.rummy.h1': 'ラミーのルール',
+    'gameRules.ginrummy.head.title': 'ジンラミーのルール | OFCポーカー：パイナップル',
+    'gameRules.ginrummy.head.description': 'ジンラミーのルールを解説。メルドの作り方とデッドウッドを減らすコツ、ノックとジンのタイミングが分かる。OFCポーカー：パイナップル公式ガイド。',
+    'gameRules.ginrummy.h1': 'ジンラミーのルール',
+    'gameRules.switchAria': 'ゲームを選択',
 
     'howToPlay.interactive.restart': '最初からやり直す',
     'howToPlay.interactive.rowFront': 'フロント',
@@ -882,69 +951,25 @@ const I18N = {
 
 const OFC_LANG_KEY = 'ofc-lang';
 
-// SEO item 3 (2026-10): index / how-to-play / about / faq are now built as
-// three static copies (/ = en, /zh/, /ja/) by tools/build_i18n.py, with the
-// text already written into the HTML. Those pages carry
-// <html data-static-lang="..">: their language comes from the URL alone —
-// never from localStorage — and the DOM text is not rewritten at runtime.
-// Pages without it (game-rules.html, still a single URL) keep the old
-// client-side switching, plus a ?lang= parameter so links from /zh/ and /ja/
-// open it in the right language.
+// SEO item 3 (2026-10): every page on the site (including game-rules/*,
+// since the per-game static-pages build) is now one of three static copies
+// (/ = en, /zh/, /ja/) built by tools/build_i18n.py, with the text already
+// written into the HTML and real cross-language <a> links in the language
+// menu -- there is no more single dynamic URL and no more ?lang= query
+// param anywhere on the site, so the language is always just read off
+// <html data-static-lang="...">.
 function ofcStaticLang() {
   const v = document.documentElement.getAttribute('data-static-lang');
   return LANGS.includes(v) ? v : null;
 }
 
 function ofcGetLang() {
-  const fixed = ofcStaticLang();
-  if (fixed) return fixed;
-  try {
-    const q = new URLSearchParams(window.location.search).get('lang');
-    if (LANGS.includes(q)) {
-      try { localStorage.setItem(OFC_LANG_KEY, q); } catch (e) { /* ignore */ }
-      return q;
-    }
-  } catch (e) { /* ignore */ }
-  try {
-    const v = localStorage.getItem(OFC_LANG_KEY);
-    return LANGS.includes(v) ? v : 'en';
-  } catch (e) {
-    return 'en';
-  }
-}
-
-// On a dynamic (single-URL) page, point the shared nav/footer links at the
-// static copy in the visitor's language, e.g. about.html -> zh/about.html.
-const OFC_STATIC_PAGES = ['index.html', 'how-to-play.html', 'about.html', 'faq.html'];
-function ofcRetargetLinks(lang) {
-  document.querySelectorAll('a[href]').forEach((a) => {
-    if (!a.dataset.ofcHref) a.dataset.ofcHref = a.getAttribute('href');
-    const orig = a.dataset.ofcHref;
-    const m = orig.match(/^([a-z-]+\.html)(#.*)?$/);
-    if (!m || !OFC_STATIC_PAGES.includes(m[1])) return;
-    a.setAttribute('href', (lang === 'en' ? '' : lang + '/') + orig);
-  });
+  return ofcStaticLang() || 'en';
 }
 
 function ofcSetLang(lang) {
   if (!LANGS.includes(lang)) lang = 'en';
   try { localStorage.setItem(OFC_LANG_KEY, lang); } catch (e) { /* ignore (private browsing, etc.) */ }
-  // Keep a ?lang= param (added by cross-language links, e.g. ja/how-to-play.html
-  // -> game-rules.html?...&lang=ja) in sync with a manual switch. ofcGetLang()
-  // always prefers the URL param over localStorage, so leaving a stale param
-  // in place after the user picks a new language from the dropdown made every
-  // later re-render that calls ofcGetLang() (e.g. game-rules.html's
-  // contentLang(), re-run on "ofc:langchange") snap straight back to the old
-  // language, even though the static data-i18n chrome above had already
-  // switched -- the exact "dropdown says one language, content says another"
-  // bug reported against game-rules.html.
-  try {
-    const url = new URL(window.location.href);
-    if (url.searchParams.has('lang')) {
-      url.searchParams.set('lang', lang);
-      window.history.replaceState(null, '', url);
-    }
-  } catch (e) { /* ignore */ }
   applyI18n(lang);
   // v26: lets any dynamically-generated UI (e.g. the carousel's JS-built
   // dot buttons and play/pause label in js/main.js) re-read I18N and
@@ -954,59 +979,16 @@ function ofcSetLang(lang) {
 }
 
 function applyI18n(lang) {
-  const dict = I18N[lang] || I18N.en;
+  // Every page is static now (see ofcGetLang() above): the text is already
+  // in the HTML, so this only has to sync the lang-switch menu's "active"
+  // state and the collapsed trigger's short label (中/EN/日).
   window.OFC_I18N_CURRENT = lang;
-  if (ofcStaticLang()) {
-    // Static page: text is already in the HTML; only sync the menu state.
-    document.querySelectorAll('.lang-switch [data-lang]').forEach((el) => {
-      el.classList.toggle('active', el.getAttribute('data-lang') === lang);
-    });
-    document.querySelectorAll('.lang-switch-label').forEach((el) => {
-      el.textContent = LANG_LABEL[lang] || LANG_LABEL.en;
-    });
-    document.documentElement.removeAttribute('data-i18n-pending');
-    return;
-  }
-  document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : (lang === 'ja' ? 'ja' : 'en');
-  ofcRetargetLinks(lang);
-
-  document.querySelectorAll('[data-i18n]').forEach((el) => {
-    const key = el.getAttribute('data-i18n');
-    const val = dict[key];
-    if (val === undefined) return;
-    if (el.tagName === 'TITLE') {
-      el.textContent = val;
-      document.title = val;
-    } else {
-      el.innerHTML = val;
-    }
+  document.querySelectorAll('.lang-switch [data-lang]').forEach((el) => {
+    el.classList.toggle('active', el.getAttribute('data-lang') === lang);
   });
-
-  document.querySelectorAll('[data-i18n-aria-label]').forEach((el) => {
-    const val = dict[el.getAttribute('data-i18n-aria-label')];
-    if (val !== undefined) el.setAttribute('aria-label', val);
-  });
-  document.querySelectorAll('[data-i18n-alt]').forEach((el) => {
-    const val = dict[el.getAttribute('data-i18n-alt')];
-    if (val !== undefined) el.setAttribute('alt', val);
-  });
-  document.querySelectorAll('[data-i18n-content]').forEach((el) => {
-    const val = dict[el.getAttribute('data-i18n-content')];
-    if (val !== undefined) el.setAttribute('content', val);
-  });
-
-  document.querySelectorAll('.lang-switch button[data-lang]').forEach((btn) => {
-    btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-  });
-
-  // Dropdown trigger label (v13): shows the currently selected language's
-  // short label (中/EN/日) on the collapsed button, since the switch is no
-  // longer three always-visible buttons but a single trigger + menu.
   document.querySelectorAll('.lang-switch-label').forEach((el) => {
     el.textContent = LANG_LABEL[lang] || LANG_LABEL.en;
   });
-
-  // Page is translated: reveal it (see the anti-flash <head> snippet).
   document.documentElement.removeAttribute('data-i18n-pending');
 }
 

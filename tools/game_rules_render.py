@@ -27,7 +27,7 @@ def esc_text(s):
     return html.escape(s, quote=False)
 
 
-def card_html(code):
+def card_html(code, img_base=CARD_IMG_BASE):
     if code == "_":
         return '<span class="gr-card gap"></span>'
     if code == "?":
@@ -37,12 +37,12 @@ def card_html(code):
         return (
             '<span class="gr-card joker" data-suit="%s">'
             '<img src="%sjoker.png" alt="Joker"></span>'
-        ) % (esc(suit), CARD_IMG_BASE)
+        ) % (esc(suit), img_base)
     is_red = suit in RED_SUIT
     cls = "gr-card is-red" if is_red else "gr-card"
     label = "10" if rank == "T" else rank
-    rank_file = "%s%s_%s.png" % (CARD_IMG_BASE, label, "r" if is_red else "b")
-    suit_file = "%s%s.png" % (CARD_IMG_BASE, SUIT_FILE.get(suit, ""))
+    rank_file = "%s%s_%s.png" % (img_base, label, "r" if is_red else "b")
+    suit_file = "%s%s.png" % (img_base, SUIT_FILE.get(suit, ""))
     return (
         '<span class="%s">'
         '<img class="gr-card-rank" src="%s" alt="%s">'
@@ -50,7 +50,7 @@ def card_html(code):
     ) % (cls, esc(rank_file), esc(label), esc(suit_file), esc(SUIT.get(suit, "")))
 
 
-def hand_html(codes):
+def hand_html(codes, img_base=CARD_IMG_BASE):
     """Split on the "_" placeholder into groups: 1 group -> plain flat hand
     (unchanged); 2 groups -> a "before -> after" demo, gold arrow between two
     bordered boxes; 3+ groups -> independent example hands side by side, each
@@ -66,7 +66,7 @@ def hand_html(codes):
     groups = [g for g in groups if g] or [[]]
 
     if len(groups) == 1:
-        inner = "".join(card_html(c) for c in groups[0])
+        inner = "".join(card_html(c, img_base) for c in groups[0])
         return '<div class="gr-hand">%s</div>' % inner
 
     parts = []
@@ -76,7 +76,7 @@ def hand_html(codes):
                 parts.append('<span class="gr-hand-arrow" aria-hidden="true">&#8594;</span>')
             else:
                 parts.append('<span class="gr-hand-gap" aria-hidden="true"></span>')
-        parts.append('<div class="gr-hand-group">%s</div>' % "".join(card_html(c) for c in g))
+        parts.append('<div class="gr-hand-group">%s</div>' % "".join(card_html(c, img_base) for c in g))
     return '<div class="gr-hand is-grouped">%s</div>' % "".join(parts)
 
 
@@ -100,7 +100,7 @@ def text_html(node, lang):
     return "".join(out)
 
 
-def render_block(b, lang, game_rules):
+def render_block(b, lang, game_rules, img_base=CARD_IMG_BASE):
     t = b["t"]
     if t == "h2":
         return '<div class="gr-sec-head"><h2>%s</h2></div>' % text_html(b["v"], lang)
@@ -111,7 +111,7 @@ def render_block(b, lang, game_rules):
     if t == "p":
         return "<p>%s</p>" % text_html(b["v"], lang)
     if t == "hand":
-        return hand_html(b["v"])
+        return hand_html(b["v"], img_base)
     if t == "steps":
         rows = []
         for s in b["v"]:
@@ -129,13 +129,13 @@ def render_block(b, lang, game_rules):
         for r in b["v"]:
             rows.append(
                 '<div class="gr-vrow">%s<span class="gr-amount">%s</span></div>'
-                % (hand_html(r["cards"]), text_html(r["amount"], lang))
+                % (hand_html(r["cards"], img_base), text_html(r["amount"], lang))
             )
         return '<div class="gr-vrows">%s</div>' % "".join(rows)
     if t == "paytable":
         rows = []
         for r in b["v"]:
-            cards_html = hand_html(r["cards"]) if r.get("cards") else "<span></span>"
+            cards_html = hand_html(r["cards"], img_base) if r.get("cards") else "<span></span>"
             rows.append(
                 '<div class="gr-prow"><span class="gr-kind">%s</span>%s<span class="gr-amount">%s</span></div>'
                 % (text_html(r["kind"], lang), cards_html, text_html(r["amount"], lang))
@@ -147,7 +147,7 @@ def render_block(b, lang, game_rules):
         for r in game_rules["ranking"]:
             trs.append(
                 '<tr><th scope="row">%s</th><td>%s</td></tr>'
-                % (text_html(r["name"], lang), hand_html(r["cards"]))
+                % (text_html(r["name"], lang), hand_html(r["cards"], img_base))
             )
         table = (
             '<div class="gr-table-scroll"><table class="gr-rank-table"><tbody>%s</tbody></table></div>'
@@ -157,5 +157,5 @@ def render_block(b, lang, game_rules):
     return ""
 
 
-def render_blocks(blocks, lang, game_rules):
-    return "".join(render_block(b, lang, game_rules) for b in blocks)
+def render_blocks(blocks, lang, game_rules, img_base=CARD_IMG_BASE):
+    return "".join(render_block(b, lang, game_rules, img_base) for b in blocks)

@@ -15,21 +15,24 @@ What it does (safe to run any number of times):
      canonical + hreflang block, turns the language menu into real links.
   2. Writes zh/<page>.html and ja/<page>.html from the root page with the
      zh / ja strings, ../ asset paths and their own lang/canonical.
-  3. Writes sitemap.xml (every page in all 3 languages, with hreflang
-     alternates, plus game-rules.html) and robots.txt pointing at it.
+  3. Writes the 18 per-game pages (<lang>/game-rules/<id>.html) and 3
+     overview pages (<lang>/game-rules.html) via tools/build_game_rules.py.
+  4. Writes sitemap.xml (every page above, in all 3 languages, with hreflang
+     alternates) and robots.txt pointing at it.
 
-So: edit text in js/i18n.js (and structure in the root .html files), then run
-this script and commit everything, including zh/ and ja/.
-Never hand-edit zh/*.html or ja/*.html — they are overwritten.
-
-game-rules.html is intentionally NOT built (still one URL, JS language
-switching); links to it get ?lang=xx so it opens in the visitor's language.
+So: edit text in js/i18n.js (and structure in the root .html files, or
+data/game-rules.json for per-game content), then run this script and commit
+everything, including zh/, ja/, and game-rules/.
+Never hand-edit zh/*.html, ja/*.html, or any game-rules/*.html — they are
+all overwritten by this script.
 """
 import html as _html
 import os
 import re
 import sys
 from html.parser import HTMLParser
+
+import build_game_rules
 
 # Switch to "https://ofcpineapple.com/" once the custom domain is live.
 BASE_URL = "https://jessica777777.github.io/OFC-Website/"
@@ -175,21 +178,19 @@ def localize(src, page, lang):
     src = LANG_MENU.sub(lambda m: m.group(1) + "\n" + links + "\n        " + m.group(3), src, count=1)
     src = re.sub(r'(<span class="lang-switch-label">)[^<]*(</span>)',
                  lambda m: m.group(1) + {"en": "EN", "zh": "中", "ja": "日"}[lang] + m.group(2), src)
-    # links into the (single-URL) game-rules page carry the language
-    src = re.sub(r'href="(?:\.\./)?game-rules\.html(\?[^"#]*)?"',
-                 lambda m: 'href="%sgame-rules.html%s"' % (
-                     up, "?" + "&amp;".join([q for q in re.split(r"&amp;|&", (m.group(1) or "?")[1:])
-                                             if q and not q.startswith("lang=")] + ["lang=" + lang])), src)
+    # how-to-play.html's 6 feature-card links used to point at the single
+    # dynamic game-rules.html?game=<id>&lang=xx page; it's now 18 static
+    # pages, one per game per language, living at game-rules/<id>.html
+    # alongside this page in every language's own folder -- so no "../" is
+    # needed here regardless of lang (see tools/build_game_rules.py).
+    src = re.sub(r'href="(?:\.\./)?game-rules\.html\?game=([a-z]+)(?:&amp;lang=\w+)?"',
+                 lambda m: 'href="game-rules/%s.html"' % m.group(1), src)
     if lang != "en":
         # shared assets live one level up
         src = re.sub(r'((?:src|href|poster|srcset)=")((?:assets|css|js)/)', r"\1../\2", src)
         src = re.sub(r"url\((['\"]?)((?:assets|css)/)", r"url(\1../\2", src)
         src = src.replace("<!DOCTYPE html>\n", "<!DOCTYPE html>\n" + GEN_NOTE % page, 1)
     return src
-
-
-# Single-URL pages that are not built per language but should be crawled.
-EXTRA_URLS = ["game-rules.html"]
 
 
 def write_sitemap():
@@ -205,8 +206,14 @@ def write_sitemap():
                 out.append('    <xhtml:link rel="alternate" hreflang="%s" href="%s"/>' % (HTML_LANG[l], _html.escape(page_url(page, l))))
             out.append('    <xhtml:link rel="alternate" hreflang="x-default" href="%s"/>' % _html.escape(page_url(page, "en")))
             out.append("  </url>")
-    for extra in EXTRA_URLS:
-        out.append("  <url>\n    <loc>%s</loc>\n  </url>" % _html.escape(BASE_URL + extra))
+    # 18 per-game pages + 3 overview pages, each with full hreflang alternates.
+    for loc, alts in build_game_rules.sitemap_entries(BASE_URL):
+        out.append("  <url>")
+        out.append("    <loc>%s</loc>" % _html.escape(loc))
+        for l in LANGS:
+            out.append('    <xhtml:link rel="alternate" hreflang="%s" href="%s"/>' % (HTML_LANG[l], _html.escape(alts[l])))
+        out.append('    <xhtml:link rel="alternate" hreflang="x-default" href="%s"/>' % _html.escape(alts["en"]))
+        out.append("  </url>")
     out.append("</urlset>")
     open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8").write("\n".join(out) + "\n")
     # Note: crawlers only read robots.txt at the host root, so this file only
@@ -220,6 +227,7 @@ def write_sitemap():
 
 def main():
     d = load_dict()
+    build_game_rules.build(d, BASE_URL)
     missing = set()
     for page in PAGES:
         path = os.path.join(ROOT, page)
