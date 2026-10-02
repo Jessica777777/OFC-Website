@@ -235,20 +235,14 @@
   }
 
   var SUIT = { s: "♠", h: "♥", d: "♦", c: "♣" };
+  var SUIT_FILE = { s: "spade", h: "heart", d: "diamond", c: "club" };
+  var RED_SUIT = { h: true, d: true };
 
-  // small inline jester-face glyph (purple hat w/ gold bells, cream face)
-  // standing in for the old plain "JOKER" text label -- same icon used by
-  // tools/game_rules_render.py so the eventual static pages match.
-  var JOKER_SVG = '<svg viewBox="0 0 32 32" aria-hidden="true">'
-    + '<path d="M6 14 L10 4 L13 11 L16 2 L19 11 L22 4 L26 14 Z" fill="#8b5cf6"/>'
-    + '<circle cx="10" cy="4" r="1.6" fill="#f2d879"/>'
-    + '<circle cx="16" cy="2" r="1.6" fill="#f2d879"/>'
-    + '<circle cx="22" cy="4" r="1.6" fill="#f2d879"/>'
-    + '<path d="M7 14 q9 10 18 0 l-1.5 6 q-7.5 7-15 0 Z" fill="#faf6ea" stroke="#1a1a1a" stroke-width="0.8"/>'
-    + '<circle cx="12.5" cy="17.5" r="1.1" fill="#1a1a1a"/>'
-    + '<circle cx="19.5" cy="17.5" r="1.1" fill="#1a1a1a"/>'
-    + '<path d="M12.5 21.5 q3.5 2.5 7 0" fill="none" stroke="#1a1a1a" stroke-width="1" stroke-linecap="round"/>'
-    + '</svg>';
+  // v35: real card-set artwork (assets/images/cards/, from the user's
+  // 素材/POKER/V08 material) in place of the old CSS-text rank/suit and the
+  // inline jester SVG -- same asset set tools/game_rules_render.py's
+  // card_html() uses so the eventual static pages match.
+  var CARD_IMG_BASE = "assets/images/cards/";
 
   function card(code) {
     var el = document.createElement("span");
@@ -259,15 +253,25 @@
     if (rank === "X") {
       el.className += " joker";
       el.setAttribute("data-suit", suit);
-      el.innerHTML = JOKER_SVG;
+      var jokerImg = document.createElement("img");
+      jokerImg.src = CARD_IMG_BASE + "joker.png";
+      jokerImg.alt = "Joker";
+      el.appendChild(jokerImg);
       return el;
     }
-    if (suit === "h" || suit === "d") { el.className += " is-red"; }
-    el.textContent = rank === "T" ? "10" : rank;
-    var s = document.createElement("span");
-    s.className = "s";
-    s.textContent = SUIT[suit] || "";
-    el.appendChild(s);
+    var isRed = !!RED_SUIT[suit];
+    if (isRed) { el.className += " is-red"; }
+    var label = rank === "T" ? "10" : rank;
+    var rankImg = document.createElement("img");
+    rankImg.className = "gr-card-rank";
+    rankImg.src = CARD_IMG_BASE + label + (isRed ? "_r" : "_b") + ".png";
+    rankImg.alt = label;
+    el.appendChild(rankImg);
+    var suitImg = document.createElement("img");
+    suitImg.className = "gr-card-suit";
+    suitImg.src = CARD_IMG_BASE + (SUIT_FILE[suit] || "") + ".png";
+    suitImg.alt = SUIT[suit] || "";
+    el.appendChild(suitImg);
     return el;
   }
 

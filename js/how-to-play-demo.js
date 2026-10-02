@@ -68,7 +68,13 @@
  */
 (function () {
   const SUITS = { S: '♠', H: '♥', D: '♦', C: '♣' };
+  const SUIT_FILE = { S: 'spade', H: 'heart', D: 'diamond', C: 'club' };
   const RED_SUITS = ['H', 'D'];
+  // v35: real card-set artwork (assets/images/cards/, from the user's
+  // 素材/POKER/V08 material), same asset set the game-rules pages use --
+  // see makeCardEl() below.
+  const CARD_IMG_BASE = 'assets/images/cards/';
+  const RANK_FILE_LABEL = { 14: 'A', 13: 'K', 12: 'Q', 11: 'J' };
   const RANK_LABEL = { 14: 'A', 13: 'K', 12: 'Q', 11: 'J' };
   const ROW_ORDER = ['front', 'middle', 'back'];
   const TOTAL_MAX = { front: 3, middle: 5, back: 5 };
@@ -316,7 +322,12 @@
           });
         }
       }
-      el.innerHTML = '<span>' + cardLabel(card) + '</span><span class="ofc-card-suit">' + SUITS[card.suit] + '</span>';
+      const isRed = RED_SUITS.includes(card.suit);
+      const rankFile = (RANK_FILE_LABEL[card.rank] || String(card.rank)) + (isRed ? '_r' : '_b') + '.png';
+      const suitFile = (SUIT_FILE[card.suit] || '') + '.png';
+      el.innerHTML = ''
+        + '<img class="ofc-card-rank" src="' + CARD_IMG_BASE + rankFile + '" alt="' + cardLabel(card) + '">'
+        + '<img class="ofc-card-suit" src="' + CARD_IMG_BASE + suitFile + '" alt="' + SUITS[card.suit] + '">';
       return el;
     }
 

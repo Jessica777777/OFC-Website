@@ -1888,10 +1888,12 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
      smaller than the desktop board/hand tray needs to be to fit this
      widget's new compact height budget. Kept in lockstep with
      .ofc-demo-slot-empty below so filled and empty slots stay the same
-     footprint. Rank/suit font sizes bumped up (was 1.1rem/1.3rem) so they
-     fill more of the smaller face, per user feedback referencing a mobile
-     OFC game's card style — same "bigger rank/suit" direction already
-     applied to the mobile breakpoint in v29e-followup7. */
+     footprint.
+     v35: rank/suit text swapped for the real card-set artwork (see
+     .ofc-card-rank/.ofc-card-suit below), same asset set used on the
+     game-rules pages (assets/images/cards/, from the user's
+     素材/POKER/V08 material) -- the font-family/font-size rules that used
+     to size the text labels are gone, replaced by fixed img heights. */
   width: 56px;
   height: 76px;
   border-radius: 8px;
@@ -1903,18 +1905,14 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1px;
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 1.32rem;
-  line-height: 1;
+  gap: 2px;
   cursor: pointer;
   transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
   flex: 0 0 auto;
 }
 .ofc-card:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35); }
-.ofc-card.is-red { color: var(--color-red); }
-.ofc-card-suit { font-size: 1.55rem; }
+.ofc-card-rank { height: 26px; display: block; }
+.ofc-card-suit { height: 19px; display: block; }
 .ofc-card.selected {
   outline: 3px solid var(--color-gold);
   outline-offset: 1px;
@@ -2513,8 +2511,13 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
      rank/suit text reads as filling the card face instead of floating in
      the middle of it, paired with the shorter aspect-ratio above and the
      tighter .ofc-card gap below. */
-  .ofc-card { font-size: clamp(0.72rem, 3.8vw, 1.05rem); gap: 1px; }
-  .ofc-card-suit { font-size: clamp(0.88rem, 4.4vw, 1.25rem); }
+  .ofc-card { gap: 1px; }
+  /* v35: the images scale with the card's own fluid width (the aspect-ratio
+     box above) via percentage sizing, replacing the old clamp()'d
+     font-size pair -- same ratio the desktop fixed px heights use
+     (26/56 and 19/56 of the 56px desktop card). */
+  .ofc-card-rank { width: 46%; height: auto; }
+  .ofc-card-suit { width: 34%; height: auto; }
 }
 
 /* --- Full-bleed "feature band" (v9/v10) ---
@@ -2974,17 +2977,23 @@ a.gr-tab { display: inline-block; text-decoration: none; }
   align-items: center;
   justify-content: center;
   gap: 1px;
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 0.82rem;
-  line-height: 1;
   flex: 0 0 auto;
 }
-.gr-card.is-red { color: var(--color-red); }
-.gr-card .s { font-size: 0.7rem; font-weight: 400; }
-.gr-card.joker { padding: 2px; }
-.gr-card.joker svg { width: 26px; height: 26px; display: block; }
-.gr-card.back { background: linear-gradient(165deg, var(--color-surface-2), #2a1218); color: transparent; border-color: var(--color-border); }
+/* v35: rank/suit are now the real card-set artwork (assets/images/cards/,
+   sourced from the user's 素材/POKER/V08 material) instead of CSS text --
+   see .gr-card-rank/.gr-card-suit below. The images are pre-colored
+   (black/red per suit) so .is-red no longer needs to set a text color, but
+   the class is still applied for anything else that might key off it. */
+.gr-card-rank { height: 18px; display: block; }
+.gr-card-suit { height: 13px; display: block; }
+.gr-card.joker { padding: 4px; }
+.gr-card.joker img { width: 100%; height: 100%; display: block; object-fit: contain; }
+.gr-card.back {
+  background-image: url("../assets/images/cards/card-back.png");
+  background-size: cover;
+  background-position: center;
+  border-color: var(--color-border);
+}
 .gr-card.gap { background: transparent; border: 0; box-shadow: none; }
 
 /* value / paytable rows -- capped to the same 720px reading width as
@@ -3058,8 +3067,9 @@ a.gr-tab { display: inline-block; text-decoration: none; }
   .gr-amount { justify-self: start; }
   .gr-prow { grid-template-columns: 1fr auto; }
   .gr-kind { grid-column: 1 / -1; }
-  .gr-card { width: 34px; height: 48px; font-size: 0.72rem; }
-  .gr-card.joker svg { width: 20px; height: 20px; }
+  .gr-card { width: 34px; height: 48px; }
+  .gr-card-rank { height: 15px; }
+  .gr-card-suit { height: 11px; }
   .gr-hand-group { padding: 4px; gap: 4px; }
   .gr-hand-arrow { font-size: 1.05rem; }
 }

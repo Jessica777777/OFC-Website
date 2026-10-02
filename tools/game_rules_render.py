@@ -6,23 +6,15 @@ import html
 import re
 
 SUIT = {"s": "♠", "h": "♥", "d": "♦", "c": "♣"}
+SUIT_FILE = {"s": "spade", "h": "heart", "d": "diamond", "c": "club"}
+RED_SUIT = {"h", "d"}
 PLACEHOLDER_RE = re.compile(r"%(?:\d+\$)?[sd]")
 
-# small inline jester-face glyph (purple hat w/ gold bells, cream face)
-# standing in for a plain "JOKER" text label -- kept identical to the
-# JOKER_SVG string in game-rules.html's inline script.
-JOKER_SVG = (
-    '<svg viewBox="0 0 32 32" aria-hidden="true">'
-    '<path d="M6 14 L10 4 L13 11 L16 2 L19 11 L22 4 L26 14 Z" fill="#8b5cf6"/>'
-    '<circle cx="10" cy="4" r="1.6" fill="#f2d879"/>'
-    '<circle cx="16" cy="2" r="1.6" fill="#f2d879"/>'
-    '<circle cx="22" cy="4" r="1.6" fill="#f2d879"/>'
-    '<path d="M7 14 q9 10 18 0 l-1.5 6 q-7.5 7-15 0 Z" fill="#faf6ea" stroke="#1a1a1a" stroke-width="0.8"/>'
-    '<circle cx="12.5" cy="17.5" r="1.1" fill="#1a1a1a"/>'
-    '<circle cx="19.5" cy="17.5" r="1.1" fill="#1a1a1a"/>'
-    '<path d="M12.5 21.5 q3.5 2.5 7 0" fill="none" stroke="#1a1a1a" stroke-width="1" stroke-linecap="round"/>'
-    '</svg>'
-)
+# v35: real card-set artwork (assets/images/cards/, from the user's
+# 素材/POKER/V08 material) in place of the old CSS-text rank/suit and the
+# inline jester SVG -- kept identical to game-rules.html's inline script so
+# the static pages this renders match the dynamic page exactly.
+CARD_IMG_BASE = "assets/images/cards/"
 
 
 def esc(s):
@@ -42,12 +34,20 @@ def card_html(code):
         return '<span class="gr-card back"></span>'
     rank, suit = code[:-1], code[-1]
     if rank == "X":
-        return '<span class="gr-card joker" data-suit="%s">%s</span>' % (esc(suit), JOKER_SVG)
-    cls = "gr-card is-red" if suit in ("h", "d") else "gr-card"
+        return (
+            '<span class="gr-card joker" data-suit="%s">'
+            '<img src="%sjoker.png" alt="Joker"></span>'
+        ) % (esc(suit), CARD_IMG_BASE)
+    is_red = suit in RED_SUIT
+    cls = "gr-card is-red" if is_red else "gr-card"
     label = "10" if rank == "T" else rank
-    return '<span class="%s">%s<span class="s">%s</span></span>' % (
-        cls, esc(label), SUIT.get(suit, "")
-    )
+    rank_file = "%s%s_%s.png" % (CARD_IMG_BASE, label, "r" if is_red else "b")
+    suit_file = "%s%s.png" % (CARD_IMG_BASE, SUIT_FILE.get(suit, ""))
+    return (
+        '<span class="%s">'
+        '<img class="gr-card-rank" src="%s" alt="%s">'
+        '<img class="gr-card-suit" src="%s" alt="%s"></span>'
+    ) % (cls, esc(rank_file), esc(label), esc(suit_file), esc(SUIT.get(suit, "")))
 
 
 def hand_html(codes):
