@@ -1614,7 +1614,11 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 .social-row-sm a.social-ig:focus-visible,
 .social-row a.social-ig:focus-visible {
   background: url('../assets/images/icon-instagram-color.png') center / cover no-repeat;
-  border-color: transparent;
+  /* v31e: was `border-color: transparent` -- against the nav's near-black
+     background that left the disc with no visible edge at all (FB/X both
+     keep a ring on hover: FB's brand blue, X's semi-transparent white).
+     Matching X's white ring here per user feedback ("放大時白邊都要在"). */
+  border-color: rgba(255, 255, 255, 0.7);
   box-shadow: 0 0 0 3px rgba(214, 36, 159, 0.28), 0 6px 16px rgba(214, 36, 159, 0.22);
 }
 .social-row-sm a.social-ig:hover svg,
