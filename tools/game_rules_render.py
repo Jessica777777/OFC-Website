@@ -8,6 +8,22 @@ import re
 SUIT = {"s": "♠", "h": "♥", "d": "♦", "c": "♣"}
 PLACEHOLDER_RE = re.compile(r"%(?:\d+\$)?[sd]")
 
+# small inline jester-face glyph (purple hat w/ gold bells, cream face)
+# standing in for a plain "JOKER" text label -- kept identical to the
+# JOKER_SVG string in game-rules.html's inline script.
+JOKER_SVG = (
+    '<svg viewBox="0 0 32 32" aria-hidden="true">'
+    '<path d="M6 14 L10 4 L13 11 L16 2 L19 11 L22 4 L26 14 Z" fill="#8b5cf6"/>'
+    '<circle cx="10" cy="4" r="1.6" fill="#f2d879"/>'
+    '<circle cx="16" cy="2" r="1.6" fill="#f2d879"/>'
+    '<circle cx="22" cy="4" r="1.6" fill="#f2d879"/>'
+    '<path d="M7 14 q9 10 18 0 l-1.5 6 q-7.5 7-15 0 Z" fill="#faf6ea" stroke="#1a1a1a" stroke-width="0.8"/>'
+    '<circle cx="12.5" cy="17.5" r="1.1" fill="#1a1a1a"/>'
+    '<circle cx="19.5" cy="17.5" r="1.1" fill="#1a1a1a"/>'
+    '<path d="M12.5 21.5 q3.5 2.5 7 0" fill="none" stroke="#1a1a1a" stroke-width="1" stroke-linecap="round"/>'
+    '</svg>'
+)
+
 
 def esc(s):
     return html.escape(s, quote=True)
@@ -26,7 +42,7 @@ def card_html(code):
         return '<span class="gr-card back"></span>'
     rank, suit = code[:-1], code[-1]
     if rank == "X":
-        return '<span class="gr-card joker" data-suit="%s">JOKER</span>' % esc(suit)
+        return '<span class="gr-card joker" data-suit="%s">%s</span>' % (esc(suit), JOKER_SVG)
     cls = "gr-card is-red" if suit in ("h", "d") else "gr-card"
     label = "10" if rank == "T" else rank
     return '<span class="%s">%s<span class="s">%s</span></span>' % (
@@ -35,8 +51,33 @@ def card_html(code):
 
 
 def hand_html(codes):
-    inner = "".join(card_html(c) for c in (codes or []))
-    return '<div class="gr-hand">%s</div>' % inner
+    """Split on the "_" placeholder into groups: 1 group -> plain flat hand
+    (unchanged); 2 groups -> a "before -> after" demo, gold arrow between two
+    bordered boxes; 3+ groups -> independent example hands side by side, each
+    boxed, plain gap (no arrow) between them. Mirrors game-rules.html's JS
+    hand() exactly.
+    """
+    groups = [[]]
+    for c in (codes or []):
+        if c == "_":
+            groups.append([])
+        else:
+            groups[-1].append(c)
+    groups = [g for g in groups if g] or [[]]
+
+    if len(groups) == 1:
+        inner = "".join(card_html(c) for c in groups[0])
+        return '<div class="gr-hand">%s</div>' % inner
+
+    parts = []
+    for i, g in enumerate(groups):
+        if i > 0:
+            if len(groups) == 2:
+                parts.append('<span class="gr-hand-arrow" aria-hidden="true">&#8594;</span>')
+            else:
+                parts.append('<span class="gr-hand-gap" aria-hidden="true"></span>')
+        parts.append('<div class="gr-hand-group">%s</div>' % "".join(card_html(c) for c in g))
+    return '<div class="gr-hand is-grouped">%s</div>' % "".join(parts)
 
 
 def txt(node, lang):

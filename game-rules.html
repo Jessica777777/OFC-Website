@@ -236,6 +236,20 @@
 
   var SUIT = { s: "♠", h: "♥", d: "♦", c: "♣" };
 
+  // small inline jester-face glyph (purple hat w/ gold bells, cream face)
+  // standing in for the old plain "JOKER" text label -- same icon used by
+  // tools/game_rules_render.py so the eventual static pages match.
+  var JOKER_SVG = '<svg viewBox="0 0 32 32" aria-hidden="true">'
+    + '<path d="M6 14 L10 4 L13 11 L16 2 L19 11 L22 4 L26 14 Z" fill="#8b5cf6"/>'
+    + '<circle cx="10" cy="4" r="1.6" fill="#f2d879"/>'
+    + '<circle cx="16" cy="2" r="1.6" fill="#f2d879"/>'
+    + '<circle cx="22" cy="4" r="1.6" fill="#f2d879"/>'
+    + '<path d="M7 14 q9 10 18 0 l-1.5 6 q-7.5 7-15 0 Z" fill="#faf6ea" stroke="#1a1a1a" stroke-width="0.8"/>'
+    + '<circle cx="12.5" cy="17.5" r="1.1" fill="#1a1a1a"/>'
+    + '<circle cx="19.5" cy="17.5" r="1.1" fill="#1a1a1a"/>'
+    + '<path d="M12.5 21.5 q3.5 2.5 7 0" fill="none" stroke="#1a1a1a" stroke-width="1" stroke-linecap="round"/>'
+    + '</svg>';
+
   function card(code) {
     var el = document.createElement("span");
     el.className = "gr-card";
@@ -245,7 +259,7 @@
     if (rank === "X") {
       el.className += " joker";
       el.setAttribute("data-suit", suit);
-      el.textContent = "JOKER";
+      el.innerHTML = JOKER_SVG;
       return el;
     }
     if (suit === "h" || suit === "d") { el.className += " is-red"; }
@@ -258,9 +272,46 @@
   }
 
   function hand(codes) {
+    // Codes are split into groups on the "_" placeholder: a single group
+    // renders as a plain flat hand (unchanged); two groups are a
+    // "before -> after" demo and get a gold arrow between two bordered
+    // card boxes; three or more groups are independent example hands
+    // shown side by side, each in its own bordered box with a plain gap
+    // (no arrow, since there's no single before/after relationship).
+    var groups = [[]];
+    (codes || []).forEach(function (c) {
+      if (c === "_") { groups.push([]); } else { groups[groups.length - 1].push(c); }
+    });
+    groups = groups.filter(function (g) { return g.length > 0; });
+    if (groups.length === 0) { groups = [[]]; }
+
     var el = document.createElement("div");
     el.className = "gr-hand";
-    (codes || []).forEach(function (c) { el.appendChild(card(c)); });
+    if (groups.length === 1) {
+      groups[0].forEach(function (c) { el.appendChild(card(c)); });
+      return el;
+    }
+    el.className += " is-grouped";
+    groups.forEach(function (g, i) {
+      if (i > 0) {
+        if (groups.length === 2) {
+          var arrow = document.createElement("span");
+          arrow.className = "gr-hand-arrow";
+          arrow.setAttribute("aria-hidden", "true");
+          arrow.textContent = "\u2192";
+          el.appendChild(arrow);
+        } else {
+          var gap = document.createElement("span");
+          gap.className = "gr-hand-gap";
+          gap.setAttribute("aria-hidden", "true");
+          el.appendChild(gap);
+        }
+      }
+      var box = document.createElement("div");
+      box.className = "gr-hand-group";
+      g.forEach(function (c) { box.appendChild(card(c)); });
+      el.appendChild(box);
+    });
     return el;
   }
 

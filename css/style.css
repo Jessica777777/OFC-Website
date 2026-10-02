@@ -2947,6 +2947,14 @@ a.gr-tab { display: inline-block; text-decoration: none; }
 /* playing cards — same skeuomorphic cream-face treatment as .ofc-card,
    just smaller so a full paytable row still fits comfortably */
 .gr-hand { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 18px; }
+/* a hand made of several card groups (e.g. a Rummy "before -> after" demo,
+   or several independent example hands shown side by side) renders each
+   run of cards in its own bordered box instead of all cards loose in one
+   row, so it reads as distinct groups rather than one jumbled hand. */
+.gr-hand.is-grouped { gap: 10px; }
+.gr-hand-group { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px; border: 1px solid var(--color-border); border-radius: 8px; background: rgba(255, 255, 255, 0.03); }
+.gr-hand-arrow { display: flex; align-items: center; font-size: 1.3rem; color: var(--color-gold); padding: 0 2px; }
+.gr-hand-gap { display: inline-block; width: 14px; }
 /* a standalone hand-of-cards example (Rummy/Gin Rummy) rendered directly into the
    panel needs the same 900px-centered treatment as the surrounding text, otherwise
    it juts out past the left edge of the centered column above/below it. Scoped to a
@@ -2974,7 +2982,8 @@ a.gr-tab { display: inline-block; text-decoration: none; }
 }
 .gr-card.is-red { color: var(--color-red); }
 .gr-card .s { font-size: 0.7rem; font-weight: 400; }
-.gr-card.joker { font-size: 0.48rem; letter-spacing: 0.02em; }
+.gr-card.joker { padding: 2px; }
+.gr-card.joker svg { width: 26px; height: 26px; display: block; }
 .gr-card.back { background: linear-gradient(165deg, var(--color-surface-2), #2a1218); color: transparent; border-color: var(--color-border); }
 .gr-card.gap { background: transparent; border: 0; box-shadow: none; }
 
@@ -3006,7 +3015,7 @@ a.gr-tab { display: inline-block; text-decoration: none; }
   font-family: ui-monospace, 'SFMono-Regular', 'Courier New', monospace;
   font-size: var(--fs-sm);
   letter-spacing: 0.04em;
-  color: var(--color-text-faint);
+  color: var(--color-text);
 }
 
 /* shared poker-hand ranking table (NLH / PLO / 7 Card Stud) */
@@ -3039,4 +3048,7 @@ a.gr-tab { display: inline-block; text-decoration: none; }
   .gr-prow { grid-template-columns: 1fr auto; }
   .gr-kind { grid-column: 1 / -1; }
   .gr-card { width: 34px; height: 48px; font-size: 0.72rem; }
+  .gr-card.joker svg { width: 20px; height: 20px; }
+  .gr-hand-group { padding: 4px; gap: 4px; }
+  .gr-hand-arrow { font-size: 1.05rem; }
 }
