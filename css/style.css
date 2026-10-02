@@ -402,10 +402,51 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
   position: absolute;
   left: 0; right: 0; bottom: 0;
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2cqw;
   padding: 0 3cqw 2.6cqw;
   pointer-events: none; /* only the CTA itself should catch clicks */
+}
+/* Visually hidden but readable by crawlers / screen readers. */
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+/* Homepage <h1> (SEO item 1): two lines in the trailer's bottom-right
+   corner, sized in cqw like the CTA so it keeps the same footprint
+   (~28% of the video width) at every screen size. Placed after the CTA
+   visually via `order` so the CTA stays bottom-left. When swapping the
+   monthly video, check this corner is still free of key art. */
+.video-hero-title {
+  order: 2;
+  margin: 0;
+  max-width: 40cqw;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  font-size: clamp(12px, 1.35cqw, 22px);
+  line-height: 1.2;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85), 0 0 2px rgba(0, 0, 0, 0.9);
+}
+.video-hero-title-main {
+  font-family: var(--font-heading);
+  font-size: 1.3em;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--color-gold-light);
+}
+.video-hero-title-sub {
+  font-size: 0.95em;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--color-text);
 }
 /* Desktop/tablet "Play Now" CTA on top of the trailer (inside
    .video-hero-frame, so it always sits on the footage). Styled as an
@@ -512,8 +553,24 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
   .video-hero-cta, .video-hero-cta::after, .video-hero-cta-arrow { transition: none; }
 }
 @media (max-width: 700px) {
-  .video-hero { max-height: none; } /* keep 16:9 so nothing is cropped */
-  .video-hero-bar { display: none; }
+  /* keep 16:9 so nothing is cropped; the section grows to fit the <h1>
+     strip under the video */
+  .video-hero { max-height: none; aspect-ratio: auto; }
+  .video-hero-frame { height: auto; aspect-ratio: auto; }
+  .video-hero-media { height: auto; aspect-ratio: 16 / 9; }
+  .video-hero-overlay { bottom: auto; aspect-ratio: 16 / 9; height: auto; }
+  .video-hero-cta { display: none; }
+  .video-hero-bar {
+    position: static;
+    justify-content: center;
+    padding: 14px 16px 16px;
+    background: rgba(5, 5, 6, 0.55);
+  }
+  .video-hero-title {
+    max-width: none;
+    text-align: center;
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 860px) {
