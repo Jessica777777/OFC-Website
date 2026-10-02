@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jessica777777.github.io/OFC-Website/sitemap.xml
