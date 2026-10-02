@@ -72,8 +72,14 @@
   const RED_SUITS = ['H', 'D'];
   // v35: real card-set artwork (assets/images/cards/, from the user's
   // 素材/POKER/V08 material), same asset set the game-rules pages use --
-  // see makeCardEl() below.
-  const CARD_IMG_BASE = 'assets/images/cards/';
+  // see makeCardEl() below. This script is shared by the root (English)
+  // how-to-play.html AND the generated zh/ and ja/ copies one directory
+  // down (see tools/build_i18n.py) -- ofcStaticLang() (js/i18n.js) reports
+  // which static copy is running, so a plain 'assets/...' path (correct at
+  // root) doesn't 404 once it's nested under zh/ or ja/ instead.
+  const STATIC_LANG = (typeof ofcStaticLang === 'function') ? ofcStaticLang() : null;
+  const ASSET_PREFIX = (STATIC_LANG === 'zh' || STATIC_LANG === 'ja') ? '../' : '';
+  const CARD_IMG_BASE = ASSET_PREFIX + 'assets/images/cards/';
   const RANK_FILE_LABEL = { 14: 'A', 13: 'K', 12: 'Q', 11: 'J' };
   const RANK_LABEL = { 14: 'A', 13: 'K', 12: 'Q', 11: 'J' };
   const ROW_ORDER = ['front', 'middle', 'back'];
