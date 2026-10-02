@@ -441,6 +441,42 @@
       });
     }
 
+    // v30-followup10: #ofcDemoDesc's text is different on every step (and a
+    // different length in every language), so its line count used to vary
+    // freely -- 2 lines on one step, 4-5 on the next at common desktop widths
+    // (worst in English, whose sentences run longer than the zh/ja text).
+    // Since #ofcDemoDesc and #ofcDemoResult share one CSS Grid cell (see
+    // .ofc-demo-desc-wrap, v29e-followup3), that row's height always equals
+    // its tallest occupant -- so instead of measuring with JS and writing a
+    // resize listener, this just always keeps a real-but-invisible copy of
+    // every possible desc string stacked in that same grid cell. The grid
+    // auto-sizes the row to the tallest of all of them, at whatever width
+    // the widget currently renders at, so navigating between steps (or
+    // resizing the window) never changes #ofcDemoDesc's reserved height --
+    // the board below it stops jumping. No JS measurement, no resize
+    // listener: it falls out of the same grid invariant already in place.
+    let descProbesBuilt = false;
+    function ensureDescProbes() {
+      if (descProbesBuilt) return;
+      descProbesBuilt = true;
+      const keys = ['howToPlay.interactive.step0.desc'];
+      for (let s = 1; s < LAST_STEP; s++) keys.push('howToPlay.interactive.step' + s + '.desc');
+      keys.push('howToPlay.interactive.desc');
+      keys.forEach((key, i) => {
+        const probe = document.createElement('p');
+        probe.className = 'ofc-demo-desc-probe';
+        probe.setAttribute('aria-hidden', 'true');
+        probe.setAttribute('data-desc-probe-key', key);
+        probe.dataset.descProbeIndex = String(i);
+        descEl.insertAdjacentElement('afterend', probe);
+      });
+    }
+    function renderDescProbes() {
+      root.querySelectorAll('.ofc-demo-desc-probe').forEach((probe) => {
+        probe.textContent = t(probe.getAttribute('data-desc-probe-key'));
+      });
+    }
+
     function renderHeader() {
       progressEl.textContent = t('howToPlay.interactive.progress')
         .replace('{n}', String(step + 1))
@@ -456,6 +492,8 @@
         titleEl.textContent = t('howToPlay.interactive.title');
         descEl.textContent = t('howToPlay.interactive.desc');
       }
+      ensureDescProbes();
+      renderDescProbes();
     }
 
     function renderHand() {

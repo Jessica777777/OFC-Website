@@ -2072,6 +2072,24 @@ a.feature-card .feature-card-body .btn { pointer-events: none; }
 #ofcDemoDesc.is-covered {
   opacity: 0;
 }
+/* v30-followup10: one invisible copy of every step's .desc string (and the
+   final generic one), inserted right after #ofcDemoDesc by
+   ensureDescProbes()/renderDescProbes() in js/how-to-play-demo.js. They
+   share #ofcDemoDesc's font-size/max-width so each wraps exactly the same
+   way the real text would at this width, and -- being .ofc-demo-desc-wrap
+   grid children too -- the grid row auto-sizes to whichever one is
+   tallest. That reserves the full height every step could ever need, at
+   whatever width the widget currently renders at, so switching steps (or
+   resizing the window) never changes #ofcDemoDesc's height and the board
+   below it stops jumping between a 2-line and a 4-5-line description
+   (worst in English, whose sentences run longer than the zh/ja text). */
+.ofc-demo-desc-probe {
+  margin: 0;
+  font-size: var(--fs-sm);
+  max-width: 620px;
+  visibility: hidden;
+  pointer-events: none;
+}
 .ofc-demo-result {
   margin: 0;
   font-size: var(--fs-sm);
