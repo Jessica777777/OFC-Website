@@ -972,7 +972,12 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
   z-index: 6;
 }
 .collectible-slide-thumb--reveal img {
-  transform: scale(1.45);
+  /* translateY lifts the crate so its base sits on the same line as the
+     other nameplates (bottom ~77% of the square thumb, like
+     nameplate-863.png). Without it the bottom-anchored 1.45x scale put the
+     crate ~17% of the thumb lower than its neighbours. The % is of the
+     img's own height (480x334 -> ~70% of the thumb), applied before scale. */
+  transform: translateY(-24.7%) scale(1.45);
   transform-origin: 50% 100%;
 }
 .collectible-slide-name {
