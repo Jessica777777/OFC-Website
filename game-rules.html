@@ -16,7 +16,8 @@
      language isn't English, the default (prevents a flash of English text). See style.css. */
   (function () {
     try {
-      var l = localStorage.getItem('ofc-lang');
+      var q = (location.search.match(/[?&]lang=(en|zh|ja)\b/) || [])[1];
+      var l = q || localStorage.getItem('ofc-lang');
       if (l === 'zh' || l === 'ja') {
         var h = document.documentElement;
         h.setAttribute('data-i18n-pending', '');
@@ -173,8 +174,8 @@
   </div>
 </footer>
 
-<script src="js/i18n.js?v=32"></script>
-<script src="js/main.js?v=32"></script>
+<script src="js/i18n.js?v=33"></script>
+<script src="js/main.js?v=33"></script>
 <script>
 /**
  * game-rules.html — content-only renderer for the games covered by the

@@ -46,6 +46,15 @@ const I18N = {
     'howToPlay.more.card.blackjack.imgAlt': '21點牌桌氛圍圖',
     'howToPlay.more.card.rummy.imgAlt': 'Rummy 牌桌氛圍圖',
     'howToPlay.more.card.ginrummy.imgAlt': 'Gin Rummy 牌桌氛圍圖',
+    'index.collectibles.alt.n063': 'Nameplate 063 開箱動畫',
+    'index.collectibles.alt.n863': 'Nameplate 863 收藏名牌',
+    'index.collectibles.alt.n901': 'Nameplate 901 收藏名牌',
+    'index.collectibles.alt.n0222': 'Nameplate 0222 收藏名牌',
+    'index.collectibles.alt.blackFile': 'THE BLACK FILE 收藏牌背',
+    'index.collectibles.alt.theAce': 'THE ACE 收藏牌背',
+    'index.collectibles.alt.medal2000': 'Medal 2000 收藏徽章',
+    'index.collectibles.alt.medal1990': 'Medal 1990 收藏徽章',
+    'index.collectibles.alt.badge2008': 'Badge 2008 收藏徽章',
     'index.hero.h1Main': 'OFC 撲克：大菠蘿',
     'index.hero.h1Sep': ' — ',
     'index.hero.h1Sub': 'Open Face Chinese Poker (OFC) App',
@@ -326,6 +335,15 @@ const I18N = {
     'howToPlay.more.card.blackjack.imgAlt': 'Blackjack table scene',
     'howToPlay.more.card.rummy.imgAlt': 'Rummy table scene',
     'howToPlay.more.card.ginrummy.imgAlt': 'Gin Rummy table scene',
+    'index.collectibles.alt.n063': 'Nameplate 063 unboxing animation',
+    'index.collectibles.alt.n863': 'Nameplate 863 collectible nameplate',
+    'index.collectibles.alt.n901': 'Nameplate 901 collectible nameplate',
+    'index.collectibles.alt.n0222': 'Nameplate 0222 collectible nameplate',
+    'index.collectibles.alt.blackFile': 'THE BLACK FILE collectible card back',
+    'index.collectibles.alt.theAce': 'THE ACE collectible card back',
+    'index.collectibles.alt.medal2000': 'Medal 2000 collectible medal',
+    'index.collectibles.alt.medal1990': 'Medal 1990 collectible medal',
+    'index.collectibles.alt.badge2008': 'Badge 2008 collectible badge',
     'index.hero.h1Main': 'Open Face Chinese Poker (OFC) App',
     'index.hero.h1Sep': ' – ',
     'index.hero.h1Sub': 'OFC: Pineapple Poker',
@@ -604,6 +622,15 @@ const I18N = {
     'howToPlay.more.card.blackjack.imgAlt': 'ブラックジャックのテーブルイメージ',
     'howToPlay.more.card.rummy.imgAlt': 'ラミーのテーブルイメージ',
     'howToPlay.more.card.ginrummy.imgAlt': 'ジンラミーのテーブルイメージ',
+    'index.collectibles.alt.n063': 'Nameplate 063 開封アニメーション',
+    'index.collectibles.alt.n863': 'Nameplate 863 コレクションネームプレート',
+    'index.collectibles.alt.n901': 'Nameplate 901 コレクションネームプレート',
+    'index.collectibles.alt.n0222': 'Nameplate 0222 コレクションネームプレート',
+    'index.collectibles.alt.blackFile': 'THE BLACK FILE コレクションカードバック',
+    'index.collectibles.alt.theAce': 'THE ACE コレクションカードバック',
+    'index.collectibles.alt.medal2000': 'Medal 2000 コレクションメダル',
+    'index.collectibles.alt.medal1990': 'Medal 1990 コレクションメダル',
+    'index.collectibles.alt.badge2008': 'Badge 2008 コレクションバッジ',
     'index.hero.h1Main': 'Open Face Chinese Poker (OFC) アプリ',
     'index.hero.h1Sep': ' – ',
     'index.hero.h1Sub': 'OFCポーカー：パイナップル',
@@ -855,13 +882,48 @@ const I18N = {
 
 const OFC_LANG_KEY = 'ofc-lang';
 
+// SEO item 3 (2026-10): index / how-to-play / about / faq are now built as
+// three static copies (/ = en, /zh/, /ja/) by tools/build_i18n.py, with the
+// text already written into the HTML. Those pages carry
+// <html data-static-lang="..">: their language comes from the URL alone —
+// never from localStorage — and the DOM text is not rewritten at runtime.
+// Pages without it (game-rules.html, still a single URL) keep the old
+// client-side switching, plus a ?lang= parameter so links from /zh/ and /ja/
+// open it in the right language.
+function ofcStaticLang() {
+  const v = document.documentElement.getAttribute('data-static-lang');
+  return LANGS.includes(v) ? v : null;
+}
+
 function ofcGetLang() {
+  const fixed = ofcStaticLang();
+  if (fixed) return fixed;
+  try {
+    const q = new URLSearchParams(window.location.search).get('lang');
+    if (LANGS.includes(q)) {
+      try { localStorage.setItem(OFC_LANG_KEY, q); } catch (e) { /* ignore */ }
+      return q;
+    }
+  } catch (e) { /* ignore */ }
   try {
     const v = localStorage.getItem(OFC_LANG_KEY);
     return LANGS.includes(v) ? v : 'en';
   } catch (e) {
     return 'en';
   }
+}
+
+// On a dynamic (single-URL) page, point the shared nav/footer links at the
+// static copy in the visitor's language, e.g. about.html -> zh/about.html.
+const OFC_STATIC_PAGES = ['index.html', 'how-to-play.html', 'about.html', 'faq.html'];
+function ofcRetargetLinks(lang) {
+  document.querySelectorAll('a[href]').forEach((a) => {
+    if (!a.dataset.ofcHref) a.dataset.ofcHref = a.getAttribute('href');
+    const orig = a.dataset.ofcHref;
+    const m = orig.match(/^([a-z-]+\.html)(#.*)?$/);
+    if (!m || !OFC_STATIC_PAGES.includes(m[1])) return;
+    a.setAttribute('href', (lang === 'en' ? '' : lang + '/') + orig);
+  });
 }
 
 function ofcSetLang(lang) {
@@ -878,7 +940,19 @@ function ofcSetLang(lang) {
 function applyI18n(lang) {
   const dict = I18N[lang] || I18N.en;
   window.OFC_I18N_CURRENT = lang;
+  if (ofcStaticLang()) {
+    // Static page: text is already in the HTML; only sync the menu state.
+    document.querySelectorAll('.lang-switch [data-lang]').forEach((el) => {
+      el.classList.toggle('active', el.getAttribute('data-lang') === lang);
+    });
+    document.querySelectorAll('.lang-switch-label').forEach((el) => {
+      el.textContent = LANG_LABEL[lang] || LANG_LABEL.en;
+    });
+    document.documentElement.removeAttribute('data-i18n-pending');
+    return;
+  }
   document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : (lang === 'ja' ? 'ja' : 'en');
+  ofcRetargetLinks(lang);
 
   document.querySelectorAll('[data-i18n]').forEach((el) => {
     const key = el.getAttribute('data-i18n');
