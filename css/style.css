@@ -2971,9 +2971,31 @@ a.gr-tab { display: inline-block; text-decoration: none; }
    run of cards in its own bordered box instead of all cards loose in one
    row, so it reads as distinct groups rather than one jumbled hand. */
 .gr-hand.is-grouped { gap: 10px; }
-.gr-hand-group { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px; border: 1px solid var(--color-border); border-radius: 8px; background: rgba(255, 255, 255, 0.03); }
+/* v36 -- a couple of px more headroom on top than the other three sides,
+   so a raised card (.gr-card.is-raised below) has room to lift without its
+   top edge poking past this box's own border. */
+.gr-hand-group { display: flex; flex-wrap: wrap; gap: 6px; padding: 14px 6px 6px; border: 1px solid var(--color-border); border-radius: 8px; background: rgba(255, 255, 255, 0.03); }
 .gr-hand-arrow { display: flex; align-items: center; font-size: 1.3rem; color: var(--color-gold); padding: 0 2px; }
 .gr-hand-gap { display: inline-block; width: 14px; }
+/* v36 -- a zero-height, full-width flex item forces .gr-hand-group (which
+   wraps) onto a new line at this exact point, for the Rummy "reform sets"
+   example that lays each side out as a 3-row grid instead of one row. See
+   tools/game_rules_render.py's "/" placeholder. */
+.gr-hand-break { flex-basis: 100%; height: 0; }
+/* v36 -- matches the real app's UI, which visually lifts the card(s) just
+   added to or pulled from a set in a Rummy "feature instructions" before ->
+   after demo (game-rules-static-plan.md pending-tasks item 0). See
+   tools/game_rules_render.py's "^" placeholder. */
+.gr-card.is-raised { transform: translateY(-8px); }
+/* v36 -- a multi-row grid (see .gr-hand-break above) is too wide for its
+   before/after pair to sit side by side in the panel's 900px reading
+   column, so stack them and point the arrow down at the second grid
+   instead of sideways at empty space. */
+.gr-hand.is-grid { flex-direction: column; align-items: flex-start; }
+.gr-hand.is-grid .gr-hand-arrow--down { transform: rotate(90deg); margin: 2px 0 2px 18px; }
+/* v36 -- same gr-card bounding box either way, so scope to .is-pair (the
+   before -> after 2-group case) rather than every .is-grouped hand -- see
+   tools/game_rules_render.py's is_pair/is_grid flags. */
 /* a standalone hand-of-cards example (Rummy/Gin Rummy) rendered directly into the
    panel needs the same 900px-centered treatment as the surrounding text, otherwise
    it juts out past the left edge of the centered column above/below it. Scoped to a
@@ -3090,8 +3112,18 @@ a.gr-tab { display: inline-block; text-decoration: none; }
   .gr-card { width: 34px; height: 48px; }
   .gr-card-rank { height: 15px; }
   .gr-card-suit { height: 11px; }
-  .gr-hand-group { padding: 4px; gap: 4px; }
+  /* v36 -- same reasoning as the desktop rule, smaller cards need less
+     headroom for the raised-card lift below. */
+  .gr-hand-group { padding: 10px 4px 4px; gap: 4px; }
   .gr-hand-arrow { font-size: 1.05rem; }
+  .gr-card.is-raised { transform: translateY(-6px); }
+  /* v36 -- a fuller before/after pair (raised cards + blank slot) is
+     often too wide for two boxes to sit side by side at phone width, so
+     stack every grouped hand (not just the "/" grid case above) and point
+     the arrow down instead of letting it wrap awkwardly next to an empty
+     line. */
+  .gr-hand.is-pair { flex-direction: column; align-items: flex-start; }
+  .gr-hand.is-pair .gr-hand-arrow { transform: rotate(90deg); margin: 2px 0 2px 14px; }
 }
 
 /* v35: below 341px the header wraps to a second line (measured 108.23px

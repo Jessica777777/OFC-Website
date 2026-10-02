@@ -28,18 +28,32 @@ def esc_text(s):
 
 
 def card_html(code, img_base=CARD_IMG_BASE):
-    if code == "_":
+    # v36 -- "." is a second, distinct placeholder from "_": "_" is consumed
+    # by hand_html() itself to split codes into before/after groups and never
+    # reaches here, while "." passes straight through as an ordinary code so
+    # it renders a blank card-shaped slot *inside* a group (the empty space
+    # left behind by a card that moved elsewhere -- see the Rummy "feature
+    # instructions" examples in data/game-rules.json).
+    if code in ("_", "."):
         return '<span class="gr-card gap"></span>'
     if code == "?":
         return '<span class="gr-card back"></span>'
+    # v36 -- a trailing "^" marks a card as the one just added/utilized in a
+    # before -> after demo, matching the real app's UI which visually raises
+    # those cards instead of leaving every card flush with the rest of the
+    # group (game-rules-static-plan.md pending-tasks item 0).
+    raised = code.endswith("^")
+    if raised:
+        code = code[:-1]
+    raised_cls = " is-raised" if raised else ""
     rank, suit = code[:-1], code[-1]
     if rank == "X":
         return (
-            '<span class="gr-card joker" data-suit="%s">'
+            '<span class="gr-card joker%s" data-suit="%s">'
             '<img src="%sjoker.png" alt="Joker"></span>'
-        ) % (esc(suit), img_base)
+        ) % (raised_cls, esc(suit), img_base)
     is_red = suit in RED_SUIT
-    cls = "gr-card is-red" if is_red else "gr-card"
+    cls = ("gr-card is-red" if is_red else "gr-card") + raised_cls
     label = "10" if rank == "T" else rank
     rank_file = "%s%s_%s.png" % (img_base, label, "r" if is_red else "b")
     suit_file = "%s%s.png" % (img_base, SUIT_FILE.get(suit, ""))
@@ -50,12 +64,31 @@ def card_html(code, img_base=CARD_IMG_BASE):
     ) % (cls, esc(rank_file), esc(label), esc(suit_file), esc(SUIT.get(suit, "")))
 
 
+def _group_inner_html(g, img_base):
+    # v36 -- "/" is a row-break *within* one group's own cards (e.g. the
+    # Rummy "reform sets" example, which shows each side as a 3-row grid
+    # rather than one flowing row): emit a 100%-wide zero-height flex item
+    # so .gr-hand-group (flex-wrap: wrap) wraps onto a new line at exactly
+    # this point, without adding a visible card slot. Never produced by
+    # card_html() itself since it is consumed here, before any code reaches
+    # that function.
+    parts = []
+    for c in g:
+        if c == "/":
+            parts.append('<span class="gr-hand-break" aria-hidden="true"></span>')
+        else:
+            parts.append(card_html(c, img_base))
+    return "".join(parts)
+
+
 def hand_html(codes, img_base=CARD_IMG_BASE):
     """Split on the "_" placeholder into groups: 1 group -> plain flat hand
     (unchanged); 2 groups -> a "before -> after" demo, gold arrow between two
     bordered boxes; 3+ groups -> independent example hands side by side, each
     boxed, plain gap (no arrow) between them. Mirrors game-rules.html's JS
-    hand() exactly.
+    hand() exactly. See card_html() for the "." (blank slot) and "^" (raised
+    card) placeholders usable within a group, and _group_inner_html() above
+    for the "/" (row-break within a group) placeholder.
     """
     groups = [[]]
     for c in (codes or []):
@@ -66,18 +99,34 @@ def hand_html(codes, img_base=CARD_IMG_BASE):
     groups = [g for g in groups if g] or [[]]
 
     if len(groups) == 1:
-        inner = "".join(card_html(c, img_base) for c in groups[0])
-        return '<div class="gr-hand">%s</div>' % inner
+        return '<div class="gr-hand">%s</div>' % _group_inner_html(groups[0], img_base)
+
+    # v36 -- a group using "/" row-breaks is laid out as a multi-row grid
+    # (e.g. Rummy's "reform sets" example), which is too wide for a
+    # before -> after pair to sit side by side within the panel's 900px
+    # reading column. Stack them instead, with the arrow rotated to point
+    # down at the second grid rather than sideways at empty space.
+    is_grid = any("/" in g for g in groups)
+
+    is_pair = len(groups) == 2
 
     parts = []
     for i, g in enumerate(groups):
         if i > 0:
-            if len(groups) == 2:
-                parts.append('<span class="gr-hand-arrow" aria-hidden="true">&#8594;</span>')
+            if is_pair:
+                arrow_cls = "gr-hand-arrow gr-hand-arrow--down" if is_grid else "gr-hand-arrow"
+                parts.append('<span class="%s" aria-hidden="true">&#8594;</span>' % arrow_cls)
             else:
                 parts.append('<span class="gr-hand-gap" aria-hidden="true"></span>')
-        parts.append('<div class="gr-hand-group">%s</div>' % "".join(card_html(c, img_base) for c in g))
-    return '<div class="gr-hand is-grouped">%s</div>' % "".join(parts)
+        parts.append('<div class="gr-hand-group">%s</div>' % _group_inner_html(g, img_base))
+    # v36 -- "is-pair" (only the before -> after 2-group case) is a narrower
+    # hook than "is-grouped" (every multi-group hand, including blackjack's
+    # independent-hands-side-by-side case) so the new "stack + arrow points
+    # down" mobile treatment below only ever applies to a real before/after
+    # demo, never to unrelated multi-hand examples that happen to flex-wrap
+    # onto their own lines already.
+    hand_cls = "gr-hand is-grouped" + (" is-pair" if is_pair else "") + (" is-grid" if is_grid else "")
+    return '<div class="%s">%s</div>' % (hand_cls, "".join(parts))
 
 
 def txt(node, lang):
