@@ -407,50 +407,6 @@ p { margin: 0 0 16px; color: var(--color-text-muted); }
   padding: 0 3cqw 2.6cqw;
   pointer-events: none; /* only the CTA itself should catch clicks */
 }
-/* Homepage <h1> (SEO item 1): a slim strip directly under the trailer,
-   deliberately NOT overlaid on the footage. One line on desktop, two
-   stacked lines on phones. */
-.video-hero-caption {
-  background: linear-gradient(180deg, rgba(5, 5, 6, 0.96), rgba(12, 11, 14, 0.9));
-  border-bottom: 1px solid rgba(212, 175, 55, 0.22);
-  padding: 14px 16px;
-}
-.video-hero-title {
-  margin: 0 auto;
-  max-width: 1160px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: baseline;
-  column-gap: 0.4em;
-  row-gap: 0.15em;
-  text-align: center;
-  font-size: var(--fs-base, 1rem);
-  line-height: 1.3;
-}
-.video-hero-title-main {
-  font-family: var(--font-heading);
-  font-size: 1.15em;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  color: var(--color-gold-light);
-}
-.video-hero-title-sep { color: var(--color-text-muted); }
-.video-hero-title-sub {
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  color: var(--color-text);
-}
-@media (max-width: 700px) {
-  .video-hero-caption { padding: 12px 16px; }
-  .video-hero-title { flex-direction: column; align-items: center; font-size: 14px; }
-  /* the dash reads oddly at the start of a wrapped line; hide it visually
-     only (it stays in the text so the heading reads as one phrase) */
-  .video-hero-title-sep {
-    position: absolute; width: 1px; height: 1px; overflow: hidden;
-    clip: rect(0 0 0 0); white-space: nowrap;
-  }
-}
 /* Desktop/tablet "Play Now" CTA on top of the trailer (inside
    .video-hero-frame, so it always sits on the footage). Styled as an
    app-store-like "dossier tab": dark glass + gold hairline, app icon,
