@@ -90,16 +90,6 @@
            a download action right on it. The trailer has no audio track, so the
            old mute toggle was removed. -->
       <div class="video-hero-bar">
-        <!-- SEO (Debby 2026-10-02, item 1): the page's only <h1>, overlaid on
-             the trailer's bottom-right corner (event titles sit top-centre and
-             key art centre-left, so this corner stays clear). Must contain the
-             head term "Open Face Chinese Poker (OFC)" + the app name. The
-             separator is visually hidden but kept in the text so crawlers read
-             one continuous heading. On phones it drops below the video. -->
-        <h1 class="video-hero-title">
-          <span class="video-hero-title-main" data-i18n="index.hero.h1Main">OFC 撲克：大菠蘿</span><span class="sr-only" data-i18n="index.hero.h1Sep"> — </span>
-          <span class="video-hero-title-sub" data-i18n="index.hero.h1Sub">Open Face Chinese Poker (OFC) App</span>
-        </h1>
         <a href="https://ofcpineapplepo.onelink.me/tBwC/zkwrf90e" class="video-hero-cta" target="_blank" rel="noopener">
           <img class="video-hero-cta-icon" src="assets/images/app-icon-180.png" alt="" width="52" height="52">
           <span class="video-hero-cta-text">
@@ -113,6 +103,17 @@
       </div>
     </div>
   </section>
+  <!-- SEO (Debby 2026-10-02, item 1): the page's only <h1>, in a slim strip
+       directly under the trailer (kept off the footage on purpose — the text
+       must stay visible; hidden keyword headings risk being treated as
+       hidden text by Google). Must contain the head term
+       "Open Face Chinese Poker (OFC)" + the app name. Text per language via
+       index.hero.h1Main / h1Sep / h1Sub in js/i18n.js. -->
+  <div class="video-hero-caption">
+    <h1 class="video-hero-title">
+      <span class="video-hero-title-main" data-i18n="index.hero.h1Main">OFC 撲克：大菠蘿</span><span class="video-hero-title-sep" data-i18n="index.hero.h1Sep"> — </span><span class="video-hero-title-sub" data-i18n="index.hero.h1Sub">Open Face Chinese Poker (OFC) App</span>
+    </h1>
+  </div>
 
   <!-- BRAND TRUST：HQ 傳令風格的品牌信任區，仿情報密令排版。
        v13：首頁精簡改版後，原本獨立的文字型 Hero 區塊（標題／描述／下載徽章／評分）
